@@ -10,7 +10,7 @@
 
 namespace BrianHenryIE\WP_Simple_Calendar\Admin;
 
-use BrianHenryIE\WP_Simple_Calendar\API\Settings;
+use BrianHenryIE\WP_Simple_Calendar\Settings_Interface;
 
 /**
  * The admin-specific functionality of the plugin.
@@ -23,14 +23,12 @@ use BrianHenryIE\WP_Simple_Calendar\API\Settings;
  * @author     Brian Henry <BrianHenryIE@gmail.com>
  */
 class Admin_Assets {
-
-	protected Settings $settings;
-
 	/**
 	 * Initialize the class and set its properties.
 	 */
-	public function __construct( $settings ) {
-		$this->settings = $settings;
+	public function __construct(
+		protected Settings_Interface $settings,
+	){
 	}
 
 	/**

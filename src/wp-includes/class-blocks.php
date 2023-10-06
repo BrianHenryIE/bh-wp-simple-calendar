@@ -11,7 +11,7 @@ class Blocks {
 	 *
 	 * @see https://developer.wordpress.org/reference/functions/register_block_type/
 	 */
-	protected function create_block_bh_wp_simple_calendar_block_init() {
+	public function create_block_bh_wp_simple_calendar_block_init() {
 		register_block_type( __DIR__ . '/build' );
 	}
 }

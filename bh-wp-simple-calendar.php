@@ -28,11 +28,14 @@ namespace BrianHenryIE\WP_Simple_Calendar;
 
 use BrianHenryIE\WP_Simple_Calendar\API\API;
 use BrianHenryIE\WP_Simple_Calendar\API\Settings;
+use BrianHenryIE\WP_Simple_Calendar\lucatume\DI52\Container;
 use BrianHenryIE\WP_Simple_Calendar\WP_Logger\Logger;
 use BrianHenryIE\WP_Simple_Calendar\WP_Includes\Activator;
 use BrianHenryIE\WP_Simple_Calendar\WP_Includes\Deactivator;
 use BrianHenryIE\WP_Simple_Calendar\WP_Logger\Logger_Settings_Interface;
 use BrianHenryIE\WP_Simple_Calendar\WP_Logger\Logger_Settings_Trait;
+use Psr\Container\ContainerInterface;
+use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 
 // If this file is called directly, abort.
@@ -55,27 +58,26 @@ define( 'PLUGIN_NAME_URL', trailingslashit( plugins_url( plugin_basename( __DIR_
 register_activation_hook( __FILE__, array( Activator::class, 'activate' ) );
 register_deactivation_hook( __FILE__, array( Deactivator::class, 'deactivate' ) );
 
+$container = new Container();
 
-/**
- * Begins execution of the plugin.
- *
- * Since everything within the plugin is registered via hooks,
- * then kicking off the plugin from this point in the file does
- * not affect the page life cycle.
- *
- * @since    1.0.0
- */
-function instantiate_bh_wp_simple_calendar() {
-	$settings = new Settings();
-	$logger   = Logger::instance( $settings );
+$container->singleton(
+	ContainerInterface::class,
+	static function () use( $container ) {
+		return $container;
+	}
+);
 
-	$api = new API();
+$container->bind( API_Interface::class, API::class );
+$container->bind( Settings_Interface::class, Settings::class );
+$container->bind( Logger_Settings_Interface::class, Settings::class );
 
-	return new BH_WP_Simple_Calendar( $api, $settings, $logger );
-}
+$container->singleton(
+	LoggerInterface::class,
+	static function ( Container $container ) {
+		return Logger::instance( $container->get( Logger_Settings_Interface::class ) );
+	}
+);
 
-/**
- * The core plugin class that is used to define internationalization,
- * admin-specific hooks, and frontend-facing site hooks.
- */
-$GLOBALS['bh_wp_simple_calendar'] = instantiate_bh_wp_simple_calendar();
+$container->get( BH_WP_Simple_Calendar::class );
+
+$GLOBALS['bh_wp_simple_calendar'] = $container->get( API_Interface::class );

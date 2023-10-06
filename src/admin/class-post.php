@@ -10,7 +10,7 @@
 
 namespace BrianHenryIE\WP_Simple_Calendar\Admin;
 
-use BrianHenryIE\WP_Simple_Calendar\API\API;
+use BrianHenryIE\WP_Simple_Calendar\API_Interface;
 use WP_Post;
 
 /**
@@ -18,10 +18,9 @@ use WP_Post;
  */
 class Post {
 
-	protected $api;
-
-	public function __construct( $api ) {
-		$this->api = $api;
+	public function __construct(
+		protected API_Interface $api
+	) {
 	}
 
 	/**

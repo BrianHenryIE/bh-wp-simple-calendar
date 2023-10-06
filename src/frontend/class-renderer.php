@@ -5,19 +5,15 @@
 
 namespace BrianHenryIE\WP_Simple_Calendar\Frontend;
 
-use BrianHenryIE\WP_Simple_Calendar\API\API;
-use BrianHenryIE\WP_Simple_Calendar\ICal\ICal;
+use BrianHenryIE\WP_Simple_Calendar\API_Interface;
 
 class Renderer {
 
 	protected $defaults;
 
-	/** @var API */
-	protected $api;
-
-	public function __construct( $api ) {
-
-		$this->api = $api;
+	public function __construct(
+		protected API_Interface $api,
+	) {
 
 		$this->defaults = array(
 			'title'        => __( 'Events', 'bh_wp_simple_calendar' ),

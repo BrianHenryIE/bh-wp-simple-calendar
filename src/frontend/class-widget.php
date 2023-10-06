@@ -16,16 +16,15 @@ namespace BrianHenryIE\WP_Simple_Calendar\Frontend;
  */
 class Widget extends \WP_Widget {
 
-	/** @var Renderer */
-	private $renderer;
-
 	/**
 	 * `id_base` and `classname` preserved for backward compatibility.
 	 * TODO: Unsure if classname is used anywhere. id_base can be find+replaced during install.
 	 *
 	 * Widget constructor.
 	 */
-	public function __construct( $renderer ) {
+	public function __construct(
+		protected Renderer $renderer,
+	) {
 
 		$id_base = 'simple_ical_widget';
 

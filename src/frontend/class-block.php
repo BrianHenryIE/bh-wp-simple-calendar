@@ -16,17 +16,10 @@ use BrianHenryIE\WP_Simple_Calendar\API\Settings;
  */
 class Block {
 
-	protected Settings $settings;
-
-	/** @var Renderer */
-	protected $renderer;
-
-
-
-	public function __construct( $renderer, $settings ) {
-
-		$this->settings = $settings;
-		$this->renderer = $renderer;
+	public function __construct(
+		protected Settings $settings,
+		protected Renderer $renderer,
+	) {
 	}
 
 	/**

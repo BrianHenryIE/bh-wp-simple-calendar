@@ -3,13 +3,9 @@
 
 namespace BrianHenryIE\WP_Simple_Calendar\API;
 
-// use BrianHenryIE\WP_Simple_Calendar\lib\ics_parser\Parser;
+use BrianHenryIE\WP_Simple_Calendar\API_Interface;
 
-use BrianHenryIE\WP_Simple_Calendar\ICal\Event;
-use BrianHenryIE\WP_Simple_Calendar\ICal\ICal;
-use BrianHenryIE\WP_Simple_Calendar\WP_Includes\Cron;
-
-class API {
+class API implements API_Interface {
 
 	/**
 	 * Stored in wp_options, an associative array of { calendar_url : post_id[] }.

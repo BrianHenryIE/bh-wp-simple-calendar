@@ -21,7 +21,10 @@
     ],
     "minimum-stability": "dev",
     "prefer-stable": true,
-    "config": {
+		"config": {
+			"platform": {
+				"php": "8.0"
+		},
         "process-timeout": 0,
         "allow-plugins": {
             "cweagans/composer-patches": true,
@@ -52,18 +55,18 @@
             "type": "git"
         }
     },
-    "require": {
-        "php": ">=7.4",
+	"require": {
         "johngrogg/ics-parser": "^2",
         "alleyinteractive/wordpress-autoloader": "*",
-        "brianhenryie/bh-wp-logger": "dev-master"
+        "brianhenryie/bh-wp-logger": "dev-master",
+        "lucatume/di52": "^3.3"
     },
     "require-dev": {
         "10up/wp_mock": "*",
         "antecedent/patchwork": "^2.1",
         "brianhenryie/color-logger": "^1.0",
         "brianhenryie/composer-phpstorm": "dev-master",
-        "brianhenryie/strauss": "*",
+        "brianhenryie/strauss": "dev-master",
         "codeception/module-asserts": "^1.0",
         "codeception/module-cli": "^1.0",
         "codeception/module-db": "^1.0.0",

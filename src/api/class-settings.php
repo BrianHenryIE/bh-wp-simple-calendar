@@ -2,11 +2,12 @@
 
 namespace BrianHenryIE\WP_Simple_Calendar\API;
 
+use BrianHenryIE\WP_Simple_Calendar\Settings_Interface;
 use BrianHenryIE\WP_Simple_Calendar\WP_Logger\Logger_Settings_Interface;
 use BrianHenryIE\WP_Simple_Calendar\WP_Logger\Logger_Settings_Trait;
 use Psr\Log\LogLevel;
 
-class Settings implements Logger_Settings_Interface {
+class Settings implements Settings_Interface, Logger_Settings_Interface {
 	use Logger_Settings_Trait;
 
 	public function get_version(): string {

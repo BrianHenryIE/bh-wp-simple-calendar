@@ -6,8 +6,10 @@
 namespace BrianHenryIE\WP_Simple_Calendar\WP_Includes;
 
 use BrianHenryIE\WP_Simple_Calendar\API\API;
+use BrianHenryIE\WP_Simple_Calendar\API_Interface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 
 /**
  * Class Cron
@@ -20,19 +22,16 @@ class Cron implements LoggerAwareInterface {
 	const UPDATE_CACHES_CRON_JOB = 'bh_wp_update_calendar_caches';
 
 	/**
-	 * @var API
-	 */
-	protected $api;
-
-	/**
 	 * Cron constructor.
 	 *
 	 * @param API    $api
 	 * @param $logger
 	 */
-	public function __construct( $api, $logger ) {
+	public function __construct(
+		protected API_Interface $api,
+		LoggerInterface $logger
+	) {
 		$this->setLogger( $logger );
-		$this->api = $api;
 	}
 
 	/**

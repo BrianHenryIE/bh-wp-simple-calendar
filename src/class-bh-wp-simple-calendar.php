@@ -10,15 +10,14 @@
 
 namespace BrianHenryIE\WP_Simple_Calendar;
 
-use BrianHenryIE\WP_Simple_Calendar\Admin\Documentation_Page;
 use BrianHenryIE\WP_Simple_Calendar\Admin\Post;
 use BrianHenryIE\WP_Simple_Calendar\API\API;
 use BrianHenryIE\WP_Simple_Calendar\API\Settings;
 use BrianHenryIE\WP_Simple_Calendar\Frontend\Block;
-use BrianHenryIE\WP_Simple_Calendar\Frontend\Renderer;
-use BrianHenryIE\WP_Simple_Calendar\Frontend\Widget;
+use BrianHenryIE\WP_Simple_Calendar\WP_Includes\Blocks;
 use BrianHenryIE\WP_Simple_Calendar\WP_Includes\Cron;
 use BrianHenryIE\WP_Simple_Calendar\WP_Includes\I18n;
+use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -55,12 +54,9 @@ class BH_WP_Simple_Calendar {
 	 *
 	 * @param API $api Common code.
 	 */
-	public function __construct( $api, $settings, $logger ) {
-
-		$this->logger   = $logger;
-		$this->settings = $settings;
-		$this->api      = $api;
-
+	public function __construct(
+		protected ContainerInterface $container
+	) {
 		$this->set_locale();
 		$this->define_admin_hooks();
 		$this->define_cron_hooks();
@@ -72,7 +68,10 @@ class BH_WP_Simple_Calendar {
 
 	protected function define_block_hooks(): void {
 
-		add_action( 'init', 'create_block_bh_wp_simple_calendar_block_init' );
+		/** @var Blocks $blocks */
+		$blocks = $this->container->get( Blocks::class );
+
+		add_action( 'init', array( $blocks, 'create_block_bh_wp_simple_calendar_block_init' ) );
 	}
 
 	/**
@@ -85,7 +84,8 @@ class BH_WP_Simple_Calendar {
 	 */
 	private function set_locale() {
 
-		$plugin_i18n = new I18n();
+		/** @var I18n $plugin_i18n */
+		$plugin_i18n = $this->container->get(I18n::class);
 
 		add_action( 'init', array( $plugin_i18n, 'load_plugin_textdomain' ) );
 	}
@@ -98,14 +98,16 @@ class BH_WP_Simple_Calendar {
 	 */
 	private function define_admin_hooks() {
 
-		$plugin_post = new Post( $this->api );
+		/** @var Post $plugin_post */
+		$plugin_post = $this->container->get(Post::class);
 
 		add_action( 'save_post', array( $plugin_post, 'update_cache_posts_list' ), 10, 3 );
 	}
 
 	protected function define_cron_hooks() {
 
-		$plugin_cron = new Cron( $this->api, $this->logger );
+		/** @var Cron $plugin_cron */
+		$plugin_cron = $this->container->get(Cron::class);
 
 		add_action( Cron::UPDATE_CACHES_CRON_JOB, array( $plugin_cron, 'update_calendars_caches' ) );
 	}
@@ -118,12 +120,10 @@ class BH_WP_Simple_Calendar {
 	private function define_frontend_hooks() {
 
 		// $widget = new Widget( $this->api );
-		//
 		// add_widget( $widget );
 
-		$renderer = new Renderer( $this->api );
-
-		$plugin_block = new Block( $renderer, $this->settings );
+		/** @var Block $plugin_block */
+		$plugin_block = $this->container->get(Block::class);
 
 		add_action( 'init', array( $plugin_block, 'register_block' ) );
 	}
