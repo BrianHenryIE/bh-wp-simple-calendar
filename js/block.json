@@ -1,9 +1,9 @@
 {
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
-	"name": "create-block/bh-wp-simple-calendar",
+	"name": "brianhenryie/bh-wp-simple-calendar",
 	"version": "0.1.0",
-	"title": "Bh Wp Simple Calendar",
+	"title": "BH WP Simple Calendar",
 	"category": "widgets",
 	"icon": "smiley",
 	"description": "Example block scaffolded with Create Block tool.",
