@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "dbafe050f492791d2ca3975dc614251f",
+    "content-hash": "717fe6ec7cc89511480ec1c943a354ff",
     "packages": [
         {
             "name": "alleyinteractive/wordpress-autoloader",
@@ -1081,12 +1081,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/BrianHenryIE/strauss.git",
-                "reference": "ef04833ff659456992e9f2e9c89034146a0489d7"
+                "reference": "0a38458217ed65d2e1c39ad31cfd279edd72cbfa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/BrianHenryIE/strauss/zipball/ef04833ff659456992e9f2e9c89034146a0489d7",
-                "reference": "ef04833ff659456992e9f2e9c89034146a0489d7",
+                "url": "https://api.github.com/repos/BrianHenryIE/strauss/zipball/0a38458217ed65d2e1c39ad31cfd279edd72cbfa",
+                "reference": "0a38458217ed65d2e1c39ad31cfd279edd72cbfa",
                 "shasum": ""
             },
             "require": {
@@ -1137,7 +1137,7 @@
                 "issues": "https://github.com/BrianHenryIE/strauss/issues",
                 "source": "https://github.com/BrianHenryIE/strauss/tree/master"
             },
-            "time": "2023-10-06T20:36:15+00:00"
+            "time": "2023-10-06T20:53:32+00:00"
         },
         {
             "name": "codeception/codeception",
@@ -3606,6 +3606,154 @@
                 "source": "https://github.com/JASchilz/PHPCoverageBadge/tree/master"
             },
             "time": "2017-07-21T20:03:56+00:00"
+        },
+        {
+            "name": "johnpbloch/wordpress",
+            "version": "6.3.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/johnpbloch/wordpress.git",
+                "reference": "45e299b8eae626d7b1db1eb53a69e63b9cc75bf6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/johnpbloch/wordpress/zipball/45e299b8eae626d7b1db1eb53a69e63b9cc75bf6",
+                "reference": "45e299b8eae626d7b1db1eb53a69e63b9cc75bf6",
+                "shasum": ""
+            },
+            "require": {
+                "johnpbloch/wordpress-core": "6.3.1",
+                "johnpbloch/wordpress-core-installer": "^1.0 || ^2.0",
+                "php": ">=7.0.0"
+            },
+            "type": "package",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "WordPress Community",
+                    "homepage": "https://wordpress.org/about/"
+                }
+            ],
+            "description": "WordPress is open source software you can use to create a beautiful website, blog, or app.",
+            "homepage": "https://wordpress.org/",
+            "keywords": [
+                "blog",
+                "cms",
+                "wordpress"
+            ],
+            "support": {
+                "docs": "https://developer.wordpress.org/",
+                "forum": "https://wordpress.org/support/",
+                "irc": "irc://irc.freenode.net/wordpress",
+                "issues": "https://core.trac.wordpress.org/",
+                "source": "https://core.trac.wordpress.org/browser"
+            },
+            "time": "2023-08-29T14:28:17+00:00"
+        },
+        {
+            "name": "johnpbloch/wordpress-core",
+            "version": "6.3.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/johnpbloch/wordpress-core.git",
+                "reference": "fc432f78ae5256b7fa28e810cfdf0b968d003699"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/johnpbloch/wordpress-core/zipball/fc432f78ae5256b7fa28e810cfdf0b968d003699",
+                "reference": "fc432f78ae5256b7fa28e810cfdf0b968d003699",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "php": ">=7.0.0"
+            },
+            "provide": {
+                "wordpress/core-implementation": "6.3.1"
+            },
+            "type": "wordpress-core",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "WordPress Community",
+                    "homepage": "https://wordpress.org/about/"
+                }
+            ],
+            "description": "WordPress is open source software you can use to create a beautiful website, blog, or app.",
+            "homepage": "https://wordpress.org/",
+            "keywords": [
+                "blog",
+                "cms",
+                "wordpress"
+            ],
+            "support": {
+                "forum": "https://wordpress.org/support/",
+                "irc": "irc://irc.freenode.net/wordpress",
+                "issues": "https://core.trac.wordpress.org/",
+                "source": "https://core.trac.wordpress.org/browser",
+                "wiki": "https://codex.wordpress.org/"
+            },
+            "time": "2023-08-29T14:28:14+00:00"
+        },
+        {
+            "name": "johnpbloch/wordpress-core-installer",
+            "version": "2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/johnpbloch/wordpress-core-installer.git",
+                "reference": "237faae9a60a4a2e1d45dce1a5836ffa616de63e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/johnpbloch/wordpress-core-installer/zipball/237faae9a60a4a2e1d45dce1a5836ffa616de63e",
+                "reference": "237faae9a60a4a2e1d45dce1a5836ffa616de63e",
+                "shasum": ""
+            },
+            "require": {
+                "composer-plugin-api": "^1.0 || ^2.0",
+                "php": ">=5.6.0"
+            },
+            "conflict": {
+                "composer/installers": "<1.0.6"
+            },
+            "require-dev": {
+                "composer/composer": "^1.0 || ^2.0",
+                "phpunit/phpunit": ">=5.7.27"
+            },
+            "type": "composer-plugin",
+            "extra": {
+                "class": "johnpbloch\\Composer\\WordPressCorePlugin"
+            },
+            "autoload": {
+                "psr-0": {
+                    "johnpbloch\\Composer\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "John P. Bloch",
+                    "email": "me@johnpbloch.com"
+                }
+            ],
+            "description": "A custom installer to handle deploying WordPress with composer",
+            "keywords": [
+                "wordpress"
+            ],
+            "support": {
+                "issues": "https://github.com/johnpbloch/wordpress-core-installer/issues",
+                "source": "https://github.com/johnpbloch/wordpress-core-installer/tree/master"
+            },
+            "time": "2020-04-16T21:44:57+00:00"
         },
         {
             "name": "json-mapper/json-mapper",
