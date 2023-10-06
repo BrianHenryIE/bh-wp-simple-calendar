@@ -66,9 +66,35 @@ languages/*.pot
 /test-results/
 /playwright-report/
 /playwright/.cache/
-/test-results/
-/playwright-report/
-/playwright/.cache/
 
 src/vendor-prefixed/
 /vendor/
+
+# Logs
+logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Coverage directory used by tools like istanbul
+coverage
+
+# Compiled binary addons (https://nodejs.org/api/addons.html)
+build/Release
+
+# Dependency directories
+node_modules/
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Output of `npm pack`
+*.tgz
+
+# dotenv environment variables file
+.env
+
+/build

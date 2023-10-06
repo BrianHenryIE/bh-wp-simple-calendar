@@ -65,7 +65,14 @@ class BH_WP_Simple_Calendar {
 		$this->define_admin_hooks();
 		$this->define_cron_hooks();
 
+		$this->define_block_hooks();
+
 		$this->define_frontend_hooks();
+	}
+
+	protected function define_block_hooks(): void {
+
+		add_action( 'init', 'create_block_bh_wp_simple_calendar_block_init' );
 	}
 
 	/**
