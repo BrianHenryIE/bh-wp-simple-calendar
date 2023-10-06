@@ -98,10 +98,6 @@ class BH_WP_Simple_Calendar {
 	 */
 	private function define_admin_hooks() {
 
-		$documentation_page = new Documentation_Page();
-
-		add_action( 'admin_menu', array( $documentation_page, 'add_submenu' ) );
-
 		$plugin_post = new Post( $this->api );
 
 		add_action( 'save_post', array( $plugin_post, 'update_cache_posts_list' ), 10, 3 );
