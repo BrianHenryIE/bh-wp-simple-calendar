@@ -19,10 +19,14 @@ extensions:
 params:
     - .env.testing
 coverage:
-    enabled: true
-    include:
-        - src/*
-    exclude:
-        - src/dependencies/*
-        - src/vendor/*
+  enabled: true
+  include:
+    - /src/*
+    - /bh-wp-simple-calendar.php
+    - /uninstall.php
+    - /templates/*
+  exclude:
+    - /*/interface-*.*
+    - autoload.php
+    - autoload-classmap.php
 bootstrap: bootstrap.php
