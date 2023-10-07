@@ -4,7 +4,7 @@ namespace BrianHenryIE\WP_Simple_Calendar;
 
 interface Settings_Interface {
 
-	public function get_version(): string;
+	public function get_plugin_version(): string;
 
 	public function get_log_level(): string;
 

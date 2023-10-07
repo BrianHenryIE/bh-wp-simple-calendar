@@ -39,7 +39,7 @@ class Block {
 			$script_handle,
 			$src,
 			$deps,
-			$this->settings->get_version(),
+			$this->settings->get_plugin_version(),
 			array( 'in_footer' => true )
 		);
 

@@ -31,7 +31,7 @@ class Admin_Assets {
 			$this->settings->get_plugin_name(),
 			plugins_url( 'assets/bh-wp-simple-calendar-admin.css', $this->settings->get_plugin_basename() ),
 			array(),
-			$this->settings->get_version(),
+			$this->settings->get_plugin_version(),
 			'all'
 		);
 	}
@@ -44,7 +44,7 @@ class Admin_Assets {
 			$this->settings->get_plugin_name(),
 			plugins_url( 'assets/bh-wp-simple-calendar-admin.js', $this->settings->get_plugin_basename() ),
 			array( 'jquery' ),
-			$this->settings->get_version(),
+			$this->settings->get_plugin_version(),
 			false
 		);
 	}

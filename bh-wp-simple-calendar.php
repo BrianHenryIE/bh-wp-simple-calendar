@@ -15,7 +15,7 @@
  * Plugin Name:       Simple Calendar
  * Plugin URI:        http://github.com/BrianHenryIE/bh-wp-simple-calendar/
  * Description:       Displays iCal/.ics/Google Calendar in a block/widget/shortcode using templates.
- * Version:           1.0.0
+ * Version:           3.0.0
  * Author:            Brian Henry
  * Author URI:        http://example.com/
  * License:           GPL-2.0+
@@ -46,14 +46,12 @@ if ( ! defined( 'WPINC' ) ) {
 require_once plugin_dir_path( __FILE__ ) . 'autoload.php';
 
 /**
- * Current plugin version.
- * Start at version 1.0.0 and use SemVer - https://semver.org
- * Rename this for your plugin and update it as you release new versions.
+ * Current plugin version. Using SemVer - https://semver.org
  */
-define( 'PLUGIN_NAME_VERSION', '1.0.0' );
-define( 'PLUGIN_NAME_BASENAME', plugin_basename( __FILE__ ) );
-define( 'PLUGIN_NAME_PATH', plugin_dir_path( __FILE__ ) );
-define( 'PLUGIN_NAME_URL', trailingslashit( plugins_url( plugin_basename( __DIR__ ) ) ) );
+define( 'BH_WP_SIMPLE_CALENDAR_VERSION', '3.0.0' );
+define( 'BH_WP_SIMPLE_CALENDAR_BASENAME', plugin_basename( __FILE__ ) );
+define( 'BH_WP_SIMPLE_CALENDAR_PATH', plugin_dir_path( __FILE__ ) );
+define( 'BH_WP_SIMPLE_CALENDAR_URL', trailingslashit( plugins_url( plugin_basename( __DIR__ ) ) ) );
 
 register_activation_hook( __FILE__, array( Activator::class, 'activate' ) );
 register_deactivation_hook( __FILE__, array( Deactivator::class, 'deactivate' ) );
