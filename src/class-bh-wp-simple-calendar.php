@@ -34,25 +34,13 @@ use Psr\Log\LoggerInterface;
 class BH_WP_Simple_Calendar {
 
 	/**
-	 * An instance of the common functions the widget and block use.
-	 *
-	 * @var API
-	 */
-	protected API $api;
-
-	protected LoggerInterface $logger;
-	protected Settings $settings;
-
-	/**
 	 * Define the core functionality of the plugin.
 	 *
-	 * Set the plugin name and the plugin version that can be used throughout the plugin.
-	 * Load the dependencies, define the locale, and set the hooks for the admin area and
-	 * the public-facing side of the site.
+	 * Load the dependencies, define the locale, and add the hooks and filters.
 	 *
 	 * @since    1.2.0
 	 *
-	 * @param API $api Common code.
+	 * @param ContainerInterface $container The DI container.
 	 */
 	public function __construct(
 		protected ContainerInterface $container
@@ -82,10 +70,10 @@ class BH_WP_Simple_Calendar {
 	 *
 	 * @since    1.2.0
 	 */
-	private function set_locale() {
+	private function set_locale(): void {
 
 		/** @var I18n $plugin_i18n */
-		$plugin_i18n = $this->container->get(I18n::class);
+		$plugin_i18n = $this->container->get( I18n::class );
 
 		add_action( 'init', array( $plugin_i18n, 'load_plugin_textdomain' ) );
 	}
@@ -96,18 +84,18 @@ class BH_WP_Simple_Calendar {
 	 *
 	 * @since    1.2.0
 	 */
-	private function define_admin_hooks() {
+	private function define_admin_hooks(): void {
 
 		/** @var Post $plugin_post */
-		$plugin_post = $this->container->get(Post::class);
+		$plugin_post = $this->container->get( Post::class );
 
 		add_action( 'save_post', array( $plugin_post, 'update_cache_posts_list' ), 10, 3 );
 	}
 
-	protected function define_cron_hooks() {
+	protected function define_cron_hooks(): void {
 
 		/** @var Cron $plugin_cron */
-		$plugin_cron = $this->container->get(Cron::class);
+		$plugin_cron = $this->container->get( Cron::class );
 
 		add_action( Cron::UPDATE_CACHES_CRON_JOB, array( $plugin_cron, 'update_calendars_caches' ) );
 	}
@@ -117,13 +105,13 @@ class BH_WP_Simple_Calendar {
 	 *
 	 * @since    1.2.0
 	 */
-	private function define_frontend_hooks() {
+	private function define_frontend_hooks(): void {
 
 		// $widget = new Widget( $this->api );
 		// add_widget( $widget );
 
 		/** @var Block $plugin_block */
-		$plugin_block = $this->container->get(Block::class);
+		$plugin_block = $this->container->get( Block::class );
 
 		add_action( 'init', array( $plugin_block, 'register_block' ) );
 	}
