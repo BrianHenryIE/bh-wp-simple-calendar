@@ -27,7 +27,7 @@ class API implements API_Interface {
 	 *
 	 * @return Event[]|null
 	 */
-	public function get_upcoming_events( $calendar_id, $period, $count ) {
+	public function get_upcoming_events( string $calendar_id, int $period, int $count ): ?array {
 
 		// Google calendar ids take the form of an email address
 		if ( is_email( $calendar_id ) ) {
@@ -82,7 +82,7 @@ class API implements API_Interface {
 	 *
 	 * @return string|null
 	 */
-	protected function get_calendar_ics( $calendar_url ) {
+	protected function get_calendar_ics( string $calendar_url ): ?string {
 
 		$calendar_ics = $this->get_calendar_from_cache( $calendar_url );
 
@@ -106,7 +106,7 @@ class API implements API_Interface {
 	 *
 	 * @return string|null
 	 */
-	protected function fetch_remote_calendar( $calendar_url ) {
+	protected function fetch_remote_calendar( string $calendar_url ): ?string {
 
 		// TODO: Use the HTTP cache header to check has it been updated.
 
@@ -147,7 +147,7 @@ class API implements API_Interface {
 	 * @return string The Google Calendar ICS file URL.
 	 * @throws \Exception
 	 */
-	protected function get_calendar_url( $calendar_id ) {
+	protected function get_calendar_url( string $calendar_id ): string {
 
 		// If it's already a URL, return it.
 		if ( false !== filter_var( $calendar_id, FILTER_VALIDATE_URL ) ) {
@@ -210,7 +210,7 @@ class API implements API_Interface {
 	 * @param string $calendar_url
 	 * @param int    $post_id
 	 */
-	public function add_post_ref_to_calendar_cache( $calendar_url, $post_id ) {
+	public function add_post_ref_to_calendar_cache( string $calendar_url, int $post_id ) {
 
 		$cached_calendars = get_option( self::CACHED_CALENDARS_OPTION_NAME, array() );
 
@@ -245,7 +245,7 @@ class API implements API_Interface {
 	 *
 	 * @param int $post_id
 	 */
-	public function remove_post_ref_from_calendar_cache( $post_id ) {
+	public function remove_post_ref_from_calendar_cache( int $post_id ): bool {
 
 		$cached_calendars = get_option( self::CACHED_CALENDARS_OPTION_NAME, array() );
 
@@ -296,7 +296,7 @@ class API implements API_Interface {
 	 *
 	 * @return string
 	 */
-	public function get_calendar_cache_option_name( $calendar_url ) {
+	public function get_calendar_cache_option_name( string $calendar_url ): string {
 
 		return substr( self::CACHED_CALENDARS_OPTION_PREFIX . strrev( rawurlencode( $calendar_url ) ), 0, 191 );
 
@@ -309,7 +309,7 @@ class API implements API_Interface {
 	 *
 	 * @return string|null
 	 */
-	protected function get_calendar_from_cache( $calendar_url ) {
+	protected function get_calendar_from_cache( string $calendar_url ): ?string {
 
 		$calendar_cache_key = $this->get_calendar_cache_option_name( $calendar_url );
 
