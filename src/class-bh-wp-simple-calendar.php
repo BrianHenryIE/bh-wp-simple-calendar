@@ -72,7 +72,7 @@ class BH_WP_Simple_Calendar {
 		/** @var I18n $plugin_i18n */
 		$plugin_i18n = $this->container->get( I18n::class );
 
-		add_action( 'init', array( $plugin_i18n, 'load_plugin_textdomain' ) );
+		add_action( 'plugins_loaded', array( $plugin_i18n, 'load_plugin_textdomain' ) );
 	}
 
 	/**
