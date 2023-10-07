@@ -33,14 +33,13 @@ use BrianHenryIE\WP_Simple_Calendar\WP_Logger\Logger;
 use BrianHenryIE\WP_Simple_Calendar\WP_Includes\Activator;
 use BrianHenryIE\WP_Simple_Calendar\WP_Includes\Deactivator;
 use BrianHenryIE\WP_Simple_Calendar\WP_Logger\Logger_Settings_Interface;
-use BrianHenryIE\WP_Simple_Calendar\WP_Logger\Logger_Settings_Trait;
+use Exception;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
-use Psr\Log\LogLevel;
 
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
-	throw new \Exception( 'WordPress required but not loaded.' );
+	throw new Exception( 'WordPress required but not loaded.' );
 }
 
 require_once plugin_dir_path( __FILE__ ) . 'autoload.php';

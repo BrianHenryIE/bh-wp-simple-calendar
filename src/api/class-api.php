@@ -13,7 +13,6 @@ use BrianHenryIE\WP_Simple_Calendar\ICal\ICal;
 use BrianHenryIE\WP_Simple_Calendar\WP_Includes\Cron;
 use DateInterval;
 use DateTime;
-use DateTimeImmutable;
 use Exception;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\LoggerInterface;
