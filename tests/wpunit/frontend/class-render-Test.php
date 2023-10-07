@@ -8,6 +8,7 @@
 
 namespace BrianHenryIE\WP_Simple_Calendar\Frontend;
 
+use BrianHenryIE\ColorLogger\ColorLogger;
 use BrianHenryIE\WP_Simple_Calendar\API\API;
 
 /**
@@ -17,8 +18,9 @@ class Render_Test extends \Codeception\TestCase\WPTestCase {
 
 	public function test_get_html() {
 
-		$api = new class() extends API {
-			public function __construct() {
+		$api = new class(new ColorLogger()) extends API {
+			public function __construct( $logger ) {
+				parent::__construct( $logger );
 
 				$url = $this->get_calendar_url( '3bpg24atqjbsmhdb00ilcdrj5c@group.calendar.google.com' );
 
