@@ -29,7 +29,7 @@ class Post_Test extends \Codeception\TestCase\WPTestCase {
 		$reflection_method = $reflection_class->getMethod( 'flatten_blocks' );
 		$reflection_method->setAccessible( true );
 
-		$api = $this->makeEmpty( API_Interface::class );
+		$api = self::makeEmpty( API_Interface::class );
 		$sut = new Post( $api );
 
 		$post_content = file_get_contents( __DIR__ . '/../../_data/inner-block.post.txt' ) ?: '';
@@ -53,7 +53,7 @@ class Post_Test extends \Codeception\TestCase\WPTestCase {
 		$mock_post               = new \WP_Post( new \stdClass() );
 		$mock_post->post_content = $post_content;
 
-		$api_mock = $this->makeEmpty(
+		$api_mock = self::makeEmpty(
 			API_Interface::class,
 			array(
 				'add_post_ref_to_calendar_cache' => Expected::once(),

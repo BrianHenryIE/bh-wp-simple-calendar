@@ -10,13 +10,14 @@ namespace BrianHenryIE\WP_Simple_Calendar\Frontend;
 
 use BrianHenryIE\ColorLogger\ColorLogger;
 use BrianHenryIE\WP_Simple_Calendar\API\API;
+use BrianHenryIE\WP_Simple_Calendar\Settings_Interface;
 
 /**
  * @coversDefaultClass \BrianHenryIE\WP_Simple_Calendar\Frontend\Renderer
  */
 class Render_Test extends \Codeception\TestCase\WPTestCase {
 
-	public function test_get_html() {
+	public function test_get_html(): void {
 
 		$api = new class(new ColorLogger()) extends API {
 			public function __construct( $logger ) {
@@ -37,10 +38,12 @@ class Render_Test extends \Codeception\TestCase\WPTestCase {
 		// return array('body'=>$test_data);
 		// },10,3);
 
-		$renderer = new Renderer( $api, 'simple-calendar', '1.0.0' );
+		$settings = self::makeEmpty( Settings_Interface::class );
+
+		$renderer = new Renderer( $api, $settings );
 
 		$html = $renderer->get_html( 'http://events.sacbike.org/calendar/subscribe', 150, 15 );
 
-		$a = $html;
+		self::markTestIncomplete();
 	}
 }

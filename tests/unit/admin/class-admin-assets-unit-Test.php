@@ -58,7 +58,7 @@ class Admin_Assets_Unit_Test extends \Codeception\Test\Unit {
 			)
 		);
 
-		$settings                    = $this->makeEmpty(
+		$settings                    = self::makeEmpty(
 			Settings_Interface::class,
 			array(
 				'get_plugin_basename' => 'bh-wp-simple-calendar/bh-wp-simple-calendar.php',
@@ -70,7 +70,7 @@ class Admin_Assets_Unit_Test extends \Codeception\Test\Unit {
 
 		$bh_wp_simple_calendar_admin->enqueue_styles();
 
-		$this->assertFileExists( $css_file );
+		self::assertFileExists( $css_file );
 	}
 
 	/**
@@ -111,7 +111,7 @@ class Admin_Assets_Unit_Test extends \Codeception\Test\Unit {
 			)
 		);
 
-		$settings                    = $this->makeEmpty(
+		$settings                    = self::makeEmpty(
 			Settings_Interface::class,
 			array(
 				'get_plugin_basename' => 'bh-wp-simple-calendar/bh-wp-simple-calendar.php',
@@ -123,6 +123,6 @@ class Admin_Assets_Unit_Test extends \Codeception\Test\Unit {
 
 		$bh_wp_simple_calendar_admin->enqueue_scripts();
 
-		$this->assertFileExists( $plugin_root_dir . '/assets/bh-wp-simple-calendar-admin.js' );
+		self::assertFileExists( $plugin_root_dir . '/assets/bh-wp-simple-calendar-admin.js' );
 	}
 }

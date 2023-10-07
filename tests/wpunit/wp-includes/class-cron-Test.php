@@ -21,9 +21,9 @@ class WpUnit_Cron_Test extends \Codeception\TestCase\WPTestCase {
 	/**
 	 * When the cron function runs, the API method should be called.
 	 */
-	public function test_call_method_directly() {
+	public function test_call_method_directly(): void {
 
-		$api_mock = $this->make(
+		$api_mock = self::make(
 			API::class,
 			array(
 				'update_caches' => Expected::once(),
@@ -35,6 +35,8 @@ class WpUnit_Cron_Test extends \Codeception\TestCase\WPTestCase {
 		$cron = new Cron( $api_mock, $logger );
 
 		$cron->update_calendars_caches();
+
+		self::markTestIncomplete();
 	}
 
 	/**

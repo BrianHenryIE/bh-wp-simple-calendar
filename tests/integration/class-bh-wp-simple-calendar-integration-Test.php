@@ -32,11 +32,11 @@ class BH_WP_Simple_Calendar_Integration_Test extends \Codeception\TestCase\WPTes
 
 		global $wp_filter;
 
-		$this->assertArrayHasKey( $action_name, $wp_filter, "$method_name definitely not hooked to $action_name" );
+		self::assertArrayHasKey( $action_name, $wp_filter, "$method_name definitely not hooked to $action_name" );
 
 		$actions_hooked = $wp_filter[ $action_name ];
 
-		$this->assertArrayHasKey( $expected_priority, $actions_hooked, "$method_name definitely not hooked to $action_name priority $expected_priority" );
+		self::assertArrayHasKey( $expected_priority, $actions_hooked, "$method_name definitely not hooked to $action_name priority $expected_priority" );
 
 		$hooked_method = null;
 		foreach ( $actions_hooked[ $expected_priority ] as $action ) {
@@ -48,9 +48,9 @@ class BH_WP_Simple_Calendar_Integration_Test extends \Codeception\TestCase\WPTes
 			}
 		}
 
-		$this->assertNotNull( $hooked_method, "No methods on an instance of $class_type hooked to $action_name" );
+		self::assertNotNull( $hooked_method, "No methods on an instance of $class_type hooked to $action_name" );
 
-		$this->assertEquals( $method_name, $hooked_method, "Unexpected method name for $class_type class hooked to $action_name" );
+		self::assertEquals( $method_name, $hooked_method, "Unexpected method name for $class_type class hooked to $action_name" );
 	}
 
 	/**
@@ -67,11 +67,11 @@ class BH_WP_Simple_Calendar_Integration_Test extends \Codeception\TestCase\WPTes
 
 		global $wp_filter;
 
-		$this->assertArrayHasKey( $action_name, $wp_filter, "$method_name definitely not hooked to $action_name" );
+		self::assertArrayHasKey( $action_name, $wp_filter, "$method_name definitely not hooked to $action_name" );
 
 		$actions_hooked = $wp_filter[ $action_name ];
 
-		$this->assertArrayHasKey( $expected_priority, $actions_hooked, "$method_name definitely not hooked to $action_name priority $expected_priority" );
+		self::assertArrayHasKey( $expected_priority, $actions_hooked, "$method_name definitely not hooked to $action_name priority $expected_priority" );
 
 		$hooked_method = null;
 		foreach ( $actions_hooked[ $expected_priority ] as $action ) {
@@ -83,9 +83,9 @@ class BH_WP_Simple_Calendar_Integration_Test extends \Codeception\TestCase\WPTes
 			}
 		}
 
-		$this->assertNotNull( $hooked_method, "No methods on an instance of $class_type hooked to $action_name" );
+		self::assertNotNull( $hooked_method, "No methods on an instance of $class_type hooked to $action_name" );
 
-		$this->assertEquals( $method_name, $hooked_method, "Unexpected method name for $class_type class hooked to $action_name" );
+		self::assertEquals( $method_name, $hooked_method, "Unexpected method name for $class_type class hooked to $action_name" );
 	}
 
 	/**
@@ -100,11 +100,11 @@ class BH_WP_Simple_Calendar_Integration_Test extends \Codeception\TestCase\WPTes
 
 		global $wp_filter;
 
-		$this->assertArrayHasKey( $action_name, $wp_filter, "$method_name definitely not hooked to $action_name" );
+		self::assertArrayHasKey( $action_name, $wp_filter, "$method_name definitely not hooked to $action_name" );
 
 		$actions_hooked = $wp_filter[ $action_name ];
 
-		$this->assertArrayHasKey( $expected_priority, $actions_hooked, "$method_name definitely not hooked to $action_name priority $expected_priority" );
+		self::assertArrayHasKey( $expected_priority, $actions_hooked, "$method_name definitely not hooked to $action_name priority $expected_priority" );
 
 		$hooked_method = null;
 		foreach ( $actions_hooked[ $expected_priority ] as $action ) {
@@ -116,9 +116,9 @@ class BH_WP_Simple_Calendar_Integration_Test extends \Codeception\TestCase\WPTes
 			}
 		}
 
-		$this->assertNotNull( $hooked_method, "No methods on an instance of $class_type hooked to $action_name" );
+		self::assertNotNull( $hooked_method, "No methods on an instance of $class_type hooked to $action_name" );
 
-		$this->assertEquals( $method_name, $hooked_method, "Unexpected method name for $class_type class hooked to $action_name" );
+		self::assertEquals( $method_name, $hooked_method, "Unexpected method name for $class_type class hooked to $action_name" );
 	}
 
 	/**
@@ -133,11 +133,11 @@ class BH_WP_Simple_Calendar_Integration_Test extends \Codeception\TestCase\WPTes
 
 		global $wp_filter;
 
-		$this->assertArrayHasKey( $action_name, $wp_filter, "$method_name definitely not hooked to $action_name" );
+		self::assertArrayHasKey( $action_name, $wp_filter, "$method_name definitely not hooked to $action_name" );
 
 		$actions_hooked = $wp_filter[ $action_name ];
 
-		$this->assertArrayHasKey( $expected_priority, $actions_hooked, "$method_name definitely not hooked to $action_name priority $expected_priority" );
+		self::assertArrayHasKey( $expected_priority, $actions_hooked, "$method_name definitely not hooked to $action_name priority $expected_priority" );
 
 		$hooked_method = null;
 		foreach ( $actions_hooked[ $expected_priority ] as $action ) {
@@ -149,9 +149,9 @@ class BH_WP_Simple_Calendar_Integration_Test extends \Codeception\TestCase\WPTes
 			}
 		}
 
-		$this->assertNotNull( $hooked_method, "No methods on an instance of $class_type hooked to $action_name" );
+		self::assertNotNull( $hooked_method, "No methods on an instance of $class_type hooked to $action_name" );
 
-		$this->assertEquals( $method_name, $hooked_method, "Unexpected method name for $class_type class hooked to $action_name" );
+		self::assertEquals( $method_name, $hooked_method, "Unexpected method name for $class_type class hooked to $action_name" );
 	}
 
 	/**
@@ -166,11 +166,11 @@ class BH_WP_Simple_Calendar_Integration_Test extends \Codeception\TestCase\WPTes
 
 		global $wp_filter;
 
-		$this->assertArrayHasKey( $action_name, $wp_filter, "$method_name definitely not hooked to $action_name" );
+		self::assertArrayHasKey( $action_name, $wp_filter, "$method_name definitely not hooked to $action_name" );
 
 		$actions_hooked = $wp_filter[ $action_name ];
 
-		$this->assertArrayHasKey( $expected_priority, $actions_hooked, "$method_name definitely not hooked to $action_name priority $expected_priority" );
+		self::assertArrayHasKey( $expected_priority, $actions_hooked, "$method_name definitely not hooked to $action_name priority $expected_priority" );
 
 		$hooked_method = null;
 		foreach ( $actions_hooked[ $expected_priority ] as $action ) {
@@ -182,8 +182,8 @@ class BH_WP_Simple_Calendar_Integration_Test extends \Codeception\TestCase\WPTes
 			}
 		}
 
-		$this->assertNotNull( $hooked_method, "No methods on an instance of $class_type hooked to $action_name" );
+		self::assertNotNull( $hooked_method, "No methods on an instance of $class_type hooked to $action_name" );
 
-		$this->assertEquals( $method_name, $hooked_method, "Unexpected method name for $class_type class hooked to $action_name" );
+		self::assertEquals( $method_name, $hooked_method, "Unexpected method name for $class_type class hooked to $action_name" );
 	}
 }

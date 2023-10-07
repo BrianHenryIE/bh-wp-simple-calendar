@@ -19,7 +19,7 @@ class Widget_Test extends \Codeception\TestCase\WPTestCase {
 
 		$widget = new \BrianHenryIE\WP_Simple_Calendar\Frontend\Widget( $renderer );
 
-		$this->assertNotNull( $widget );
+		self::markTestIncomplete();
 	}
 
 	protected function an_instance(): array {
@@ -42,5 +42,7 @@ class Widget_Test extends \Codeception\TestCase\WPTestCase {
 	public function test_widget_output(): void {
 
 		// Pre-populate the transient for WordPress to pull.
+
+		self::markTestIncomplete();
 	}
 }

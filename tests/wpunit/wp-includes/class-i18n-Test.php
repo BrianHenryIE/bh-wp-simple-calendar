@@ -13,13 +13,12 @@ namespace BrianHenryIE\WP_Simple_Calendar\WP_Includes;
  */
 class BH_WP_Simple_Calendar_I18n_Test extends \Codeception\TestCase\WPTestCase {
 
-
 	/**
 	 * Checks if the filter run by WordPress in the load_plugin_textdomain() function is called.
 	 *
-	 * @see load_plugin_textdomain()
+	 * @covers ::load_plugin_textdomain
 	 */
-	public function test_load_plugin_textdomain_function(): void {
+	public function test_load_plugin_textdomain(): void {
 
 		$called        = false;
 		$actual_domain = null;
@@ -38,7 +37,7 @@ class BH_WP_Simple_Calendar_I18n_Test extends \Codeception\TestCase\WPTestCase {
 
 		$i18n->load_plugin_textdomain();
 
-		$this->assertTrue( $called, 'plugin_locale filter not called within load_plugin_textdomain() suggesting it has not been set by the plugin.' );
-		$this->assertEquals( 'bh-wp-simple-calendar', $actual_domain );
+		self::assertTrue( $called, 'plugin_locale filter not called within load_plugin_textdomain() suggesting it has not been set by the plugin.' );
+		self::assertEquals( 'bh-wp-simple-calendar', $actual_domain );
 	}
 }

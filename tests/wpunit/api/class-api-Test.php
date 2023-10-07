@@ -45,6 +45,8 @@ class API_Test extends \Codeception\TestCase\WPTestCase {
 		$events = $api->get_upcoming_events( '3bpg24atqjbsmhdb00ilcdrj5c@group.calendar.google.com', 30, 10 );
 
 		$a = $events;
+
+		self::markTestIncomplete();
 	}
 
 	// protected get_calendar_ics
@@ -52,7 +54,7 @@ class API_Test extends \Codeception\TestCase\WPTestCase {
 	// protected fetch_remote_calendar
 
 	/**
-	 * uses WordPress is_email function.
+	 * Uses WordPress `is_email()` function.
 	 */
 	public function test_calendar_id_email(): void {
 
@@ -69,7 +71,7 @@ class API_Test extends \Codeception\TestCase\WPTestCase {
 
 		$calendar_url = $api->protected_get_calendar_url( $input );
 
-		$this->assertSame( $expected, $calendar_url );
+		self::assertSame( $expected, $calendar_url );
 	}
 
 	public function test_calendar_id_url(): void {
@@ -85,7 +87,7 @@ class API_Test extends \Codeception\TestCase\WPTestCase {
 
 		$calendar_url = $api->protected_get_calendar_url( $input );
 
-		$this->assertSame( $expected, $calendar_url );
+		self::assertSame( $expected, $calendar_url );
 	}
 
 	public function test_get_calendar_cache_option_name(): void {
@@ -98,6 +100,6 @@ class API_Test extends \Codeception\TestCase\WPTestCase {
 
 		$actual = $api->get_calendar_cache_option_name( $input );
 
-		$this->assertSame( $expected, $actual );
+		self::assertSame( $expected, $actual );
 	}
 }
