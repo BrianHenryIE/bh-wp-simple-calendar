@@ -22,6 +22,9 @@
 	"minimum-stability": "dev",
 	"prefer-stable": true,
 	"config": {
+		"platform": {
+			"php": "8.0.2"
+		},
 		"process-timeout": 0,
 		"sort-packages": true,
 		"allow-plugins": {
@@ -66,11 +69,6 @@
 		"brianhenryie/color-logger": "^1.0",
 		"brianhenryie/composer-phpstorm": "dev-master",
 		"brianhenryie/strauss": "dev-master",
-		"codeception/module-asserts": "*",
-		"codeception/module-cli": "*",
-		"codeception/module-db": "*",
-		"codeception/module-filesystem": "*",
-		"codeception/util-universalframework": "^1.0",
 		"cweagans/composer-patches": "*",
 		"dealerdirect/phpcodesniffer-composer-installer": "*",
 		"jaschilz/php-coverage-badger": "^2.0",
