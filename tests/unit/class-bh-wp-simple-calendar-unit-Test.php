@@ -81,7 +81,9 @@ class BH_WP_Simple_Calendar_Unit_Test extends \Codeception\Test\Unit {
 
 		\WP_Mock::expectActionAdded(
 			'save_post',
-			array( new AnyInstance( Post::class ), 'update_cache_posts_list' )
+			array( new AnyInstance( Post::class ), 'update_cache_posts_list' ),
+			10,
+			3
 		);
 
 		$container = new Container();
