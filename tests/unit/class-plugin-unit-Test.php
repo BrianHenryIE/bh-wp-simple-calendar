@@ -106,6 +106,6 @@ class Plugin_Unit_Test extends \Codeception\Test\Unit {
 
 		$this->assertArrayHasKey( 'bh_wp_simple_calendar', $GLOBALS );
 
-		$this->assertInstanceOf( BH_WP_Simple_Calendar::class, $GLOBALS['bh_wp_simple_calendar'] );
+		$this->assertInstanceOf( API_Interface::class, $GLOBALS['bh_wp_simple_calendar'] );
 	}
 }
