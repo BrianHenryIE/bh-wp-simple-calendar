@@ -1,11 +1,39 @@
 <?php
-
+/**
+ * The main plugin functions.
+ *
+ * @package brianhenryie/bh-wp-simple-calendar
+ */
 
 namespace BrianHenryIE\WP_Simple_Calendar\API;
 
 use BrianHenryIE\WP_Simple_Calendar\API_Interface;
+use BrianHenryIE\WP_Simple_Calendar\ICal\Event;
+use BrianHenryIE\WP_Simple_Calendar\ICal\ICal;
+use BrianHenryIE\WP_Simple_Calendar\WP_Includes\Cron;
+use DateInterval;
+use DateTime;
+use DateTimeImmutable;
+use Exception;
+use Psr\Log\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 
+/**
+ * Mostly cache functions.
+ */
 class API implements API_Interface {
+	use LoggerAwareTrait;
+
+	/**
+	 * Constructor
+	 *
+	 * @param LoggerInterface $logger A PSR-3 compliant logger.
+	 */
+	public function __construct(
+		LoggerInterface $logger,
+	) {
+		$this->setLogger( $logger );
+	}
 
 	/**
 	 * Stored in wp_options, an associative array of { calendar_url : post_id[] }.
@@ -29,7 +57,7 @@ class API implements API_Interface {
 	 */
 	public function get_upcoming_events( string $calendar_id, int $period, int $count ): ?array {
 
-		// Google calendar ids take the form of an email address
+		// Google calendar ids take the form of an email address.
 		if ( is_email( $calendar_id ) ) {
 			$calendar_url = $this->get_calendar_url( $calendar_id );
 		} else {
@@ -43,24 +71,26 @@ class API implements API_Interface {
 			return null;
 		}
 
-		// parse_ics()
 		$ical = new ICal();
 		$ical->initString( $calendar_ics );
 
-		// $rangeStart = 'now'; //new \DateTime('now', new \DateTimeZone( $ical->calendarTimeZone() ));
-		$rangeEnd             = new \DateTime( 'now', new \DateTimeZone( $ical->calendarTimeZone() ) );
-				$dateInterval = \DateInterval::createFromDateString( "$period days" );
-		$rangeEnd->add( $dateInterval );
+		$range_end = new DateTime( 'now', new \DateTimeZone( $ical->calendarTimeZone() ) );
+
+		// Default to ten days.
+		$period = absint( $period ) ?: 10;
+		/** @var DateInterval $date_interval */
+		$date_interval = DateInterval::createFromDateString( "$period days" );
+		$range_end->add( $date_interval );
 
 		/** @var Event[] $events */
-		$events = $ical->eventsFromRange( 'now', $rangeEnd->format( 'Y-m-d' ) );
+		$events = $ical->eventsFromRange( 'now', $range_end->format( 'Y-m-d' ) );
 		// $ical->eventsFromInterval()
 
 		$events = array_slice( $events, 0, $count );
 
-		// TODO: Add filter for sanitizing the events
+		// TODO: Add filter for sanitizing the events.
 
-		// e.g. remove [SABA] from the beginning of all the titles
+		// E.g. remove [SABA] from the beginning of all the titles.
 		foreach ( $events as $event ) {
 
 			$event->summary = str_replace( '[SABA]', '', $event->summary );
@@ -78,23 +108,13 @@ class API implements API_Interface {
 	/**
 	 * Get the .ics file for the calendar, either from cache or from the remote url.
 	 *
-	 * @param string $calendar_url
-	 *
-	 * @return string|null
+	 * @param string $calendar_url The URL of the calendar.
 	 */
 	protected function get_calendar_ics( string $calendar_url ): ?string {
 
-		$calendar_ics = $this->get_calendar_from_cache( $calendar_url );
-
-		if ( is_null( $calendar_ics ) ) {
-
-			$calendar_ics = $this->fetch_remote_calendar( $calendar_url );
-
-		}
-
-		return $calendar_ics;
+		return $this->get_calendar_from_cache( $calendar_url )
+			?? $this->fetch_remote_calendar( $calendar_url );
 	}
-
 
 	/**
 	 * Fetches data from Google Calendar.
@@ -103,8 +123,6 @@ class API implements API_Interface {
 	 * then it will always exist in cache in future.
 	 *
 	 * @param string $calendar_url Remote URL of ics file to fetch.
-	 *
-	 * @return string|null
 	 */
 	protected function fetch_remote_calendar( string $calendar_url ): ?string {
 
@@ -113,14 +131,14 @@ class API implements API_Interface {
 		$http_data = wp_remote_get( $calendar_url );
 
 		if ( is_wp_error( $http_data ) ) {
-			error_log( 'Simple Calendar: ' . $http_data->get_error_message() );
+			$this->logger->error( 'Simple Calendar: ' . $http_data->get_error_message() );
 
 			return null;
 		}
 
 		if ( ! is_array( $http_data ) || ! array_key_exists( 'body', $http_data ) ) {
 
-			error_log( 'not array, no body in http' );
+			$this->logger->error( 'not array, no body in http' );
 			return null;
 		}
 
@@ -135,17 +153,16 @@ class API implements API_Interface {
 		return $calendar_ics;
 	}
 
-
 	/**
 	 * Returns the URL for fetching the calendar.
 	 *
 	 * If the calendar_id is already a URL, it returns directly. Otherwise, the URL is built from the calendar address
 	 * entered.
 	 *
-	 * @param string $calendar_id
+	 * @param string $calendar_id A calendar ics URL or Google Calendar ID.
 	 *
 	 * @return string The Google Calendar ICS file URL.
-	 * @throws \Exception
+	 * @throws Exception When the input is invalid.
 	 */
 	protected function get_calendar_url( string $calendar_id ): string {
 
@@ -156,24 +173,26 @@ class API implements API_Interface {
 
 		// Calendar IDs are in email format.
 		if ( is_email( urldecode( $calendar_id ) ) ) {
-			return 'https://calendar.google.com/calendar/ical/' . urlencode( $calendar_id ) . '/public/basic.ics';
+			return 'https://calendar.google.com/calendar/ical/' . rawurlencode( $calendar_id ) . '/public/basic.ics';
 		}
 
 		// Maybe it's not set yet.
 
-		// log
+		// TODO: log.
 
-		throw new \Exception( 'Error parsing calendar URL' );
+		throw new Exception( 'Error parsing calendar URL' );
 	}
-
 
 	/**
 	 * To be called hourly by cron to fetch the most recent events for all calendars.
 	 *
 	 * TODO: On a site with many, many calendars, this could exceed the PHP timeout.
+	 *
+	 * TODO: If the calendar is no longer on any pages, remove it from the cache.
 	 */
-	public function update_caches() {
+	public function update_caches(): void {
 
+		/** @var array<string,int[]> $cached_calendars */
 		$cached_calendars = get_option( self::CACHED_CALENDARS_OPTION_NAME, array() );
 
 		$calendar_urls = array_keys( $cached_calendars );
@@ -207,10 +226,10 @@ class API implements API_Interface {
 	 * Separately, we run an occasional cron to check do these posts still have the calendars, so the cache
 	 * is not being unnecessarily updated.
 	 *
-	 * @param string $calendar_url
-	 * @param int    $post_id
+	 * @param string $calendar_url The calendar URL (acting as its uuid).
+	 * @param int    $post_id The post ID the calendar is on.
 	 */
-	public function add_post_ref_to_calendar_cache( string $calendar_url, int $post_id ) {
+	public function add_post_ref_to_calendar_cache( string $calendar_url, int $post_id ): void {
 
 		$cached_calendars = get_option( self::CACHED_CALENDARS_OPTION_NAME, array() );
 
@@ -238,11 +257,11 @@ class API implements API_Interface {
 	}
 
 	/**
-	 *
+	 * Remove the post reference from the calendar cache.
 	 *
 	 * Unfortunately we won't know the calendar URL.
 	 *
-	 * @param int $post_id
+	 * @param int $post_id WordPress post id the calendar was on.
 	 */
 	public function remove_post_ref_from_calendar_cache( int $post_id ): bool {
 
@@ -256,7 +275,7 @@ class API implements API_Interface {
 
 			$index = array_search( $post_id, $post_id_array, true );
 
-			if ( $index !== false ) {
+			if ( false !== $index ) {
 
 				unset( $post_id_array[ $index ] );
 
@@ -291,9 +310,7 @@ class API implements API_Interface {
 	 * The reverse URL is to preserve the most significant bits in similar URLs.
 	 * The wp_options table option_name column is limited to 191 characters.
 	 *
-	 * @param $calendar_url
-	 *
-	 * @return string
+	 * @param string $calendar_url The calendar URL.
 	 */
 	public function get_calendar_cache_option_name( string $calendar_url ): string {
 
@@ -303,9 +320,7 @@ class API implements API_Interface {
 	/**
 	 * Get a calendar's ics file last saved to cache.
 	 *
-	 * @param $calendar_url
-	 *
-	 * @return string|null
+	 * @param string $calendar_url The calendar URL.
 	 */
 	protected function get_calendar_from_cache( string $calendar_url ): ?string {
 
@@ -314,16 +329,15 @@ class API implements API_Interface {
 		return get_option( $calendar_cache_key, null );
 	}
 
-
 	/**
 	 * Update the cache with the new calendar ics string.
 	 *
-	 * @param string $calendar_url
-	 * @param string $calendar_ics_content
+	 * @param string $calendar_url The calendar URL.
+	 * @param string $calendar_ics_content The downloaded calendar ics file content.
 	 *
 	 * @return bool Was the calendar updated?
 	 */
-	protected function save_calendar_to_cache( $calendar_url, $calendar_ics_content ) {
+	protected function save_calendar_to_cache( string $calendar_url, string $calendar_ics_content ): bool {
 
 		$calendar_cache_key = $this->get_calendar_cache_option_name( $calendar_url );
 
