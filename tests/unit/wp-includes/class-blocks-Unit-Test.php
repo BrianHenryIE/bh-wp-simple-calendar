@@ -22,6 +22,7 @@ class Blocks_Unit_Test extends \Codeception\Test\Unit {
 
 	/**
 	 * @covers ::register_block
+	 * @covers ::__construct
 	 */
 	public function test_register_block(): void {
 
