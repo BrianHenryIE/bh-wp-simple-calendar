@@ -8,18 +8,18 @@
 
 namespace BrianHenryIE\WP_Simple_Calendar\API;
 
+use BrianHenryIE\ColorLogger\ColorLogger;
+
 /**
  * @coversDefaultClass \BrianHenryIE\WP_Simple_Calendar\API\API
  */
 class API_Test extends \Codeception\TestCase\WPTestCase {
 
+	public function test_get_upcoming_events(): void {
 
-	// public get_upcoming_events
-
-	public function test_get_upcoming_events() {
-
-		$api = new class() extends API {
-			public function __construct() {
+		$api = new class(new ColorLogger() ) extends API {
+			public function __construct( $logger ) {
+				parent::__construct( $logger );
 
 				$url = $this->get_calendar_url( '3bpg24atqjbsmhdb00ilcdrj5c@group.calendar.google.com' );
 
@@ -54,9 +54,9 @@ class API_Test extends \Codeception\TestCase\WPTestCase {
 	/**
 	 * uses WordPress is_email function.
 	 */
-	public function test_calendar_id_email() {
+	public function test_calendar_id_email(): void {
 
-		$api = new class() extends API {
+		$api = new class( new ColorLogger() ) extends API {
 			public function protected_get_calendar_url( $input ) {
 				return $this->get_calendar_url( $input );
 			}
@@ -72,8 +72,8 @@ class API_Test extends \Codeception\TestCase\WPTestCase {
 		$this->assertSame( $expected, $calendar_url );
 	}
 
-	public function test_calendar_id_url() {
-		$api = new class() extends API {
+	public function test_calendar_id_url(): void {
+		$api = new class( new ColorLogger() ) extends API {
 			public function protected_get_calendar_url( $input ) {
 				return $this->get_calendar_url( $input );
 			}
@@ -88,9 +88,9 @@ class API_Test extends \Codeception\TestCase\WPTestCase {
 		$this->assertSame( $expected, $calendar_url );
 	}
 
-	public function test_get_calendar_cache_option_name() {
+	public function test_get_calendar_cache_option_name(): void {
 
-		$api = new API();
+		$api = new API( new ColorLogger() );
 
 		$input = 'https://events.sacbike.org/calendar/subscribe';
 
@@ -100,14 +100,4 @@ class API_Test extends \Codeception\TestCase\WPTestCase {
 
 		$this->assertSame( $expected, $actual );
 	}
-
-
-	// public update_caches
-
-	// protected add_post_ref_to_calendar_cache
-
-	// protected get_calendar_from_cache
-
-
-	// protected save_calendar_to_cache
 }
