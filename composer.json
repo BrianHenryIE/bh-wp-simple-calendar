@@ -176,7 +176,8 @@
 		],
 		"test": [
 			"codecept run unit",
-			"codecept run wpunit"
+			"codecept run wpunit",
+			"codecept run integration"
 		],
 		"test-coverage": [
 			"codecept run unit --coverage unit.cov",
