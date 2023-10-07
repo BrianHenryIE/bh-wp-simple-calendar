@@ -7,7 +7,7 @@
 
 namespace BrianHenryIE\WP_Simple_Calendar\Frontend;
 
-use BrianHenryIE\WP_Simple_Calendar\API\Settings;
+use BrianHenryIE\WP_Simple_Calendar\Settings_Interface;
 
 /**
  * Class Block
@@ -17,7 +17,7 @@ use BrianHenryIE\WP_Simple_Calendar\API\Settings;
 class Block {
 
 	public function __construct(
-		protected Settings $settings,
+		protected Settings_Interface $settings,
 		protected Renderer $renderer,
 	) {
 	}
@@ -27,12 +27,17 @@ class Block {
 	 */
 	public function register_block() {
 
-		$script_handle = $this->settings->get_plugin_name() . '-block-editor-script';
-		$src           = plugins_url( 'js/calendar.js', __FILE__ );
+		$script_handle = $this->settings->get_plugin_slug() . '-block-editor-script';
+		$src           = plugins_url( 'assets/calendar.js', $this->settings->get_plugin_basename() );
 		$deps          = array( 'wp-blocks', 'wp-element', 'wp-data', 'wp-editor' );
 
-		// TODO: remove time() in favour of get_version()
-		wp_register_script( $script_handle, $src, $deps, $this->settings->get_version(), true );
+		wp_register_script(
+			$script_handle,
+			$src,
+			$deps,
+			$this->settings->get_version(),
+			array( 'in_footer' => true ,)
+		);
 
 		// TODO: make this a constant.
 		$name       = 'brianhenryie/simple-calendar';
