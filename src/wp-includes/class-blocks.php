@@ -7,10 +7,22 @@
 
 namespace BrianHenryIE\WP_Simple_Calendar\WP_Includes;
 
+use BrianHenryIE\WP_Simple_Calendar\Settings_Interface;
+
 /**
  * Register the block from the `/build` directory.
  */
 class Blocks {
+	/**
+	 * Constructor.
+	 *
+	 * @param Settings_Interface $settings The plugin basename is used to find the dir path.
+	 */
+	public function __construct(
+		protected Settings_Interface $settings,
+	) {
+	}
+
 	/**
 	 * Registers the block using the metadata loaded from the `block.json` file.
 	 * Behind the scenes, it registers also all assets so they can be enqueued
@@ -19,6 +31,7 @@ class Blocks {
 	 * @see https://developer.wordpress.org/reference/functions/register_block_type/
 	 */
 	public function register_block(): void {
-		register_block_type( __DIR__ . '/build' );
+
+		register_block_type( plugin_dir_path( $this->settings->get_plugin_basename() ) . '/build' );
 	}
 }
