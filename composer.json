@@ -68,18 +68,16 @@
         "brianhenryie/color-logger": "^1.0",
         "brianhenryie/composer-phpstorm": "dev-master",
         "brianhenryie/strauss": "dev-master",
-        "codeception/module-asserts": "^1.0",
-        "codeception/module-cli": "^1.0",
-        "codeception/module-db": "^1.0.0",
-        "codeception/module-filesystem": "^1.0",
-        "codeception/module-phpbrowser": "^1.0.0",
-        "codeception/module-webdriver": "^1.0",
+        "codeception/module-asserts": "*",
+        "codeception/module-cli": "*",
+        "codeception/module-db": "*",
+        "codeception/module-filesystem": "*",
         "codeception/util-universalframework": "^1.0",
         "cweagans/composer-patches": "*",
         "dealerdirect/phpcodesniffer-composer-installer": "*",
         "jaschilz/php-coverage-badger": "^2.0",
         "kporras07/composer-symlinks": "dev-master",
-        "lucatume/wp-browser": "*",
+        "lucatume/wp-browser": "^4",
         "phpcompatibility/phpcompatibility-wp": "*",
         "phpstan/extension-installer": "*",
         "phpunit/phpcov": "*",
@@ -100,6 +98,11 @@
             },
             "wp-cli/dist-archive-command": {
                 "Add Increment Version": "https://github.com/BrianHenryIE/dist-archive-command/commit/f37c375ba8069c9160d642dd0c00435e0f1c4804.patch"
+            },
+            "lucatume/wp-browser": {
+                "Add default composer autoload file to Control::getDefault()": "https://github.com/lucatume/wp-browser/pull/660.patch",
+                "On error, print stdout when stderr is empty": "https://github.com/lucatume/wp-browser/pull/658.patch",
+                "Allow longer database names": "https://github.com/lucatume/wp-browser/pull/657.patch"
             }
         },
         "strauss": {
