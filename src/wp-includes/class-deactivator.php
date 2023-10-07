@@ -13,12 +13,11 @@ namespace BrianHenryIE\WP_Simple_Calendar\WP_Includes;
 class Deactivator {
 
 	/**
-	 * Short Description. (use period)
-	 *
-	 * Long Description.
+	 * Remove the cron job which updates the caches.
 	 *
 	 * @since    1.0.0
 	 */
-	public static function deactivate() {
+	public static function deactivate(): void {
+		wp_unschedule_hook( Cron::UPDATE_CACHES_CRON_JOB );
 	}
 }
