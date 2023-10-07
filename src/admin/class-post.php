@@ -45,6 +45,8 @@ class Post {
 	 */
 	public function update_cache_posts_list( int $post_id, WP_Post $post, bool $update ): void {
 
+		// TODO: Get ids of all posts with calendars, return early if this post is not one of them.
+
 		$blocks = parse_blocks( $post->post_content );
 
 		$all_blocks = $this->flatten_blocks( $blocks );
