@@ -6,9 +6,9 @@ interface API_Interface {
 
 	public function get_upcoming_events( string $calendar_id, int $period, int $count ): ?array;
 
-	public function update_caches();
+	public function update_caches(): void;
 
-	public function add_post_ref_to_calendar_cache( string $calendar_url, int $post_id );
+	public function add_post_ref_to_calendar_cache( string $calendar_url, int $post_id ): void;
 
 	public function remove_post_ref_from_calendar_cache( int $post_id ): bool;
 

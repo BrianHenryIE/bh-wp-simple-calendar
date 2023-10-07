@@ -1,8 +1,8 @@
 <?php
 /**
- * Functionality to register block.
+ * Functionality to register and render a block (in a very PHP way).
  *
- * i.e. With Gutenberg.
+ * @package brianhenryie/bh-wp-simple-calendar
  */
 
 namespace BrianHenryIE\WP_Simple_Calendar\Frontend;
@@ -10,12 +10,16 @@ namespace BrianHenryIE\WP_Simple_Calendar\Frontend;
 use BrianHenryIE\WP_Simple_Calendar\Settings_Interface;
 
 /**
- * Class Block
- *
- * @package BH_WP_Simple_Calendar\Frontend
+ * Enqueue the script, register the block and render via the Renderer class.
  */
 class Block {
 
+	/**
+	 * Constructor.
+	 *
+	 * @param Settings_Interface $settings The plugin settings.
+	 * @param Renderer           $renderer
+	 */
 	public function __construct(
 		protected Settings_Interface $settings,
 		protected Renderer $renderer,
@@ -25,7 +29,7 @@ class Block {
 	/**
 	 * @hooked init
 	 */
-	public function register_block() {
+	public function register_block(): void {
 
 		$script_handle = $this->settings->get_plugin_slug() . '-block-editor-script';
 		$src           = plugins_url( 'assets/calendar.js', $this->settings->get_plugin_basename() );
@@ -70,11 +74,9 @@ class Block {
 	/**
 	 * The method used by WordPress to render the Block.
 	 *
-	 * @param $js_args
-	 *
-	 * @return string
+	 * @param array<string, string> $js_args
 	 */
-	public function render_block( $js_args ) {
+	public function render_block( array $js_args ): ?string {
 
 		// The array passed from javascript is in camelCase, convert to snake_case.
 		$args = array();
@@ -114,9 +116,9 @@ class Block {
 		// "dateFormat": "l jS \\of F"
 		// }
 
-		$calendar_id = $args['calendar_id'];
-		$count       = $args['event_count'];
-		$period      = $args['event_period'];
+		$calendar_id = (string) $args['calendar_id'];
+		$count       = absint( $args['event_count'] );
+		$period      = absint( $args['event_period'] ); // ?: default.
 
 		// TODO: Should the page/widget the calendar is on be passed here?
 

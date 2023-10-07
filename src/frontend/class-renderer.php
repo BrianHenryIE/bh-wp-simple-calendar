@@ -25,11 +25,11 @@ class Renderer {
 	}
 
 	/**
-	 * @param $calendar_id
+	 * @param string $calendar_id
 	 * @param $period
-	 * @param $count
+	 * @param int    $count
 	 */
-	public function get_html( $calendar_id, $period, $count ) {
+	public function get_html( string $calendar_id, $period, int $count ) {
 
 		$events = $this->api->get_upcoming_events( $calendar_id, $period, $count );
 
@@ -131,22 +131,16 @@ class Renderer {
 		return wp_kses( $html, $allowed_html );
 	}
 
-
-	public function get_defaults() {
-
-		return $this->defaults;
-	}
-
 	/**
 	 * TODO: should this be called sanitize?
 	 *
 	 * Returns an array of invalid inputs, with suggestions.
 	 *
-	 * @param $args
+	 * @param array<string, string> $args
 	 *
-	 * @return mixed
+	 * @return array<string, string> Errors.
 	 */
-	public function validate_settings( $args ) {
+	public function validate_settings( $args ): array {
 
 		$errors = array();
 

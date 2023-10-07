@@ -29,7 +29,9 @@ class Activator {
 	 *
 	 * @since    1.0.0
 	 */
-	public static function activate() {
+	public static function activate(): void {
+
+		// TODO: check there are calendars to update.
 
 		wp_schedule_event( time(), 'hourly', Cron::UPDATE_CACHES_CRON_JOB );
 	}
