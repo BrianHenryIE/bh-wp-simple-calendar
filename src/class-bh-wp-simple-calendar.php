@@ -10,6 +10,7 @@
 
 namespace BrianHenryIE\WP_Simple_Calendar;
 
+use BrianHenryIE\WP_Simple_Calendar\Admin\Admin_Assets;
 use BrianHenryIE\WP_Simple_Calendar\Admin\Post;
 use BrianHenryIE\WP_Simple_Calendar\Frontend\Block;
 use BrianHenryIE\WP_Simple_Calendar\WP_Includes\Blocks;
@@ -18,15 +19,7 @@ use BrianHenryIE\WP_Simple_Calendar\WP_Includes\I18n;
 use Psr\Container\ContainerInterface;
 
 /**
- * The core plugin class.
- *
- * This is used to define internationalization, admin-specific hooks, and
- * public-facing site hooks.
- *
- * Also maintains the unique identifier of this plugin as well as the current
- * version of the plugin.
- *
- * phpcs:disable Squiz.PHP.DisallowMultipleAssignments.Found
+ * The plugin's main `add_action()` and `add_filter()` hooks.
  */
 class BH_WP_Simple_Calendar {
 
@@ -35,12 +28,10 @@ class BH_WP_Simple_Calendar {
 	 *
 	 * Load the dependencies, define the locale, and add the hooks and filters.
 	 *
-	 * @since    1.2.0
-	 *
 	 * @param ContainerInterface $container The DI container.
 	 */
 	public function __construct(
-		protected ContainerInterface $container
+		protected ContainerInterface $container,
 	) {
 		$this->set_locale();
 		$this->define_admin_hooks();
@@ -49,14 +40,18 @@ class BH_WP_Simple_Calendar {
 		$this->define_block_hooks();
 
 		$this->define_frontend_hooks();
+		$this->define_post_hooks();
 	}
 
+	/**
+	 * Register the React block.
+	 */
 	protected function define_block_hooks(): void {
 
 		/** @var Blocks $blocks */
 		$blocks = $this->container->get( Blocks::class );
 
-		add_action( 'init', array( $blocks, 'create_block_bh_wp_simple_calendar_block_init' ) );
+		add_action( 'init', array( $blocks, 'register_block' ) );
 	}
 
 	/**
@@ -64,10 +59,8 @@ class BH_WP_Simple_Calendar {
 	 *
 	 * Uses the i18n class in order to set the domain and to register the hook
 	 * with WordPress.
-	 *
-	 * @since    1.2.0
 	 */
-	private function set_locale(): void {
+	protected function set_locale(): void {
 
 		/** @var I18n $plugin_i18n */
 		$plugin_i18n = $this->container->get( I18n::class );
@@ -76,12 +69,21 @@ class BH_WP_Simple_Calendar {
 	}
 
 	/**
-	 * Register all of the hooks related to the admin area functionality
-	 * of the plugin.
-	 *
-	 * @since    1.2.0
+	 * Register the hooks related to the admin area functionality of the plugin.
 	 */
-	private function define_admin_hooks(): void {
+	protected function define_admin_hooks(): void {
+
+		/** @var Admin_Assets $plugin_admin */
+		$plugin_admin = $this->container->get( Admin_Assets::class );
+
+		add_action( 'admin_enqueue_scripts', array( $plugin_admin, 'enqueue_styles' ) );
+		add_action( 'admin_enqueue_scripts', array( $plugin_admin, 'enqueue_scripts' ) );
+	}
+
+	/**
+	 * Define the hook to handle post saves.
+	 */
+	protected function define_post_hooks(): void {
 
 		/** @var Post $plugin_post */
 		$plugin_post = $this->container->get( Post::class );
@@ -89,6 +91,9 @@ class BH_WP_Simple_Calendar {
 		add_action( 'save_post', array( $plugin_post, 'update_cache_posts_list' ), 10, 3 );
 	}
 
+	/**
+	 * Register hook to run the cron job.
+	 */
 	protected function define_cron_hooks(): void {
 
 		/** @var Cron $plugin_cron */
@@ -98,14 +103,9 @@ class BH_WP_Simple_Calendar {
 	}
 
 	/**
-	 * Register all of the hooks related to frontend functionality.
-	 *
-	 * @since    1.2.0
+	 * Register the hooks related to frontend functionality.
 	 */
-	private function define_frontend_hooks(): void {
-
-		// $widget = new Widget( $this->api );
-		// add_widget( $widget );
+	protected function define_frontend_hooks(): void {
 
 		/** @var Block $plugin_block */
 		$plugin_block = $this->container->get( Block::class );
