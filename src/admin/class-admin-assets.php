@@ -28,7 +28,7 @@ class Admin_Assets {
 	 */
 	public function enqueue_styles(): void {
 		wp_enqueue_style(
-			$this->settings->get_plugin_name(),
+			$this->settings->get_plugin_slug(),
 			plugins_url( 'assets/bh-wp-simple-calendar-admin.css', $this->settings->get_plugin_basename() ),
 			array(),
 			$this->settings->get_plugin_version(),
@@ -41,11 +41,11 @@ class Admin_Assets {
 	 */
 	public function enqueue_scripts(): void {
 		wp_enqueue_script(
-			$this->settings->get_plugin_name(),
+			$this->settings->get_plugin_slug(),
 			plugins_url( 'assets/bh-wp-simple-calendar-admin.js', $this->settings->get_plugin_basename() ),
 			array( 'jquery' ),
 			$this->settings->get_plugin_version(),
-			false
+			true
 		);
 	}
 }
