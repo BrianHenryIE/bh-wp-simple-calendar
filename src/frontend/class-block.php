@@ -13,6 +13,7 @@ use BrianHenryIE\WP_Simple_Calendar\Settings_Interface;
  * Enqueue the script, register the block and render via the Renderer class.
  */
 class Block {
+	const BLOCK_TYPE_NAME = 'brianhenryie/simple-calendar';
 
 	/**
 	 * Constructor.
@@ -43,8 +44,6 @@ class Block {
 			array( 'in_footer' => true )
 		);
 
-		// TODO: make this a constant.
-		$name       = 'brianhenryie/simple-calendar';
 		$attributes = array(
 			'calendarId'  => array(
 				'type' => 'string',
@@ -68,7 +67,7 @@ class Block {
 			'attributes'      => $attributes,
 		);
 
-		register_block_type( $name, $args );
+		register_block_type( self::BLOCK_TYPE_NAME, $args );
 	}
 
 	/**

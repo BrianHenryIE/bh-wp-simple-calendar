@@ -11,6 +11,7 @@
 namespace BrianHenryIE\WP_Simple_Calendar\Admin;
 
 use BrianHenryIE\WP_Simple_Calendar\API_Interface;
+use BrianHenryIE\WP_Simple_Calendar\Frontend\Block;
 use WP_Post;
 
 /**
@@ -54,7 +55,7 @@ class Post {
 		$calendars_to_cache = array();
 
 		foreach ( $all_blocks as $block ) {
-			if ( 'brianhenryie/simple-calendar' === $block['blockName'] ) {
+			if ( Block::BLOCK_TYPE_NAME === $block['blockName'] ) {
 				$calendars_to_cache[] = $block['attrs']['calendarId'];
 			}
 		}
