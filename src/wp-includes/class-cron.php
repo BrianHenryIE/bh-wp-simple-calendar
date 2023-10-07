@@ -45,5 +45,4 @@ class Cron implements LoggerAwareInterface {
 
 		$this->api->update_caches();
 	}
-
 }

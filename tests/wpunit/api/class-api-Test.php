@@ -26,13 +26,12 @@ class API_Test extends \Codeception\TestCase\WPTestCase {
 				$cache_key = $this->get_calendar_cache_option_name( $url );
 
 				delete_option( $cache_key );
-
 			}
 		};
 
 		add_filter(
 			'pre_http_request',
-			function( $return_value, $parsed_args, $url ) {
+			function ( $return_value, $parsed_args, $url ) {
 
 				global $project_root_dir;
 				$test_data = file_get_contents( $project_root_dir . '/tests/_data/saba-events.ics' );
@@ -46,7 +45,6 @@ class API_Test extends \Codeception\TestCase\WPTestCase {
 		$events = $api->get_upcoming_events( '3bpg24atqjbsmhdb00ilcdrj5c@group.calendar.google.com', 30, 10 );
 
 		$a = $events;
-
 	}
 
 	// protected get_calendar_ics
@@ -72,7 +70,6 @@ class API_Test extends \Codeception\TestCase\WPTestCase {
 		$calendar_url = $api->protected_get_calendar_url( $input );
 
 		$this->assertSame( $expected, $calendar_url );
-
 	}
 
 	public function test_calendar_id_url() {
@@ -89,7 +86,6 @@ class API_Test extends \Codeception\TestCase\WPTestCase {
 		$calendar_url = $api->protected_get_calendar_url( $input );
 
 		$this->assertSame( $expected, $calendar_url );
-
 	}
 
 	public function test_get_calendar_cache_option_name() {
@@ -103,7 +99,6 @@ class API_Test extends \Codeception\TestCase\WPTestCase {
 		$actual = $api->get_calendar_cache_option_name( $input );
 
 		$this->assertSame( $expected, $actual );
-
 	}
 
 
@@ -115,5 +110,4 @@ class API_Test extends \Codeception\TestCase\WPTestCase {
 
 
 	// protected save_calendar_to_cache
-
 }

@@ -1,7 +1,5 @@
 <?php
-/**
- *
- */
+
 
 namespace BrianHenryIE\WP_Simple_Calendar\API;
 
@@ -27,5 +25,4 @@ class API_Test extends \Codeception\Test\Unit {
 
 		$this->assertTrue( false );
 	}
-
 }

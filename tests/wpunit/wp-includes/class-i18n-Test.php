@@ -40,6 +40,5 @@ class BH_WP_Simple_Calendar_I18n_Test extends \Codeception\TestCase\WPTestCase {
 
 		$this->assertTrue( $called, 'plugin_locale filter not called within load_plugin_textdomain() suggesting it has not been set by the plugin.' );
 		$this->assertEquals( 'bh-wp-simple-calendar', $actual_domain );
-
 	}
 }

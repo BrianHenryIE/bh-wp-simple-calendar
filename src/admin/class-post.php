@@ -64,7 +64,6 @@ class Post {
 		} else {
 			$this->api->remove_post_ref_from_calendar_cache( $post_id );
 		}
-
 	}
 
 	/**

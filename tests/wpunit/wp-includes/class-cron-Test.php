@@ -40,6 +40,4 @@ class WpUnit_Cron_Test extends \Codeception\TestCase\WPTestCase {
 	/**
 	 * When cron runs, the function should run.
 	 */
-
-
 }

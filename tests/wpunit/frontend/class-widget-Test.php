@@ -21,7 +21,6 @@ class Widget_Test extends \Codeception\TestCase\WPTestCase {
 		echo 'widget id: ' . $widget->id;
 
 		$this->assertNotNull( $widget );
-
 	}
 
 	private function an_instance() {
@@ -45,5 +44,4 @@ class Widget_Test extends \Codeception\TestCase\WPTestCase {
 
 		// Pre-populate the transient for WordPress to pull
 	}
-
 }

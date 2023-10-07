@@ -32,7 +32,5 @@ class Activator {
 	public static function activate() {
 
 		wp_schedule_event( time(), 'hourly', Cron::UPDATE_CACHES_CRON_JOB );
-
 	}
-
 }

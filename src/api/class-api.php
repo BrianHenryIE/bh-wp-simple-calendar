@@ -48,9 +48,9 @@ class API implements API_Interface {
 		$ical->initString( $calendar_ics );
 
 		// $rangeStart = 'now'; //new \DateTime('now', new \DateTimeZone( $ical->calendarTimeZone() ));
-		 $rangeEnd             = new \DateTime( 'now', new \DateTimeZone( $ical->calendarTimeZone() ) );
-				 $dateInterval = \DateInterval::createFromDateString( "$period days" );
-		 $rangeEnd->add( $dateInterval );
+		$rangeEnd             = new \DateTime( 'now', new \DateTimeZone( $ical->calendarTimeZone() ) );
+				$dateInterval = \DateInterval::createFromDateString( "$period days" );
+		$rangeEnd->add( $dateInterval );
 
 		/** @var Event[] $events */
 		$events = $ical->eventsFromRange( 'now', $rangeEnd->format( 'Y-m-d' ) );
@@ -235,7 +235,6 @@ class API implements API_Interface {
 			// Otherwise just add an extra one-off.
 			wp_schedule_single_event( time(), Cron::UPDATE_CACHES_CRON_JOB );
 		}
-
 	}
 
 	/**
@@ -299,7 +298,6 @@ class API implements API_Interface {
 	public function get_calendar_cache_option_name( string $calendar_url ): string {
 
 		return substr( self::CACHED_CALENDARS_OPTION_PREFIX . strrev( rawurlencode( $calendar_url ) ), 0, 191 );
-
 	}
 
 	/**
@@ -330,7 +328,5 @@ class API implements API_Interface {
 		$calendar_cache_key = $this->get_calendar_cache_option_name( $calendar_url );
 
 		return update_option( $calendar_cache_key, $calendar_ics_content );
-
 	}
-
 }

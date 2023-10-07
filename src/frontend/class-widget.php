@@ -197,5 +197,4 @@ class Widget extends \WP_Widget {
 
 		return '';
 	}
-
 }

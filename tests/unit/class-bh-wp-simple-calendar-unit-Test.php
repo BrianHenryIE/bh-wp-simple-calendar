@@ -67,5 +67,4 @@ class BH_WP_Simple_Calendar_Unit_Test extends \Codeception\Test\Unit {
 		$api      = self::makeEmpty( API::class );
 		new BH_WP_Simple_Calendar( $api, $settings, $logger );
 	}
-
 }

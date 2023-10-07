@@ -90,7 +90,5 @@ class Post_Test extends \Codeception\TestCase\WPTestCase {
 		$post = new Post( $api_mock, '', '' );
 
 		$post->update_cache_posts_list( null, $mock_post, null );
-
 	}
-
 }

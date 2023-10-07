@@ -28,7 +28,7 @@ class Admin_Assets {
 	 */
 	public function __construct(
 		protected Settings_Interface $settings,
-	){
+	) {
 	}
 
 	/**
@@ -73,7 +73,5 @@ class Admin_Assets {
 		 */
 
 		wp_enqueue_script( $this->settings->get_plugin_name(), plugin_dir_url( $this->settings->get_plugin_basename() ) . 'assets/bh-wp-simple-calendar-admin.js', array( 'jquery' ), $this->settings->get_version(), false );
-
 	}
-
 }

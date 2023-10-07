@@ -36,7 +36,7 @@ class Block {
 			$src,
 			$deps,
 			$this->settings->get_version(),
-			array( 'in_footer' => true ,)
+			array( 'in_footer' => true )
 		);
 
 		// TODO: make this a constant.
@@ -65,7 +65,6 @@ class Block {
 		);
 
 		register_block_type( $name, $args );
-
 	}
 
 	/**
@@ -125,6 +124,4 @@ class Block {
 
 		return $html;
 	}
-
-
 }

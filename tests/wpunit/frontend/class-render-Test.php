@@ -25,7 +25,6 @@ class Render_Test extends \Codeception\TestCase\WPTestCase {
 				$cache_key = $this->get_calendar_cache_option_name( $url );
 
 				delete_option( $cache_key );
-
 			}
 		};
 
@@ -41,7 +40,5 @@ class Render_Test extends \Codeception\TestCase\WPTestCase {
 		$html = $renderer->get_html( 'http://events.sacbike.org/calendar/subscribe', 150, 15 );
 
 		$a = $html;
-
 	}
-
 }

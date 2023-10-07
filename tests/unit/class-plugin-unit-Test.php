@@ -14,7 +14,7 @@ use BrianHenryIE\WP_Simple_Calendar\WP_Logger\Logger;
  * Class Plugin_WP_Mock_Test
  */
 class Plugin_Unit_Test extends \Codeception\Test\Unit {
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 		\WP_Mock::setUp();
 	}
@@ -33,12 +33,12 @@ class Plugin_Unit_Test extends \Codeception\Test\Unit {
 		// Prevents code-coverage counting, and removes the need to define the WordPress functions that are used in that class.
 		\Patchwork\redefine(
 			array( BH_WP_Simple_Calendar::class, '__construct' ),
-			function() {}
+			function () {}
 		);
 
 		\Patchwork\redefine(
 			array( Logger::class, '__construct' ),
-			function() {}
+			function () {}
 		);
 
 		// Defined in `bootstrap.php`.
@@ -107,7 +107,5 @@ class Plugin_Unit_Test extends \Codeception\Test\Unit {
 		$this->assertArrayHasKey( 'bh_wp_simple_calendar', $GLOBALS );
 
 		$this->assertInstanceOf( BH_WP_Simple_Calendar::class, $GLOBALS['bh_wp_simple_calendar'] );
-
 	}
-
 }

@@ -32,4 +32,4 @@ class Settings implements Settings_Interface, Logger_Settings_Interface {
 	public function get_plugin_basename(): string {
 		return 'bh-wp-simple-calendar/bh-wp-simple-calendar.php';
 	}
-};
+}
