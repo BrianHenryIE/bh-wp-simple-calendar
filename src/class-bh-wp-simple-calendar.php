@@ -11,14 +11,11 @@
 namespace BrianHenryIE\WP_Simple_Calendar;
 
 use BrianHenryIE\WP_Simple_Calendar\Admin\Post;
-use BrianHenryIE\WP_Simple_Calendar\API\API;
-use BrianHenryIE\WP_Simple_Calendar\API\Settings;
 use BrianHenryIE\WP_Simple_Calendar\Frontend\Block;
 use BrianHenryIE\WP_Simple_Calendar\WP_Includes\Blocks;
 use BrianHenryIE\WP_Simple_Calendar\WP_Includes\Cron;
 use BrianHenryIE\WP_Simple_Calendar\WP_Includes\I18n;
 use Psr\Container\ContainerInterface;
-use Psr\Log\LoggerInterface;
 
 /**
  * The core plugin class.
