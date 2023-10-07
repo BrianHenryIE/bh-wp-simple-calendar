@@ -3,15 +3,12 @@
  * Tests the Post class.
  *
  * @package simple-google-calendar-block
- * @author Brian Henry <BrianHenryIE@gmail.com>
  */
 
 namespace BrianHenryIE\WP_Simple_Calendar\Admin;
 
-use BrianHenryIE\WP_Simple_Calendar\API\API;
+use BrianHenryIE\WP_Simple_Calendar\API_Interface;
 use Codeception\Stub\Expected;
-use stdClass;
-use WP_Post;
 
 /**
  * @coversDefaultClass \BrianHenryIE\WP_Simple_Calendar\Admin\Post
@@ -23,22 +20,24 @@ class Post_Test extends \Codeception\TestCase\WPTestCase {
 	 * e.g. inside a column.
 	 *
 	 * In `inner-block.post.txt` there is a columns block, with two columns, and one has a calendar = 4.
+	 *
+	 * @covers ::flatten_blocks
 	 */
-	public function test_get_inner_block() {
+	public function test_flatten_blocks(): void {
 
-		$post_tester = new class( null ) extends Post {
-			public function test_flatten_blocks( $blocks ) {
-				return $this->flatten_blocks( $blocks );
-			}
-		};
+		$reflection_class  = new \ReflectionClass( Post::class );
+		$reflection_method = $reflection_class->getMethod( 'flatten_blocks' );
+		$reflection_method->setAccessible( true );
 
-		$post_content = file_get_contents( __DIR__ . '/../../_data/inner-block.post.txt' );
+		$api = $this->makeEmpty( API_Interface::class );
+		$sut = new Post( $api );
 
-		$blocks = parse_blocks( $post_content );
+		$post_content = file_get_contents( __DIR__ . '/../../_data/inner-block.post.txt' ) ?: '';
+		$blocks       = parse_blocks( $post_content );
 
-		$all_blocks = $post_tester->test_flatten_blocks( $blocks );
+		$result = $reflection_method->invokeArgs( $sut, array( $blocks ) );
 
-		$this->assertCount( 4, $all_blocks );
+		self::assertCount( 4, $result );
 	}
 
 	/**
@@ -47,48 +46,41 @@ class Post_Test extends \Codeception\TestCase\WPTestCase {
 	 * In simple.post.txt we have on single brianhenryie/simple-calendar block which should mean API
 	 * is told to add it to its cache list.
 	 */
-	public function test_read_post_content_calendar_added() {
+	public function test_read_post_content_calendar_added(): void {
 
-		$post_content = file_get_contents( __DIR__ . '/../../_data/simple.post.txt' );
+		$post_content = file_get_contents( __DIR__ . '/../../_data/simple.post.txt' ) ?: '';
 
-		$mock_post = new class( $post_content ) {
-			public $post_content;
-			public function __construct( $post_content ) {
-				$this->post_content = $post_content;
-			}
-		};
+		$mock_post               = new \WP_Post( new \stdClass() );
+		$mock_post->post_content = $post_content;
 
-		$api_mock = $this->make(
-			API::class,
+		$api_mock = $this->makeEmpty(
+			API_Interface::class,
 			array(
 				'add_post_ref_to_calendar_cache' => Expected::once(),
 			)
 		);
 
-		$post = new Post( $api_mock, '', '' );
+		$post = new Post( $api_mock );
 
-		$post->update_cache_posts_list( null, $mock_post, null );
+		$post->update_cache_posts_list( 1, $mock_post, true );
 	}
-
 
 	/**
 	 * Happy path for when a calendar is removed from the post.
 	 */
-	public function test_read_post_content_calendar_removed() {
+	public function test_read_post_content_calendar_removed(): void {
 
-		$mock_post = new class() {
-			public $post_content = '';
-		};
+		$mock_post = new \WP_Post( new \stdClass() );
 
-		$api_mock = $this->make(
-			API::class,
+		$api_mock = self::makeEmpty(
+			API_Interface::class,
 			array(
-				'remove_post_ref_from_calendar_cache' => Expected::once(),
+				'remove_post_ref_from_calendar_cache' => Expected::once( true ),
 			)
 		);
 
-		$post = new Post( $api_mock, '', '' );
+		$post = new Post( $api_mock );
 
-		$post->update_cache_posts_list( null, $mock_post, null );
+		$post->update_cache_posts_list( 2, $mock_post, true );
 	}
 }

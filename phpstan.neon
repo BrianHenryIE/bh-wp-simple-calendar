@@ -29,3 +29,5 @@ parameters:
         # - '/Parameter .* of .* expects .* given\./'
         # Setting an empty array with type associative array in the PhpDoc prints this.
         - '/does not accept default value of type array\(\)/'
+        # Parameter #2 $callback of static method WP_Mock::expectActionAdded() expects (callable(): mixed)|Mockery\Matcher\Type, array{WP_Mock\Matcher\AnyInstance, 'register_block'} given.
+        - '/Parameter #\d+ \$callback of static method WP_Mock::expectActionAdded\(\) expects .*/'

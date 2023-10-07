@@ -14,12 +14,17 @@ use BrianHenryIE\WP_Simple_Calendar\API_Interface;
 use WP_Post;
 
 /**
- * Class Post
+ * Hooked on post save, include calendars on the list of calendars to cache.
  */
 class Post {
 
+	/**
+	 * Constructor
+	 *
+	 * @param API_Interface $api Cache functions.
+	 */
 	public function __construct(
-		protected API_Interface $api
+		protected API_Interface $api,
 	) {
 	}
 
@@ -38,7 +43,7 @@ class Post {
 	 * @param WP_Post $post    Post with post content which will be checked.
 	 * @param bool    $update  Updated flag which is not needed here.
 	 */
-	public function update_cache_posts_list( $post_id, $post, $update ) {
+	public function update_cache_posts_list( int $post_id, WP_Post $post, bool $update ): void {
 
 		$blocks = parse_blocks( $post->post_content );
 
@@ -69,26 +74,25 @@ class Post {
 	/**
 	 * Recursive function to return a flat array of all blocks on a page, i.e. to remove the hierarchy.
 	 *
-	 * @param array $blocks An array of blocks (which themselves are arrays).
+	 * @param array<array{innerBlocks?:array, blockName?:string, attrs:array<string,string>, innerHTML:string, innerContent:array<int,string>}> $blocks An array of blocks (which themselves are arrays).
 	 *
-	 * @return array A flat array with all the blocks
+	 * @return array<array{blockName:string, attrs:array<string,string>, innerHTML:string, innerContent:array<int,string>}> A flat array with all the blocks
 	 */
-	protected function flatten_blocks( $blocks ) {
+	protected function flatten_blocks( array $blocks ): array {
 
-		$new_blocks = array();
-
-		foreach ( $blocks as $block ) {
-			if ( isset( $block['innerBlocks'] ) ) {
-
-				$inner_blocks = $this->flatten_blocks( $block['innerBlocks'] );
-
-				$new_blocks = array_merge( $new_blocks, $inner_blocks );
-
-				unset( $block['innerBlocks'] );
-			}
-			$new_blocks[] = $block;
-		}
-
-		return $new_blocks;
+		return array_reduce(
+			$blocks,
+			function ( array $carry, array $item ): array {
+				if ( isset( $item['innerBlocks'] ) && ! empty( $item['innerBlocks'] ) ) {
+					$carry = array_merge( $carry, $this->flatten_blocks( $item['innerBlocks'] ) );
+				}
+				if ( ! isset( $item['blockName'] ) ) {
+					return $carry;
+				}
+				$carry[] = $item;
+				return $carry;
+			},
+			array()
+		);
 	}
 }
