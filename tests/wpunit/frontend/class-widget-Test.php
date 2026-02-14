@@ -2,23 +2,24 @@
 /**
  * Tests the widget.
  *
- * @package simple-google-calendar-widget
+ * @package brianhenryie/bh-wp-simple-calendar
  * @author Brian Henry <BrianHenryIE@gmail.com>
  */
 
 use BrianHenryIE\WP_Simple_Calendar\API_Interface;
 use BrianHenryIE\WP_Simple_Calendar\Frontend\Renderer;
 use BrianHenryIE\WP_Simple_Calendar\Frontend\Widget;
+use BrianHenryIE\WP_Simple_Calendar\WPUnit_Testcase;
 
 /**
  * @coversDefaultClass Widget
  */
-class Widget_Test extends \Codeception\TestCase\WPTestCase {
+class Widget_Test extends WPUnit_Testcase {
 
 	public function test_things_start(): void {
 
 		$renderer = self::make( Renderer::class );
-		$api = self::makeEmpty( API_Interface::class );
+		$api      = self::makeEmpty( API_Interface::class );
 
 		$widget = new Widget( $renderer, $api );
 

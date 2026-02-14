@@ -13,11 +13,12 @@
     }
   },
   "lifecycleScripts": {
-    "afterStart": "./tests/e2e-pw/setup/initialize-external.sh"
+    "afterStart": "bash 'tests/_wp-env/initialize-external.sh'"
   },
   "mappings": {
-    "../setup": "./tests/e2e-pw/setup",
-    "wp-content/plugins/simple-google-icalendar-widget": "./wp-content/plugins/simple-google-icalendar-widget"
+    "../setup": "./tests/_wp-env",
+    "wp-content/plugins/simple-google-icalendar-widget": "./wp-content/plugins/simple-google-icalendar-widget",
+    "wp-content/plugins/query-monitor": "./wp-content/plugins/query-monitor"
   },
   "phpVersion": "8.4"
 }

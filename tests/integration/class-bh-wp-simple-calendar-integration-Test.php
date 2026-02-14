@@ -2,7 +2,7 @@
 /**
  * Tests for BH_WP_Simple_Calendar main setup class. Tests the actions are correctly added.
  *
- * @package BH_WP_Simple_Calendar
+ * @package brianhenryie/bh-wp-simple-calendar
  * @author  Brian Henry <BrianHenryIE@gmail.com>
  */
 

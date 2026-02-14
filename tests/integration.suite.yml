@@ -1,14 +1,13 @@
 # Codeception Test Suite Configuration
 #
-# Suite for unit or integration tests that require WordPress functions and classes.
+# Suite for integration tests that require WordPress functions and classes.
 
 actor: WpunitTester
 modules:
     enabled:
-        - WPLoader
-        - \Helper\Wpunit
+        - lucatume\WPBrowser\Module\WPLoader
     config:
-        WPLoader:
+        lucatume\WPBrowser\Module\WPLoader:
             wpRootFolder: "%WP_ROOT_FOLDER%"
             dbName: "%TEST_DB_NAME%"
             dbHost: "%TEST_DB_HOST%"
@@ -18,5 +17,6 @@ modules:
             domain: "%TEST_SITE_WP_DOMAIN%"
             adminEmail: "%TEST_SITE_ADMIN_EMAIL%"
             title: "bh-wp-simple-calendar"
-            plugins: ['bh-wp-simple-calendar/bh-wp-simple-calendar.php']
-            activatePlugins: ['bh-wp-simple-calendar/bh-wp-simple-calendar.php']
+            plugins: ["bh-wp-simple-calendar/bh-wp-simple-calendar.php"]
+            activatePlugins: ["bh-wp-simple-calendar/bh-wp-simple-calendar.php"]
+            WP_CONTENT_DIR: wp-content

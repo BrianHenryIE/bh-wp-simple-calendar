@@ -2,7 +2,7 @@
 /**
  * Fired during plugin deactivation
  *
- * @package    brianhenryie/bh-wp-simple-calendar
+ * @package brianhenryie/bh-wp-simple-calendar
  */
 
 namespace BrianHenryIE\WP_Simple_Calendar\WP_Includes;

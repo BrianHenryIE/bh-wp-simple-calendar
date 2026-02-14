@@ -5,7 +5,7 @@
  * A class definition that includes attributes and functions used across both the
  * public-facing side of the site and the admin area.
  *
- * @package    bh-wp-simple-calendar
+ * @package brianhenryie/bh-wp-simple-calendar
  */
 
 namespace BrianHenryIE\WP_Simple_Calendar;

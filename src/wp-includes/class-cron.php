@@ -14,7 +14,7 @@ use BrianHenryIE\WP_Simple_Calendar\Psr\Log\LoggerInterface;
 /**
  * Class Cron
  *
- * @package BH_WP_Simple_Calendar\WP_Includes
+ * @package brianhenryie/bh-wp-simple-calendar
  */
 class Cron implements LoggerAwareInterface {
 	use LoggerAwareTrait;
@@ -24,7 +24,7 @@ class Cron implements LoggerAwareInterface {
 	/**
 	 * Cron constructor.
 	 *
-	 * @param API    $api
+	 * @param API $api
 	 * @param $logger
 	 */
 	public function __construct(

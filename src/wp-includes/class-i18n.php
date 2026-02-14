@@ -8,7 +8,7 @@
  * @link       http://example.com
  * @since      1.0.0
  *
- * @package    brianhenryie/bh-wp-simple-calendar
+ * @package brianhenryie/bh-wp-simple-calendar
  */
 
 namespace BrianHenryIE\WP_Simple_Calendar\WP_Includes;
@@ -20,7 +20,7 @@ namespace BrianHenryIE\WP_Simple_Calendar\WP_Includes;
  * so that it is ready for translation.
  *
  * @since      1.0.0
- * @package    brianhenryie/bh-wp-simple-calendar
+ * @package brianhenryie/bh-wp-simple-calendar
  *
  * @author     Brian Henry <BrianHenryIE@gmail.com>
  */

@@ -2,16 +2,18 @@
 /**
  * Tests for I18n. Tests load_plugin_textdomain.
  *
- * @package BH_WP_Simple_Calendar
+ * @package brianhenryie/bh-wp-simple-calendar
  * @author  Brian Henry <BrianHenryIE@gmail.com>
  */
 
 namespace BrianHenryIE\WP_Simple_Calendar\WP_Includes;
 
+use BrianHenryIE\WP_Simple_Calendar\WPUnit_Testcase;
+
 /**
  * @coversDefaultClass \BrianHenryIE\WP_Simple_Calendar\WP_Includes\I18n
  */
-class BH_WP_Simple_Calendar_I18n_Test extends \Codeception\TestCase\WPTestCase {
+class BH_WP_Simple_Calendar_I18n_Test extends WPUnit_Testcase {
 
 	/**
 	 * Checks if the filter run by WordPress in the load_plugin_textdomain() function is called.

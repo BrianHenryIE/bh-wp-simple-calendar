@@ -2,7 +2,7 @@
 /**
  * The admin-specific functionality of the plugin.
  *
- * @package    brianhenryie/bh-wp-simple-calendar
+ * @package brianhenryie/bh-wp-simple-calendar
  */
 
 namespace BrianHenryIE\WP_Simple_Calendar\Admin;

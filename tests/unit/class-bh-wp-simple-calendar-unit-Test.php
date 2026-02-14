@@ -1,6 +1,6 @@
 <?php
 /**
- * @package PHP_Package_Name
+ * @package brianhenryie/bh-wp-simple-calendar
  * @author  Your Name <email@example.com>
  */
 
@@ -12,6 +12,7 @@ use BrianHenryIE\WP_Simple_Calendar\Admin\Post;
 use BrianHenryIE\WP_Simple_Calendar\API\API;
 use BrianHenryIE\WP_Simple_Calendar\API\Settings;
 use BrianHenryIE\WP_Simple_Calendar\Frontend\Block;
+use BrianHenryIE\WP_Simple_Calendar\Psr\Container\ContainerInterface;
 use BrianHenryIE\WP_Simple_Calendar\WP_Includes\Blocks;
 use BrianHenryIE\WP_Simple_Calendar\WP_Includes\Cron;
 use BrianHenryIE\WP_Simple_Calendar\WP_Includes\I18n;
@@ -22,16 +23,10 @@ use WP_Mock\Matcher\AnyInstance;
 /**
  * @coversDefaultClass \BrianHenryIE\WP_Simple_Calendar\BH_WP_Simple_Calendar
  */
-class BH_WP_Simple_Calendar_Unit_Test extends \Codeception\Test\Unit {
+class BH_WP_Simple_Calendar_Unit_Test extends WPUnit_Testcase {
 
 	protected function setUp(): void {
 		parent::setUp();
-		\WP_Mock::setUp();
-	}
-
-	protected function tearDown(): void {
-		parent::tearDown();
-		\WP_Mock::tearDown();
 	}
 
 	/**
@@ -45,7 +40,7 @@ class BH_WP_Simple_Calendar_Unit_Test extends \Codeception\Test\Unit {
 			array( new AnyInstance( I18n::class ), 'load_plugin_textdomain' )
 		);
 
-		$container = new Container();
+		$container = new class() extends Container implements ContainerInterface{};
 		$container->bind( LoggerInterface::class, ColorLogger::class );
 		$container->bind( API_Interface::class, API::class );
 		$container->bind( Settings_Interface::class, Settings::class );

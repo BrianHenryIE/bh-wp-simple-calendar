@@ -2,7 +2,7 @@
 /**
  * Tests for the root plugin file.
  *
- * @package PHP_Package_Name
+ * @package brianhenryie/bh-wp-simple-calendar
  * @author  Your Name <email@example.com>
  */
 

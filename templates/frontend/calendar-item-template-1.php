@@ -43,15 +43,15 @@
 		// error_log( json_encode( $event->dtstart_array ) );
 	}
 
-//	$timezone  = $event->dtstart_array[0]['TZID'];
+	// $timezone  = $event->dtstart_array[0]['TZID'];
 	$timestamp = $event->dtstart_array[2];
 
 
 	/** @var \DateTime $start_time */
 	$start_time = $event->start_time;
 
-//	$start_time = new DateTimeImmutable( $start_time , wp_timezone());
-	$start_time = DateTimeImmutable::createFromFormat('U', $timestamp)->setTimezone( wp_timezone() );
+	// $start_time = new DateTimeImmutable( $start_time , wp_timezone());
+	$start_time = DateTimeImmutable::createFromFormat( 'U', $timestamp )->setTimezone( wp_timezone() );
 
 	$event_date_string = $start_time->format( 'l F j, H:i' );
 

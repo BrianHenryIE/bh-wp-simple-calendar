@@ -44,7 +44,7 @@ class Renderer {
 
 		$events = $this->api->get_upcoming_events( $calendar_id, $period, $count );
 
-		$template = realpath(__DIR__ . '/../../templates/frontend/calendar-template-1.php');
+		$template = realpath( __DIR__ . '/../../templates/frontend/calendar-template-1.php' );
 
 		// $template = get_template_part( 'simple-calendar', $template );
 

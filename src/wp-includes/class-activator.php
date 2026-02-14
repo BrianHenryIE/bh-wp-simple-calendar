@@ -5,7 +5,7 @@
  * @link       http://example.com
  * @since      1.0.0
  *
- * @package    brianhenryie/bh-wp-simple-calendar
+ * @package brianhenryie/bh-wp-simple-calendar
  */
 
 namespace BrianHenryIE\WP_Simple_Calendar\WP_Includes;
@@ -16,7 +16,7 @@ namespace BrianHenryIE\WP_Simple_Calendar\WP_Includes;
  * This class defines all code necessary to run during the plugin's activation.
  *
  * @since      1.0.0
- * @package    brianhenryie/bh-wp-simple-calendar
+ * @package brianhenryie/bh-wp-simple-calendar
  *
  * @author     Brian Henry <BrianHenryIE@gmail.com>
  */

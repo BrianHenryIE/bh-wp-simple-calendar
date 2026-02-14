@@ -60,7 +60,7 @@ $container = new Container();
 
 $container->singleton(
 	ContainerInterface::class,
-	static function () use( $container ) {
+	static function () use ( $container ) {
 		return $container;
 	}
 );

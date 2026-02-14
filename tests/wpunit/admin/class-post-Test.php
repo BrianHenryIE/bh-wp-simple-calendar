@@ -2,18 +2,19 @@
 /**
  * Tests the Post class.
  *
- * @package simple-google-calendar-block
+ * @package brianhenryie/bh-wp-simple-calendar
  */
 
 namespace BrianHenryIE\WP_Simple_Calendar\Admin;
 
 use BrianHenryIE\WP_Simple_Calendar\API_Interface;
+use BrianHenryIE\WP_Simple_Calendar\WPUnit_Testcase;
 use Codeception\Stub\Expected;
 
 /**
  * @coversDefaultClass \BrianHenryIE\WP_Simple_Calendar\Admin\Post
  */
-class Post_Test extends \Codeception\TestCase\WPTestCase {
+class Post_Test extends WPUnit_Testcase {
 
 	/**
 	 * We can't just iterate over the blocks since blocks can contain blocks,
@@ -47,7 +48,6 @@ class Post_Test extends \Codeception\TestCase\WPTestCase {
 	 * is told to add it to its cache list.
 	 */
 	public function test_read_post_content_calendar_added(): void {
-
 
 		img_caption_shortcode( null );
 

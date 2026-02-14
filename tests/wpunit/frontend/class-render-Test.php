@@ -2,7 +2,7 @@
 /**
  * Tests the widget.
  *
- * @package simple-google-calendar-widget
+ * @package brianhenryie/bh-wp-simple-calendar
  * @author Brian Henry <BrianHenryIE@gmail.com>
  */
 
@@ -11,15 +11,16 @@ namespace BrianHenryIE\WP_Simple_Calendar\Frontend;
 use BrianHenryIE\ColorLogger\ColorLogger;
 use BrianHenryIE\WP_Simple_Calendar\API\API;
 use BrianHenryIE\WP_Simple_Calendar\Settings_Interface;
+use BrianHenryIE\WP_Simple_Calendar\WPUnit_Testcase;
 
 /**
  * @coversDefaultClass \BrianHenryIE\WP_Simple_Calendar\Frontend\Renderer
  */
-class Render_Test extends \Codeception\TestCase\WPTestCase {
+class Render_Test extends WPUnit_Testcase {
 
 	public function test_get_html(): void {
 
-		$api = new class(new ColorLogger()) extends API {
+		$api = new class($this->logger) extends API {
 			public function __construct( $logger ) {
 				parent::__construct( $logger );
 

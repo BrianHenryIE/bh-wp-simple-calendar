@@ -2,24 +2,22 @@
 /**
  * Tests the API functions.
  *
- * @package simple-google-calendar-block
- * @author Brian Henry <BrianHenryIE@gmail.com>
+ * @package brianhenryie/bh-wp-simple-calendar
  */
 
 namespace BrianHenryIE\WP_Simple_Calendar\API;
 
 use BrianHenryIE\ColorLogger\ColorLogger;
-use BrianHenryIE\WP_Simple_Calendar\Admin\Post;
-use BrianHenryIE\WP_Simple_Calendar\API_Interface;
+use BrianHenryIE\WP_Simple_Calendar\WPUnit_Testcase;
 
 /**
  * @coversDefaultClass \BrianHenryIE\WP_Simple_Calendar\API\API
  */
-class API_Test extends \Codeception\TestCase\WPTestCase {
+class API_Test extends WPUnit_Testcase {
 
 	public function test_get_upcoming_events(): void {
 
-		$api = new class(new ColorLogger() ) extends API {
+		$api = new class($this->logger) extends API {
 			public function __construct( $logger ) {
 				parent::__construct( $logger );
 
@@ -96,7 +94,6 @@ class API_Test extends \Codeception\TestCase\WPTestCase {
 	 * @covers ::get_calendar_cache_option_name
 	 */
 	public function test_get_calendar_cache_option_name(): void {
-
 
 		$reflection_class  = new \ReflectionClass( API::class );
 		$reflection_method = $reflection_class->getMethod( 'get_calendar_cache_option_name' );

@@ -2,7 +2,7 @@
 /**
  * Test cron job mehtod behaves.
  *
- * @package BH_WP_Simple_Calendar
+ * @package brianhenryie/bh-wp-simple-calendar
  * @author  Brian Henry <BrianHenryIE@gmail.com>
  */
 
@@ -10,13 +10,13 @@ namespace BrianHenryIE\WP_Simple_Calendar\WP_Includes;
 
 use BrianHenryIE\ColorLogger\ColorLogger;
 use BrianHenryIE\WP_Simple_Calendar\API\API;
+use BrianHenryIE\WP_Simple_Calendar\WPUnit_Testcase;
 use Codeception\Stub\Expected;
-
 
 /**
  * @coversDefaultClass \BrianHenryIE\WP_Simple_Calendar\WP_Includes\Cron
  */
-class WpUnit_Cron_Test extends \Codeception\TestCase\WPTestCase {
+class WpUnit_Cron_Test extends WPUnit_Testcase {
 
 	/**
 	 * When the cron function runs, the API method should be called.
@@ -30,9 +30,7 @@ class WpUnit_Cron_Test extends \Codeception\TestCase\WPTestCase {
 			)
 		);
 
-		$logger = new ColorLogger();
-
-		$cron = new Cron( $api_mock, $logger );
+		$cron = new Cron( $api_mock, $this->logger );
 
 		$cron->update_calendars_caches();
 

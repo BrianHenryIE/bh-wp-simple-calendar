@@ -5,7 +5,7 @@
  *
  * If a calendar has just been removed, remove it from the cache list.
  *
- * @package    brianhenryie/bh-wp-simple-calendar
+ * @package brianhenryie/bh-wp-simple-calendar
  */
 
 namespace BrianHenryIE\WP_Simple_Calendar\Admin;

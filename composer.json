@@ -30,8 +30,8 @@
 		"allow-plugins": {
 			"composer/installers": true,
 			"dealerdirect/phpcodesniffer-composer-installer": true,
-			"phpstan/extension-installer": true,
-			"johnpbloch/wordpress-core-installer": true
+			"johnpbloch/wordpress-core-installer": true,
+			"phpstan/extension-installer": true
 		}
 	},
 	"repositories": {
@@ -55,21 +55,34 @@
 		"10up/wp_mock": "^1.0",
 		"antecedent/patchwork": "^2.1",
 		"brianhenryie/color-logger": "*",
+		"brianhenryie/php-codecoverage-markdown": "*",
 		"brianhenryie/strauss": "*",
 		"dealerdirect/phpcodesniffer-composer-installer": "*",
 		"johnpbloch/wordpress": "*",
 		"lucatume/wp-browser": "^4",
-		"phpcompatibility/phpcompatibility-wp": "*",
 		"phpstan/extension-installer": "*",
 		"phpunit/phpcov": "*",
+		"rector/rector": "*",
 		"squizlabs/php_codesniffer": "*",
 		"szepeviktor/phpstan-wordpress": "*",
 		"wordpress/wordpress": "*",
 		"wp-cli/dist-archive-command": "dev-main",
 		"wp-cli/wp-cli-bundle": "^2.12",
-		"wp-cli/wp-cli-tests": "*",
 		"wp-coding-standards/wpcs": "*",
+		"wpackagist-plugin/query-monitor": "*",
 		"wpackagist-theme/twentytwenty": "*"
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"BrianHenryIE\\WP_Simple_Calendar\\": [
+				"tests/unit",
+				"tests/wpunit",
+				"tests/integration"
+			]
+		},
+		"classmap": [
+			"tests/_support"
+		]
 	},
 	"extra": {
 		"strauss": {
@@ -101,28 +114,32 @@
 			"codecept run integration"
 		],
 		"test-coverage": [
-			"codecept run unit --coverage unit.cov &",
-			"codecept run wpunit --coverage wpunit.cov &",
+			"codecept run unit --coverage unit.cov",
+			"codecept run wpunit --coverage wpunit.cov",
 			"phpcov merge --clover tests/_output/clover.xml --html tests/_output/html tests/_output;",
 			"open tests/_output/html/index.html"
 		],
-		"cs-fix": [
-			"phpcbf || true",
+		"cs": [
 			"phpcs || true",
 			"phpstan analyse --memory-limit 1G"
 		],
-		"cs-fix-changes": [
-			"updated_files=$( git status | grep 'modified:\\s.*.php$' | cut -c14- | awk '{ printf(\"%s \", $0) }' ); phpcbf $(echo $updated_files); phpcs $(echo $updated_files); phpstan analyse $(echo $updated_files) --memory-limit 1G"
+		"cs-fix": [
+			"phpcbf || true",
+			"@cs"
 		],
-		"php-compatibility": [
-			"phpcs -p src templates vendor-prefixed --standard=PHPCompatibilityWP --runtime-set testVersion 7.4-"
+		"cs-strict": [
+			"phpcs || true",
+			"phpstan analyse --level max --memory-limit 1G"
+		],
+		"cs-changes": [
+			"updated_files=$(echo $(git diff --name-only `git merge-base origin/master HEAD` | grep \\.php | tr '\\n' '\\0' | xargs -0 ls -1df 2>/dev/null)); if [ -n \"$updated_files\" ]; then phpcbf $(echo $updated_files); phpcs $(echo $updated_files); phpstan analyse $(echo $updated_files) --memory-limit 1G; else echo \"No modified php files for phpstan.\"; fi;"
+		],
+		"cs-changes-strict": [
+			"updated_files=$(echo $(git diff --name-only `git merge-base origin/master HEAD` | grep \\.php | tr '\\n' '\\0' | xargs -0 ls -1df 2>/dev/null)); if [ -n \"$updated_files\" ]; then phpcbf $(echo $updated_files); phpcs $(echo $updated_files); phpstan analyse $(echo $updated_files) --level max --memory-limit 1G; else echo \"No modified php files for phpstan.\"; fi;"
 		],
 		"create-plugin-archive": [
 			"wp i18n make-pot src languages/$(basename \"$PWD\").pot --domain=$(basename \"$PWD\")",
 			"wp dist-archive . ./dist-archive --plugin-dirname=$(basename \"$PWD\") --create-target-dir"
-		],
-		"github-actions": [
-			"act -P ubuntu-latest=shivammathur/node:latest"
 		],
 		"sync-composer-wpenv": [
 			"for name in $(cat .wp-env.json | jq '.mappings | values[]' | sed -r 's/^\\\"|\\\"$//g'); do [ ! -d $name ] && [ ! -f $name ] && echo $name && jq 'del(.. | select(. ==\"'$name'\"))' .wp-env.json | sponge .wp-env.json || true; done",

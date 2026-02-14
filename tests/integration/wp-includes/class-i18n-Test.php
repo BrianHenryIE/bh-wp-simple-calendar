@@ -2,7 +2,7 @@
 /**
  * Tests for I18n. Tests load_plugin_textdomain.
  *
- * @package BH_WP_Simple_Calendar
+ * @package brianhenryie/bh-wp-simple-calendar
  * @author  Brian Henry <BrianHenryIE@gmail.com>
  */
 

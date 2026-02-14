@@ -2,7 +2,7 @@
 /**
  * The widget to display the calendar data in a sidebar, and its admin UI.
  *
- * @package    bh-wp-simple-calendar
+ * @package brianhenryie/bh-wp-simple-calendar
  */
 
 namespace BrianHenryIE\WP_Simple_Calendar\Frontend;
