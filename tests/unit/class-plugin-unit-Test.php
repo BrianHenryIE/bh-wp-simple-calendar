@@ -13,7 +13,8 @@ use BrianHenryIE\WP_Simple_Calendar\WP_Logger\Logger;
 /**
  * Class Plugin_WP_Mock_Test
  */
-class Plugin_Unit_Test extends \Codeception\Test\Unit {
+class Plugin_Unit_Test extends Unit_Testcase {
+
 	protected function setUp(): void {
 		parent::setUp();
 		\WP_Mock::setUp();

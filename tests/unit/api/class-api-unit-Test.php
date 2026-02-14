@@ -4,22 +4,13 @@
 namespace BrianHenryIE\WP_Simple_Calendar\API;
 
 use BrianHenryIE\ColorLogger\ColorLogger;
+use BrianHenryIE\WP_Simple_Calendar\Unit_Testcase;
 use BrianHenryIE\WP_Simple_Calendar\WP_Includes\Cron;
 
 /**
  * @coversDefaultClass \BrianHenryIE\WP_Simple_Calendar\API\API
  */
-class API_Test extends \Codeception\Test\Unit {
-
-	protected function setUp(): void {
-		parent::setUp();
-		\WP_Mock::setUp();
-	}
-
-	protected function tearDown(): void {
-		parent::tearDown();
-		\WP_Mock::tearDown();
-	}
+class API_Test extends Unit_Testcase {
 
 	/**
 	 * Check there is a regular cron job registered after the first calendar has been added.
@@ -62,7 +53,7 @@ class API_Test extends \Codeception\Test\Unit {
 			)
 		);
 
-		$api = new API( new ColorLogger() );
+		$api = new API( $this->logger );
 
 		$api->add_post_ref_to_calendar_cache( 'http://example.org/calendar.ics', 123 );
 	}

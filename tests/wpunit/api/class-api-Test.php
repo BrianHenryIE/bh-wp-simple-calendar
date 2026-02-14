@@ -58,7 +58,7 @@ class API_Test extends WPUnit_Testcase {
 	 */
 	public function test_calendar_id_email(): void {
 
-		$api = new class( new ColorLogger() ) extends API {
+		$api = new class( $this->logger ) extends API {
 			public function protected_get_calendar_url( $input ) {
 				return $this->get_calendar_url( $input );
 			}
@@ -75,7 +75,7 @@ class API_Test extends WPUnit_Testcase {
 	}
 
 	public function test_calendar_id_url(): void {
-		$api = new class( new ColorLogger() ) extends API {
+		$api = new class( $this->logger ) extends API {
 			public function protected_get_calendar_url( $input ) {
 				return $this->get_calendar_url( $input );
 			}
@@ -99,7 +99,7 @@ class API_Test extends WPUnit_Testcase {
 		$reflection_method = $reflection_class->getMethod( 'get_calendar_cache_option_name' );
 		$reflection_method->setAccessible( true );
 
-		$sut = new API( new ColorLogger() );
+		$sut = new API( $this->logger );
 
 		$input = 'https://events.sacbike.org/calendar/subscribe';
 

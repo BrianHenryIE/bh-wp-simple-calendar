@@ -17,8 +17,8 @@
   },
   "mappings": {
     "../setup": "./tests/_wp-env",
-    "wp-content/plugins/simple-google-icalendar-widget": "./wp-content/plugins/simple-google-icalendar-widget",
-    "wp-content/plugins/query-monitor": "./wp-content/plugins/query-monitor"
+    "wp-content/plugins/query-monitor": "./wp-content/plugins/query-monitor",
+    "wp-content/plugins/simple-google-icalendar-widget": "./wp-content/plugins/simple-google-icalendar-widget"
   },
   "phpVersion": "8.4"
 }

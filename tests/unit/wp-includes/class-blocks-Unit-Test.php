@@ -3,12 +3,13 @@
 namespace BrianHenryIE\WP_Simple_Calendar\WP_Includes;
 
 use BrianHenryIE\WP_Simple_Calendar\Settings_Interface;
+use BrianHenryIE\WP_Simple_Calendar\Unit_Testcase;
 use Codeception\Stub\Expected;
 
 /**
  * @coversDefaultClass \BrianHenryIE\WP_Simple_Calendar\WP_Includes\Blocks
  */
-class Blocks_Unit_Test extends \Codeception\Test\Unit {
+class Blocks_Unit_Test extends Unit_Testcase {
 
 	protected function setUp(): void {
 		parent::setUp();

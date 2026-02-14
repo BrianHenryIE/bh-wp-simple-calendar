@@ -1,9 +1,11 @@
 # Codeception Test Suite Configuration
 #
-# Suite for unit tests with WP_Mock.
+# Suite for unit or integration tests.
 
 actor: UnitTester
 modules:
-    enabled:
-        - Asserts
+  enabled:
+    - Asserts
+    - \Helper\Unit
+  step_decorators: ~
 bootstrap: _bootstrap.php

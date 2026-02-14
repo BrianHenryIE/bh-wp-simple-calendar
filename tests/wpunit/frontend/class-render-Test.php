@@ -32,12 +32,17 @@ class Render_Test extends WPUnit_Testcase {
 			}
 		};
 
-		// add_filter( 'pre_http_request', function( $return_value, $parsed_args, $url ) {
-		//
-		// $test_data = file_get_contents( __DIR__ . '/../saba-events.ics' );
-		//
-		// return array('body'=>$test_data);
-		// },10,3);
+		add_filter(
+			'pre_http_request',
+			function ( $return_value, $parsed_args, $url ) {
+
+				$test_data = file_get_contents( codecept_root_dir( 'tests/_data/saba-events.ics' ) );
+
+				return array( 'body' => $test_data );
+			},
+			10,
+			3
+		);
 
 		$settings = self::makeEmpty( Settings_Interface::class );
 

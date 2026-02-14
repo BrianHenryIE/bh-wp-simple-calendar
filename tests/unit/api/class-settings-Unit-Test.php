@@ -2,10 +2,12 @@
 
 namespace BrianHenryIE\WP_Simple_Calendar\API;
 
+use BrianHenryIE\WP_Simple_Calendar\Unit_Testcase;
+
 /**
  * @coversDefaultClass \BrianHenryIE\WP_Simple_Calendar\API\Settings
  */
-class Settings_Unit_Test extends \Codeception\Test\Unit {
+class Settings_Unit_Test extends Unit_Testcase {
 
 	/**
 	 * @covers ::get_plugin_version

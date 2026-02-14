@@ -6,28 +6,23 @@
 
 namespace BrianHenryIE\WP_Simple_Calendar;
 
-use BrianHenryIE\ColorLogger\ColorLogger;
 use BrianHenryIE\WP_Simple_Calendar\Admin\Admin_Assets;
 use BrianHenryIE\WP_Simple_Calendar\Admin\Post;
 use BrianHenryIE\WP_Simple_Calendar\API\API;
 use BrianHenryIE\WP_Simple_Calendar\API\Settings;
 use BrianHenryIE\WP_Simple_Calendar\Frontend\Block;
 use BrianHenryIE\WP_Simple_Calendar\Psr\Container\ContainerInterface;
+use BrianHenryIE\WP_Simple_Calendar\Psr\Log\LoggerInterface;
 use BrianHenryIE\WP_Simple_Calendar\WP_Includes\Blocks;
 use BrianHenryIE\WP_Simple_Calendar\WP_Includes\Cron;
 use BrianHenryIE\WP_Simple_Calendar\WP_Includes\I18n;
 use lucatume\DI52\Container;
-use Psr\Log\LoggerInterface;
 use WP_Mock\Matcher\AnyInstance;
 
 /**
  * @coversDefaultClass \BrianHenryIE\WP_Simple_Calendar\BH_WP_Simple_Calendar
  */
-class BH_WP_Simple_Calendar_Unit_Test extends WPUnit_Testcase {
-
-	protected function setUp(): void {
-		parent::setUp();
-	}
+class BH_WP_Simple_Calendar_Unit_Test extends Unit_Testcase {
 
 	/**
 	 * @covers ::set_locale
@@ -41,7 +36,7 @@ class BH_WP_Simple_Calendar_Unit_Test extends WPUnit_Testcase {
 		);
 
 		$container = new class() extends Container implements ContainerInterface{};
-		$container->bind( LoggerInterface::class, ColorLogger::class );
+		$container->bind( LoggerInterface::class, $this->logger );
 		$container->bind( API_Interface::class, API::class );
 		$container->bind( Settings_Interface::class, Settings::class );
 		new BH_WP_Simple_Calendar( $container );
@@ -62,8 +57,8 @@ class BH_WP_Simple_Calendar_Unit_Test extends WPUnit_Testcase {
 			array( new AnyInstance( Admin_Assets::class ), 'enqueue_scripts' )
 		);
 
-		$container = new Container();
-		$container->bind( LoggerInterface::class, ColorLogger::class );
+		$container = new class() extends Container implements ContainerInterface{};
+		$container->bind( LoggerInterface::class, $this->logger );
 		$container->bind( API_Interface::class, API::class );
 		$container->bind( Settings_Interface::class, Settings::class );
 		new BH_WP_Simple_Calendar( $container );
@@ -81,8 +76,8 @@ class BH_WP_Simple_Calendar_Unit_Test extends WPUnit_Testcase {
 			3
 		);
 
-		$container = new Container();
-		$container->bind( LoggerInterface::class, ColorLogger::class );
+		$container = new class() extends Container implements ContainerInterface{};
+		$container->bind( LoggerInterface::class, $this->logger );
 		$container->bind( API_Interface::class, API::class );
 		$container->bind( Settings_Interface::class, Settings::class );
 		new BH_WP_Simple_Calendar( $container );
@@ -98,8 +93,8 @@ class BH_WP_Simple_Calendar_Unit_Test extends WPUnit_Testcase {
 			array( new AnyInstance( Cron::class ), 'update_calendars_caches' )
 		);
 
-		$container = new Container();
-		$container->bind( LoggerInterface::class, ColorLogger::class );
+		$container = new class() extends Container implements ContainerInterface{};
+		$container->bind( LoggerInterface::class, $this->logger );
 		$container->bind( API_Interface::class, API::class );
 		$container->bind( Settings_Interface::class, Settings::class );
 		new BH_WP_Simple_Calendar( $container );
@@ -115,8 +110,8 @@ class BH_WP_Simple_Calendar_Unit_Test extends WPUnit_Testcase {
 			array( new AnyInstance( Blocks::class ), 'register_block' )
 		);
 
-		$container = new Container();
-		$container->bind( LoggerInterface::class, ColorLogger::class );
+		$container = new class() extends Container implements ContainerInterface{};
+		$container->bind( LoggerInterface::class, $this->logger );
 		$container->bind( API_Interface::class, API::class );
 		$container->bind( Settings_Interface::class, Settings::class );
 		new BH_WP_Simple_Calendar( $container );
@@ -132,8 +127,8 @@ class BH_WP_Simple_Calendar_Unit_Test extends WPUnit_Testcase {
 			array( new AnyInstance( Block::class ), 'register_block' )
 		);
 
-		$container = new Container();
-		$container->bind( LoggerInterface::class, ColorLogger::class );
+		$container = new class() extends Container implements ContainerInterface{};
+		$container->bind( LoggerInterface::class, $this->logger );
 		$container->bind( API_Interface::class, API::class );
 		$container->bind( Settings_Interface::class, Settings::class );
 		new BH_WP_Simple_Calendar( $container );

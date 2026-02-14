@@ -3,20 +3,12 @@
 namespace BrianHenryIE\WP_Simple_Calendar\Admin;
 
 use BrianHenryIE\WP_Simple_Calendar\Settings_Interface;
+use BrianHenryIE\WP_Simple_Calendar\Unit_Testcase;
 
 /**
  * @coversDefaultClass \BrianHenryIE\WP_Simple_Calendar\Admin\Admin_Assets
  */
-class Admin_Assets_Unit_Test extends \Codeception\Test\Unit {
-
-	protected function setUp(): void {
-		\WP_Mock::setUp();
-	}
-
-	protected function tearDown(): void {
-		parent::tearDown();
-		\WP_Mock::tearDown();
-	}
+class Admin_Assets_Unit_Test extends Unit_Testcase {
 
 	/**
 	 * Verifies enqueue_styles() calls wp_enqueue_style() with appropriate parameters.
