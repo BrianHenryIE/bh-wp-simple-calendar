@@ -84,8 +84,6 @@ class Block {
 			$args[ $key ] = $value;
 		}
 
-		// TODO validate
-
 		$validation_errors = $this->renderer->validate_settings( $args );
 
 		// TODO: Make sure this is only shown in the editing UI.

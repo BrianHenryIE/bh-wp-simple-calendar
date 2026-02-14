@@ -31,7 +31,7 @@ class Blocks_Unit_Test extends \Codeception\Test\Unit {
 		\WP_Mock::userFunction(
 			'register_block_type',
 			array(
-				'args'  => array( "{$plugin_root_dir}/build" ),
+				'args'  => array( "{$plugin_root_dir}build" ),
 				'times' => 1,
 			)
 		);

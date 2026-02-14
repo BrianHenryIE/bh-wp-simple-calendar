@@ -16,7 +16,7 @@ use BrianHenryIE\WP_Simple_Calendar\Frontend\Block;
 use BrianHenryIE\WP_Simple_Calendar\WP_Includes\Blocks;
 use BrianHenryIE\WP_Simple_Calendar\WP_Includes\Cron;
 use BrianHenryIE\WP_Simple_Calendar\WP_Includes\I18n;
-use Psr\Container\ContainerInterface;
+use BrianHenryIE\WP_Simple_Calendar\Psr\Container\ContainerInterface;
 
 /**
  * The plugin's main `add_action()` and `add_filter()` hooks.
@@ -92,7 +92,7 @@ class BH_WP_Simple_Calendar {
 	}
 
 	/**
-	 * Register hook to run the cron job.
+	 * Register hook to run the cron job to keep caches fresh.
 	 */
 	protected function define_cron_hooks(): void {
 

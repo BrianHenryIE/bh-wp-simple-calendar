@@ -9,7 +9,7 @@ namespace BrianHenryIE\WP_Simple_Calendar\API;
 use BrianHenryIE\WP_Simple_Calendar\Settings_Interface;
 use BrianHenryIE\WP_Simple_Calendar\WP_Logger\Logger_Settings_Interface;
 use BrianHenryIE\WP_Simple_Calendar\WP_Logger\Logger_Settings_Trait;
-use Psr\Log\LogLevel;
+use BrianHenryIE\WP_Simple_Calendar\Psr\Log\LogLevel;
 
 class Settings implements Settings_Interface, Logger_Settings_Interface {
 	use Logger_Settings_Trait;
@@ -17,7 +17,7 @@ class Settings implements Settings_Interface, Logger_Settings_Interface {
 	public function get_plugin_version(): string {
 		return defined( 'BH_WP_SIMPLE_CALENDAR_VERSION' )
 			? constant( 'BH_WP_SIMPLE_CALENDAR_VERSION' )
-			: '3.0.0';
+			: '3.0.1';
 	}
 
 	public function get_log_level(): string {

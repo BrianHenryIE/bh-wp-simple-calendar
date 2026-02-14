@@ -20,4 +20,5 @@ modules:
             title: "bh-wp-simple-calendar"
             plugins: ["bh-wp-simple-calendar/bh-wp-simple-calendar.php"]
             activatePlugins: []
+            WP_CONTENT_DIR: wp-content
 bootstrap: _bootstrap.php

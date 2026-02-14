@@ -32,6 +32,6 @@ class Blocks {
 	 */
 	public function register_block(): void {
 
-		register_block_type( plugin_dir_path( $this->settings->get_plugin_basename() ) . '/build' );
+		register_block_type( plugin_dir_path( $this->settings->get_plugin_basename() ) . 'build' );
 	}
 }

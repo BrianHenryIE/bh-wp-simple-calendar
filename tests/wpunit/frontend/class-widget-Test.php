@@ -6,18 +6,21 @@
  * @author Brian Henry <BrianHenryIE@gmail.com>
  */
 
+use BrianHenryIE\WP_Simple_Calendar\API_Interface;
 use BrianHenryIE\WP_Simple_Calendar\Frontend\Renderer;
+use BrianHenryIE\WP_Simple_Calendar\Frontend\Widget;
 
 /**
- * @coversDefaultClass \BrianHenryIE\WP_Simple_Calendar\Frontend\Widget
+ * @coversDefaultClass Widget
  */
 class Widget_Test extends \Codeception\TestCase\WPTestCase {
 
 	public function test_things_start(): void {
 
 		$renderer = self::make( Renderer::class );
+		$api = self::makeEmpty( API_Interface::class );
 
-		$widget = new \BrianHenryIE\WP_Simple_Calendar\Frontend\Widget( $renderer );
+		$widget = new Widget( $renderer, $api );
 
 		self::markTestIncomplete();
 	}

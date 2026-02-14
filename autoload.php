@@ -44,3 +44,7 @@ Autoloader::generate(
 	'BrianHenryIE\WP_Simple_Calendar',
 	__DIR__ . '/src',
 )->register();
+
+
+require_once __DIR__ . '/vendor-prefixed/johngrogg/ics-parser/src/ICal/ICal.php';
+require_once __DIR__ . '/vendor-prefixed/johngrogg/ics-parser/src/ICal/Event.php';

@@ -2,17 +2,15 @@
 /**
  * The widget to display the calendar data in a sidebar, and its admin UI.
  *
- * @since      0.1
- *
  * @package    bh-wp-simple-calendar
  */
 
 namespace BrianHenryIE\WP_Simple_Calendar\Frontend;
 
+use BrianHenryIE\WP_Simple_Calendar\API_Interface;
+
 /**
- * Class Widget
  *
- * @package BH_WP_Simple_Calendar\Frontend
  */
 class Widget extends \WP_Widget {
 
@@ -24,6 +22,7 @@ class Widget extends \WP_Widget {
 	 */
 	public function __construct(
 		protected Renderer $renderer,
+		protected API_Interface $api,
 	) {
 
 		$id_base = 'simple_ical_widget';
@@ -36,11 +35,7 @@ class Widget extends \WP_Widget {
 		);
 
 		parent::__construct( $id_base, $name, $widget_options );
-
-		$this->renderer = $renderer;
 	}
-
-
 
 	/**
 	 * Front-end display of widget.
@@ -71,7 +66,7 @@ class Widget extends \WP_Widget {
 		/** @var Parsed_Event[] $data */
 		$data = $this->get_data( $instance );
 
-		$html = $this->api->render( $data, $formatting );
+		$html = $this->renderer->render( $data, $formatting );
 
 		echo $html;
 
@@ -115,9 +110,11 @@ class Widget extends \WP_Widget {
 	}
 
 	/**
-	 * Outputs the settings update form.
+	 * Outputs (i.e. echos) the settings update form.
 	 *
-	 * @see WP_Widget::form()
+	 * @overrides WP_Widget::form()
+	 * @see parent::form()
+	 *
 	 * @param array $instance Previously saved values from database.
 	 * @return string
 	 */
@@ -133,14 +130,14 @@ class Widget extends \WP_Widget {
 
 		$var   = 'title';
 		$html .= '<p>';
-		$html .= '<label for="' . $this->get_field_id( 'title' ) . '">' . __( 'Title:', 'simple_ical' ) . '</label>';
+		$html .= '<label for="' . $this->get_field_id( 'title' ) . '">' . __( 'Title:', 'bh-wp-simple-calendar' ) . '</label>';
 		$html .= '<input class="widefat" id="' . $this->get_field_id( 'title' ) . '" ';
 		$html .= ' name="' . $this->get_field_name( 'title' ) . '" type="text" value="' . esc_attr( $instance['title'] ) . '"/>';
 		$html .= '</p>';
 
 		$var   = 'calendar_id';
 		$html .= '<p>';
-		$html .= ' <label for="' . $this->get_field_id( 'calendar_id' ) . '">' . __( 'Calendar ID, or iCal URL:', 'simple_ical' ) . '</label>';
+		$html .= ' <label for="' . $this->get_field_id( 'calendar_id' ) . '">' . __( 'Calendar ID, or iCal URL:', 'bh-wp-simple-calendar' ) . '</label>';
 		$html .= ' <input class="widefat" id="' . $this->get_field_id( 'calendar_id' ) . '"';
 		$html .= ' name="' . $this->get_field_name( 'calendar_id' ) . '" type="text"';
 		$html .= ' value="' . esc_attr( $instance['calendar_id'] ) . '"/>';
@@ -148,7 +145,7 @@ class Widget extends \WP_Widget {
 
 		$var   = 'event_count';
 		$html .= ' <p>';
-		$html .= ' <label for="' . $this->get_field_id( 'event_count' ) . '">' . __( 'Number of events displayed:', 'simple_ical' ) . '</label>';
+		$html .= ' <label for="' . $this->get_field_id( 'event_count' ) . '">' . __( 'Number of events displayed:', 'bh-wp-simple-calendar' ) . '</label>';
 		$html .= ' <input class="widefat" id="' . $this->get_field_id( 'event_count' ) . '"';
 		$html .= ' name="' . $this->get_field_name( 'event_count' ) . '" type="text"';
 		$html .= ' value="' . esc_attr( $instance['event_count'] ) . '"/>';
@@ -156,7 +153,7 @@ class Widget extends \WP_Widget {
 
 		$car   = 'event_period';
 		$html .= ' <p>';
-		$html .= ' <label for="' . $this->get_field_id( 'event_period' ) . '">' . __( 'Number of days after today with events displayed:', 'simple_ical' ) . '</label>';
+		$html .= ' <label for="' . $this->get_field_id( 'event_period' ) . '">' . __( 'Number of days after today with events displayed:', 'bh-wp-simple-calendar' ) . '</label>';
 		$html .= ' <input class="widefat" id="' . $this->get_field_id( 'event_period' ) . '"';
 		$html .= ' name="' . $this->get_field_name( 'event_period' ) . '" type="text"';
 		$html .= ' value="' . esc_attr( $instance['event_period'] ) . '"/>';
@@ -164,7 +161,7 @@ class Widget extends \WP_Widget {
 
 		$var   = 'dateformat';
 		$html .= ' <p>';
-		$html .= ' <label for="' . $this->get_field_id( $var ) . '">' . __( 'Date format first line:', 'simple_ical' ) . '</label>';
+		$html .= ' <label for="' . $this->get_field_id( $var ) . '">' . __( 'Date format first line:', 'bh-wp-simple-calendar' ) . '</label>';
 		$html .= ' <input class="widefat" id="' . $this->get_field_id( $var ) . '"';
 		$html .= ' name="' . $this->get_field_name( $var ) . '" type="text"';
 		$html .= ' value="' . esc_attr( $instance[ $var ] ) . '"/>';
@@ -173,7 +170,7 @@ class Widget extends \WP_Widget {
 		// TODO: Try to link to an anchor on the WordPress.org page.
 		$html .= ' <p>';
 		$html .= '<a href="' . admin_url( 'admin.php?page=simple_ical_info' ) . '" target="_blank">';
-		$html .= __( 'Need help?', 'simple_ical' );
+		$html .= __( 'Need help?', 'bh-wp-simple-calendar' );
 		$html .= '</a>';
 		$html .= '</p>';
 

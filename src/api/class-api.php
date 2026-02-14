@@ -13,9 +13,10 @@ use BrianHenryIE\WP_Simple_Calendar\ICal\ICal;
 use BrianHenryIE\WP_Simple_Calendar\WP_Includes\Cron;
 use DateInterval;
 use DateTime;
+use DateTimeZone;
 use Exception;
-use Psr\Log\LoggerAwareTrait;
-use Psr\Log\LoggerInterface;
+use BrianHenryIE\WP_Simple_Calendar\Psr\Log\LoggerAwareTrait;
+use BrianHenryIE\WP_Simple_Calendar\Psr\Log\LoggerInterface;
 
 /**
  * Mostly cache functions.
@@ -73,7 +74,7 @@ class API implements API_Interface {
 		$ical = new ICal();
 		$ical->initString( $calendar_ics );
 
-		$range_end = new DateTime( 'now', new \DateTimeZone( $ical->calendarTimeZone() ) );
+		$range_end = new DateTime( 'now', new DateTimeZone( $ical->calendarTimeZone() ) );
 
 		// Default to ten days.
 		$period = absint( $period ) ?: 10;
@@ -92,7 +93,6 @@ class API implements API_Interface {
 		// E.g. remove [SABA] from the beginning of all the titles.
 		foreach ( $events as $event ) {
 
-			$event->summary = str_replace( '[SABA]', '', $event->summary );
 			$event->summary = str_replace( "!{$event->status}!", '', $event->summary );
 			$event->summary = preg_replace( '/\s+/', ' ', $event->summary );
 			$event->summary = trim( $event->summary );
@@ -311,7 +311,7 @@ class API implements API_Interface {
 	 *
 	 * @param string $calendar_url The calendar URL.
 	 */
-	public function get_calendar_cache_option_name( string $calendar_url ): string {
+	protected function get_calendar_cache_option_name( string $calendar_url ): string {
 
 		return substr( self::CACHED_CALENDARS_OPTION_PREFIX . strrev( rawurlencode( $calendar_url ) ), 0, 191 );
 	}
@@ -340,6 +340,6 @@ class API implements API_Interface {
 
 		$calendar_cache_key = $this->get_calendar_cache_option_name( $calendar_url );
 
-		return update_option( $calendar_cache_key, $calendar_ics_content );
+		return update_option( $calendar_cache_key, $calendar_ics_content, false );
 	}
 }

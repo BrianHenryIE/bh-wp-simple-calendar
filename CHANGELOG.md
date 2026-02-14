@@ -1,5 +1,12 @@
 # Changelog
 
+## 3.0.1
+
+* Update bh-wp-logger
+
+## 3.0 2026-02
+
+* Require PHP 8.4
 
 ## 2023-10-06
 

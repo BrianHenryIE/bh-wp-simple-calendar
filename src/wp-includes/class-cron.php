@@ -7,9 +7,9 @@ namespace BrianHenryIE\WP_Simple_Calendar\WP_Includes;
 
 use BrianHenryIE\WP_Simple_Calendar\API\API;
 use BrianHenryIE\WP_Simple_Calendar\API_Interface;
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
-use Psr\Log\LoggerInterface;
+use BrianHenryIE\WP_Simple_Calendar\Psr\Log\LoggerAwareInterface;
+use BrianHenryIE\WP_Simple_Calendar\Psr\Log\LoggerAwareTrait;
+use BrianHenryIE\WP_Simple_Calendar\Psr\Log\LoggerInterface;
 
 /**
  * Class Cron

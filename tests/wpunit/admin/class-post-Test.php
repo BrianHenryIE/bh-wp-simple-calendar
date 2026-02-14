@@ -48,6 +48,9 @@ class Post_Test extends \Codeception\TestCase\WPTestCase {
 	 */
 	public function test_read_post_content_calendar_added(): void {
 
+
+		img_caption_shortcode( null );
+
 		$post_content = file_get_contents( __DIR__ . '/../../_data/simple.post.txt' ) ?: '';
 
 		$mock_post               = new \WP_Post( new \stdClass() );

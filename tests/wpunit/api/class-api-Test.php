@@ -9,6 +9,8 @@
 namespace BrianHenryIE\WP_Simple_Calendar\API;
 
 use BrianHenryIE\ColorLogger\ColorLogger;
+use BrianHenryIE\WP_Simple_Calendar\Admin\Post;
+use BrianHenryIE\WP_Simple_Calendar\API_Interface;
 
 /**
  * @coversDefaultClass \BrianHenryIE\WP_Simple_Calendar\API\API
@@ -90,16 +92,24 @@ class API_Test extends \Codeception\TestCase\WPTestCase {
 		self::assertSame( $expected, $calendar_url );
 	}
 
+	/**
+	 * @covers ::get_calendar_cache_option_name
+	 */
 	public function test_get_calendar_cache_option_name(): void {
 
-		$api = new API( new ColorLogger() );
+
+		$reflection_class  = new \ReflectionClass( API::class );
+		$reflection_method = $reflection_class->getMethod( 'get_calendar_cache_option_name' );
+		$reflection_method->setAccessible( true );
+
+		$sut = new API( new ColorLogger() );
 
 		$input = 'https://events.sacbike.org/calendar/subscribe';
 
+		$result = $reflection_method->invokeArgs( $sut, array( $input ) );
+
 		$expected = 'bh_wp_calendar_ebircsbusF2%radnelacF2%gro.ekibcas.stneveF2%F2%A3%sptth';
 
-		$actual = $api->get_calendar_cache_option_name( $input );
-
-		self::assertSame( $expected, $actual );
+		self::assertSame( $expected, $result );
 	}
 }

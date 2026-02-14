@@ -1,20 +1,31 @@
 <?php
 /**
  * Should this be called "Calendar"?
+ *
+ * @package brianhenryie/bh-wp-simple-calendar
  */
 
 namespace BrianHenryIE\WP_Simple_Calendar\Frontend;
 
 use BrianHenryIE\WP_Simple_Calendar\API_Interface;
+use BrianHenryIE\WP_Simple_Calendar\Settings_Interface;
 
 class Renderer {
 
-	protected $defaults;
+	/**
+	 * @var array{title:string, calendar_id:string, event_count:int, event_period:int, date_format:string} $defaults
+	 */
+	protected array $defaults;
 
+	/**
+	 * @param API_Interface $api
+	 *
+	 * @throws \Exception
+	 */
 	public function __construct(
 		protected API_Interface $api,
+		protected Settings_Interface $settings,
 	) {
-
 		$this->defaults = array(
 			'title'        => __( 'Events', 'bh_wp_simple_calendar' ),
 			'calendar_id'  => '',
@@ -26,14 +37,14 @@ class Renderer {
 
 	/**
 	 * @param string $calendar_id
-	 * @param $period
+	 * @param int    $period In days.
 	 * @param int    $count
 	 */
 	public function get_html( string $calendar_id, $period, int $count ) {
 
 		$events = $this->api->get_upcoming_events( $calendar_id, $period, $count );
 
-		$template = __DIR__ . '/partials/calendar-template-1.php';
+		$template = realpath(__DIR__ . '/../../templates/frontend/calendar-template-1.php');
 
 		// $template = get_template_part( 'simple-calendar', $template );
 
@@ -58,12 +69,10 @@ class Renderer {
 
 	/**
 	 *
-	 * @param $data
-	 * @param $formatting
-	 *
-	 * @return string
+	 * @param array $data
+	 * @param array $formatting
 	 */
-	public function render( $data, $formatting ) {
+	public function render( $data, $formatting ): string {
 
 		// TODO: wp_parse_args with defaults
 		// Then filter
@@ -93,7 +102,7 @@ class Renderer {
 			if ( file_exists( $custom_template ) ) {
 				$template = $custom_template;
 			} else {
-				$template = plugin_dir_path( __FILE__ ) . '../Frontend/partials/item-template.php';
+				$template = plugin_dir_path( $this->settings->get_plugin_basename() ) . '/templates/frontend/partials/item-template.php';
 			}
 
 			ob_start();
@@ -103,13 +112,11 @@ class Renderer {
 				$idlist = explode( '@', esc_attr( $event->uid ) );
 
 				include $template;
-
 			}
 
 			$html .= ob_end_clean();
 
 			$html .= '</ul>';
-			date_default_timezone_set( 'UTC' );
 		}
 
 		$allowed_html = array(
@@ -132,15 +139,15 @@ class Renderer {
 	}
 
 	/**
-	 * TODO: should this be called sanitize?
-	 *
 	 * Returns an array of invalid inputs, with suggestions.
 	 *
-	 * @param array<string, string> $args
+	 * I.e. to display in the admin UI what needs to be addressed.
+	 *
+	 * @param array{title:string, calendar_id:string, event_period:string, event_count:string, date_format:string} $args
 	 *
 	 * @return array<string, string> Errors.
 	 */
-	public function validate_settings( $args ): array {
+	public function validate_settings( array $args ): array {
 
 		$errors = array();
 
@@ -172,7 +179,7 @@ class Renderer {
 			$errors['event_count'] = empty( $event_count ) ? $this->defaults['event_count'] : $event_count;
 		}
 
-		// Using strip_tags because it can start with space or contain more classe seperated by spaces.
+		// Using strip_tags because it can start with space or contain more classes seperated by spaces.
 		$date_format = wp_strip_all_tags( $args['date_format'] );
 
 		if ( $date_format !== $args['date_format'] ) {

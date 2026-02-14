@@ -11,6 +11,4 @@ interface API_Interface {
 	public function add_post_ref_to_calendar_cache( string $calendar_url, int $post_id ): void;
 
 	public function remove_post_ref_from_calendar_cache( int $post_id ): bool;
-
-	public function get_calendar_cache_option_name( string $calendar_url ): string;
 }
