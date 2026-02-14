@@ -53,7 +53,7 @@ class API implements API_Interface {
 	 * @param int    $period The number of days from now to show.
 	 * @param int    $count The number of events to return.
 	 *
-	 * @return Event[]|null
+	 * @return ?Calendar_Event[]
 	 */
 	public function get_upcoming_events( string $calendar_id, int $period, int $count ): ?array {
 
@@ -82,24 +82,15 @@ class API implements API_Interface {
 		$date_interval = DateInterval::createFromDateString( "$period days" );
 		$range_end->add( $date_interval );
 
-		/** @var Event[] $events */
-		$events = $ical->eventsFromRange( 'now', $range_end->format( 'Y-m-d' ) );
-		// $ical->eventsFromInterval()
+		/** @var Event[] $ical_events */
+		$ical_events = $ical->eventsFromRange( 'now', $range_end->format( 'Y-m-d' ) );
 
-		$events = array_slice( $events, 0, $count );
+		$ical_events = array_slice( $ical_events, 0, $count );
 
-		// TODO: Add filter for sanitizing the events.
-
-		// E.g. remove [SABA] from the beginning of all the titles.
-		foreach ( $events as $event ) {
-
-			$event->summary = str_replace( "!{$event->status}!", '', $event->summary );
-			$event->summary = preg_replace( '/\s+/', ' ', $event->summary );
-			$event->summary = trim( $event->summary );
-
-			$event->start_time = $ical->iCalDateToDateTime( $event->dtstart );
-			$event->end_time   = $ical->iCalDateToDateTime( $event->dtend );
-		}
+		$events = array_map(
+			fn( Event $ical_event ) => Calendar_Event::from_ical_event( $ical_event, $ical ),
+			$ical_events
+		);
 
 		return $events;
 	}

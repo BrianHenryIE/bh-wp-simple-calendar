@@ -5,7 +5,7 @@
  *
  * TODO Allow overriding via WordPress's get_template function.
  *
- * @var $events BH_WP_Simple_Calendar\ICal\Event[];
+ * @var \BrianHenryIE\WP_Simple_Calendar\API\Calendar_Event[] $events
  */
 ?>
 

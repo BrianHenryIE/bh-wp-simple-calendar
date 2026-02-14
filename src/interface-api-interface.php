@@ -2,8 +2,13 @@
 
 namespace BrianHenryIE\WP_Simple_Calendar;
 
+use BrianHenryIE\WP_Simple_Calendar\API\Calendar_Event;
+
 interface API_Interface {
 
+	/**
+	 * @return Calendar_Event[]|null
+	 */
 	public function get_upcoming_events( string $calendar_id, int $period, int $count ): ?array;
 
 	public function update_caches(): void;
