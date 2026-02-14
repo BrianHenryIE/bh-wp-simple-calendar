@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.0.2
+
+* Use internal `Calendar_Event` class to pass data
+
 ## 3.0.1
 
 * Update bh-wp-logger
