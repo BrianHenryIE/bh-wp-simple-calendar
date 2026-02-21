@@ -331,6 +331,10 @@ class API implements API_Interface {
 
 		$calendar_cache_key = $this->get_calendar_cache_option_name( $calendar_url );
 
-		return update_option( $calendar_cache_key, $calendar_ics_content, false );
+		$updated = update_option( $calendar_cache_key, $calendar_ics_content, false );
+
+		$this->logger->info( 'Calendar updated: ' . $calendar_url );
+
+		return $updated;
 	}
 }
