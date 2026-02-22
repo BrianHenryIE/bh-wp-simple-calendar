@@ -9,7 +9,7 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   reporter: 'html',
   use: {
-    baseURL: 'http://localhost:8889',
+    baseURL: 'http://localhost:8888',
     trace: 'on-first-retry',
   },
 
@@ -30,7 +30,7 @@ export default defineConfig({
 
   webServer: {
     command: 'npx wp-env start',
-    url: 'http://localhost:8889',
+    url: 'http://localhost:8888',
     reuseExistingServer: true,
   },
 });
