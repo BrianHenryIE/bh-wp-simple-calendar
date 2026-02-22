@@ -8,11 +8,13 @@
 
 namespace BrianHenryIE\WP_Simple_Calendar\WP_Includes;
 
+use BrianHenryIE\WP_Simple_Calendar\WPUnit_Testcase;
+
 /**
  * @coversNothing
  * @see I18n
  */
-class Integration_I18n_Test extends \Codeception\TestCase\WPTestCase {
+class Integration_I18n_Test extends WPUnit_Testcase {
 
 	/**
 	 * AFAICT, this will fail until a translation has been added.

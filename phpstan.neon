@@ -1,7 +1,7 @@
 parameters:
     level: 8
     paths:
-        - src
+        - includes
         - bh-wp-simple-calendar.php
         - autoload.php
         - uninstall.php

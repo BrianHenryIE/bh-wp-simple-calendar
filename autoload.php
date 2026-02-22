@@ -42,7 +42,7 @@ require_once __DIR__ . '/vendor-prefixed/autoload.php';
 
 Autoloader::generate(
 	'BrianHenryIE\WP_Simple_Calendar',
-	__DIR__ . '/src',
+	__DIR__ . '/includes',
 )->register();
 
 

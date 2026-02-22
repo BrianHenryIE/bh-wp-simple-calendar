@@ -21,7 +21,7 @@ params:
 coverage:
     enabled: true
     include:
-        - src/*
+        - includes/*
         - bh-wp-simple-calendar.php
         - uninstall.php
         - templates/*

@@ -16,7 +16,7 @@ use BrianHenryIE\WP_Simple_Calendar\WP_Includes\I18n;
 /**
  * @coversNothing
  */
-class BH_WP_Simple_Calendar_Integration_Test extends \Codeception\TestCase\WPTestCase {
+class BH_WP_Simple_Calendar_Integration_Test extends WPUnit_Testcase {
 
 	/**
 	 * Verify admin_enqueue_scripts action is correctly added for styles, at priority 10.
