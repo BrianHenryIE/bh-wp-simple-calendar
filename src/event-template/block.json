@@ -1,0 +1,27 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "simple-calendar/event-template",
+	"version": "1.0.0",
+	"title": "Event Template",
+	"category": "widgets",
+	"icon": "media-default",
+	"description": "Defines the layout for each calendar event. Arrange the child blocks to customize how each event is displayed.",
+	"keywords": [ "event", "template", "layout" ],
+	"textdomain": "bh-wp-simple-calendar",
+	"parent": [ "simple-calendar/calendar" ],
+	"supports": {
+		"html": false,
+		"reusable": false,
+		"color": {
+			"text": true,
+			"background": true
+		},
+		"spacing": {
+			"padding": true,
+			"margin": true
+		}
+	},
+	"editorScript": "file:./index.js",
+	"render": "file:./render.php"
+}

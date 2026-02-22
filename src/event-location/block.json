@@ -1,0 +1,24 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "simple-calendar/event-location",
+	"version": "1.0.0",
+	"title": "Event Location",
+	"category": "widgets",
+	"icon": "location",
+	"description": "Displays the event location.",
+	"keywords": [ "event", "location", "venue", "place" ],
+	"textdomain": "bh-wp-simple-calendar",
+	"parent": [ "simple-calendar/event-template" ],
+	"supports": {
+		"html": false,
+		"color": { "text": true, "background": true },
+		"spacing": { "margin": true, "padding": true },
+		"typography": { "fontSize": true, "fontFamily": true }
+	},
+	"usesContext": [
+		"simple-calendar/eventLocation"
+	],
+	"editorScript": "file:./index.js",
+	"render": "file:./render.php"
+}

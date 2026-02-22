@@ -1,0 +1,24 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "simple-calendar/event-description",
+	"version": "1.0.0",
+	"title": "Event Description",
+	"category": "widgets",
+	"icon": "text",
+	"description": "Displays the event description.",
+	"keywords": [ "event", "description", "details" ],
+	"textdomain": "bh-wp-simple-calendar",
+	"parent": [ "simple-calendar/event-template" ],
+	"supports": {
+		"html": false,
+		"color": { "text": true, "background": true },
+		"spacing": { "margin": true, "padding": true },
+		"typography": { "fontSize": true, "fontFamily": true }
+	},
+	"usesContext": [
+		"simple-calendar/eventDescription"
+	],
+	"editorScript": "file:./index.js",
+	"render": "file:./render.php"
+}

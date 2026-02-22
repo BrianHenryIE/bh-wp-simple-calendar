@@ -1,0 +1,20 @@
+{
+	"compilerOptions": {
+		"allowJs": true,
+		"checkJs": false,
+		"jsx": "react-jsx",
+		"target": "ESNext",
+		"module": "ESNext",
+		"moduleResolution": "bundler",
+		"esModuleInterop": true,
+		"strict": true,
+		"noEmit": true,
+		"skipLibCheck": true,
+		"isolatedModules": true,
+		"resolveJsonModule": true,
+		"forceConsistentCasingInFileNames": true,
+		"types": [ "wordpress__block-editor", "wordpress__blocks", "wordpress__components", "wordpress__i18n" ]
+	},
+	"include": [ "src/**/*.ts", "src/**/*.tsx" ],
+	"exclude": [ "node_modules", "build" ]
+}

@@ -17,6 +17,7 @@ class Unit_Testcase extends Unit {
 	protected LoggerInterface $logger;
 
 	protected function setUp(): void {
+		\WP_Mock::setUp();
 		parent::setUp();
 		$this->logger = new class() extends ColorLogger implements LoggerInterface {};
 	}

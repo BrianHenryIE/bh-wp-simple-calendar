@@ -1,0 +1,31 @@
+.simple-calendar-block {
+
+	.simple-calendar-loading {
+		opacity: 0.6;
+		font-style: italic;
+	}
+
+	.simple-calendar-placeholder-notice {
+		background: #f0f0f0;
+		padding: 8px 12px;
+		border-radius: 4px;
+		font-size: 13px;
+		color: #757575;
+	}
+}
+
+.simple-calendar-url-item {
+	display: flex;
+	align-items: flex-start;
+	gap: 4px;
+	margin-bottom: 8px;
+
+	/* stylelint-disable-next-line selector-class-pattern */
+	.components-text-control__input {
+		flex: 1;
+	}
+}
+
+.simple-calendar-add-url {
+	margin-top: 12px;
+}

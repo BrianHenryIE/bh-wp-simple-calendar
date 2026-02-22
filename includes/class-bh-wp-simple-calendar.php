@@ -16,6 +16,7 @@ use BrianHenryIE\WP_Simple_Calendar\Frontend\Block;
 use BrianHenryIE\WP_Simple_Calendar\WP_Includes\Blocks;
 use BrianHenryIE\WP_Simple_Calendar\WP_Includes\Cron;
 use BrianHenryIE\WP_Simple_Calendar\WP_Includes\I18n;
+use BrianHenryIE\WP_Simple_Calendar\WP_Includes\REST_API;
 use BrianHenryIE\WP_Simple_Calendar\Psr\Container\ContainerInterface;
 
 /**
@@ -38,6 +39,7 @@ class BH_WP_Simple_Calendar {
 		$this->define_cron_hooks();
 
 		$this->define_block_hooks();
+		$this->define_rest_hooks();
 
 		$this->define_frontend_hooks();
 		$this->define_post_hooks();
@@ -100,6 +102,17 @@ class BH_WP_Simple_Calendar {
 		$plugin_cron = $this->container->get( Cron::class );
 
 		add_action( Cron::UPDATE_CACHES_CRON_JOB, array( $plugin_cron, 'update_calendars_caches' ) );
+	}
+
+	/**
+	 * Register the REST API routes for the block editor.
+	 */
+	protected function define_rest_hooks(): void {
+
+		/** @var REST_API $rest_api */
+		$rest_api = $this->container->get( REST_API::class );
+
+		add_action( 'rest_api_init', array( $rest_api, 'register_routes' ) );
 	}
 
 	/**

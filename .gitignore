@@ -73,6 +73,12 @@ dist-archive
 
 .claude/settings.local.json
 
+# Playwright auth state
+tests/e2e-pw/.auth/
+
+# Test artifacts
+/artifacts/
+
 # Build output
 /build
 
@@ -81,3 +87,4 @@ logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+scratch.txt
