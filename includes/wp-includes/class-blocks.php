@@ -33,9 +33,6 @@ class Blocks {
 	 * @hooked init
 	 */
 	public function register_block(): void {
-		if ( ! defined( 'WP_PLUGIN_DIR' ) ) {
-			return;
-		}
 
 		$build_dir = constant( 'WP_PLUGIN_DIR' ) . '/' . dirname( $this->settings->get_plugin_basename() ) . '/build';
 
