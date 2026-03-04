@@ -35,7 +35,7 @@
 		}
 	},
 	"repositories": {
-		"composer/composer": {
+		"outlandishideas/wpackagist": {
 			"type": "composer",
 			"url": "https://wpackagist.org"
 		},
