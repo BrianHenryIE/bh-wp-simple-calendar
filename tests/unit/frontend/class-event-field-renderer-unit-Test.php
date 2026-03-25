@@ -231,7 +231,7 @@ class Event_Field_Renderer_Test extends Unit_Testcase {
 	public function test_render_recurrence_when_recurring(): void {
 		$block = $this->make_block(
 			array(
-				'simple-calendar/eventIsRecurring'          => true,
+				'simple-calendar/eventIsRecurring' => true,
 				'simple-calendar/eventRecurrenceDescription' => 'Every week on Tuesday',
 			)
 		);
@@ -254,7 +254,7 @@ class Event_Field_Renderer_Test extends Unit_Testcase {
 	public function test_render_recurrence_when_not_recurring(): void {
 		$block = $this->make_block(
 			array(
-				'simple-calendar/eventIsRecurring'          => false,
+				'simple-calendar/eventIsRecurring' => false,
 				'simple-calendar/eventRecurrenceDescription' => null,
 			)
 		);
