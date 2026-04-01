@@ -15,7 +15,7 @@
     "start": "wp-scripts start"
   },
   "devDependencies": {
-    "@playwright/test": "^1.38.1",
+    "@playwright/test": "^1.59.0",
     "@types/node": "^20.8.2",
     "@wordpress/e2e-test-utils-playwright": "^0.11.0",
     "@wordpress/env": "^10.39.0",
