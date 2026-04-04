@@ -4,6 +4,7 @@ namespace BrianHenryIE\WP_Simple_Calendar\WP_Includes;
 
 use BrianHenryIE\WP_Simple_Calendar\API_Interface;
 use BrianHenryIE\WP_Simple_Calendar\Unit_Testcase;
+use WP_Error;
 use WP_Mock;
 
 /**
@@ -36,7 +37,7 @@ class REST_API_Test extends Unit_Testcase {
 	 */
 	public function test_permissions_check_denied_returns_non_true(): void {
 		// WP_Error is not available in unit tests. Verify the method doesn't return true.
-		if ( ! class_exists( \WP_Error::class ) ) {
+		if ( ! class_exists( WP_Error::class ) ) {
 			$this->markTestSkipped( 'WP_Error not available in unit tests — covered by wpunit.' );
 		}
 
@@ -51,6 +52,6 @@ class REST_API_Test extends Unit_Testcase {
 
 		$result = $sut->permissions_check();
 
-		$this->assertInstanceOf( \WP_Error::class, $result );
+		$this->assertInstanceOf( WP_Error::class, $result );
 	}
 }
