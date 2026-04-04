@@ -11,6 +11,16 @@ use BrianHenryIE\WP_Simple_Calendar\Unit_Testcase;
  */
 class Blocks_Unit_Test extends Unit_Testcase {
 
+	protected function setUp(): void {
+		parent::setUp();
+
+		$build_dir  = codecept_root_dir( 'build' );
+		$block_dirs = glob( $build_dir . '/*/block.json' );
+
+		if ( empty( $block_dirs ) ) {
+			$this->fail( 'Test needs you to run: npm run build' );
+		}
+	}
 
 	/**
 	 * @covers ::register_block
@@ -23,7 +33,7 @@ class Blocks_Unit_Test extends Unit_Testcase {
 			function ( string $constant_name ) {
 				switch ( $constant_name ) {
 					case 'WP_PLUGIN_DIR':
-						return codecept_root_dir( '/..' );
+						return realpath( codecept_root_dir( '/..' ) );
 					default:
 						return \Patchwork\relay( func_get_args() );
 				}
