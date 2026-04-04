@@ -7,7 +7,6 @@
 
 namespace BrianHenryIE\WP_Simple_Calendar\API;
 
-use BrianHenryIE\ColorLogger\ColorLogger;
 use BrianHenryIE\WP_Simple_Calendar\WPUnit_Testcase;
 
 /**
