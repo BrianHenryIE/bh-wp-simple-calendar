@@ -8,6 +8,7 @@
 namespace BrianHenryIE\WP_Simple_Calendar\Frontend;
 
 use BrianHenryIE\WP_Simple_Calendar\API_Interface;
+use BrianHenryIE\WP_Simple_Calendar\lib\ics_parser\Parsed_Event;
 
 /**
  *
