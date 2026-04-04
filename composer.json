@@ -40,7 +40,7 @@
 			"url": "https://wpackagist.org"
 		},
 		"wordpress/wordpress": {
-			"url": "https://github.com/WordPress/wordpress-develop",
+			"url": "https://github.com/WordPress/wordpress-develop.git",
 			"type": "git"
 		}
 	},
