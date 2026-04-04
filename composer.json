@@ -23,7 +23,7 @@
 	"prefer-stable": true,
 	"config": {
 		"platform": {
-			"php": "8.4"
+			"php": "8.3"
 		},
 		"process-timeout": 0,
 		"sort-packages": true,
@@ -45,6 +45,7 @@
 		}
 	},
 	"require": {
+    "php": ">=8.3",
 		"johngrogg/ics-parser": "^3",
 		"alleyinteractive/wordpress-autoloader": "*",
 		"brianhenryie/bh-wp-private-uploads": "^0.2",
