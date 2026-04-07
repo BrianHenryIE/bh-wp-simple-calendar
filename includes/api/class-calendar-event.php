@@ -19,23 +19,23 @@ use DateTimeImmutable;
 readonly class Calendar_Event {
 
 	/**
-	 * @param string            $summary                The event title/summary.
-	 * @param string            $status                 The event status (e.g. CONFIRMED, TENTATIVE, CANCELLED, POSTPONED).
-	 * @param DateTimeImmutable $start_time             The event start time (timezone-adjusted).
-	 * @param DateTimeImmutable $end_time               The event end time (timezone-adjusted).
-	 * @param string|null       $url                    The event URL, if any.
-	 * @param string|null       $description            The event description, if any.
-	 * @param string|null       $location               The event location, if any.
-	 * @param string|null       $uid                    The unique event identifier.
-	 * @param bool              $is_recurring           Whether this event is part of a recurring series.
-	 * @param string|null       $recurrence_rule        The raw RRULE string (e.g. "FREQ=WEEKLY;BYDAY=TU").
-	 * @param string|null       $recurrence_description Human-readable recurrence (e.g. "Every Tuesday").
+	 * @param string             $summary                The event title/summary.
+	 * @param string             $status                 The event status (e.g. CONFIRMED, TENTATIVE, CANCELLED, POSTPONED).
+	 * @param DateTimeImmutable  $start_time             The event start time (timezone-adjusted).
+	 * @param ?DateTimeImmutable $end_time               The event end time (timezone-adjusted).
+	 * @param string|null        $url                    The event URL, if any.
+	 * @param string|null        $description            The event description, if any.
+	 * @param string|null        $location               The event location, if any.
+	 * @param string|null        $uid                    The unique event identifier.
+	 * @param bool               $is_recurring           Whether this event is part of a recurring series.
+	 * @param string|null        $recurrence_rule        The raw RRULE string (e.g. "FREQ=WEEKLY;BYDAY=TU").
+	 * @param string|null        $recurrence_description Human-readable recurrence (e.g. "Every Tuesday").
 	 */
 	public function __construct(
 		public string $summary,
 		public string $status,
 		public DateTimeImmutable $start_time,
-		public DateTimeImmutable $end_time,
+		public ?DateTimeImmutable $end_time,
 		public ?string $url = null,
 		public ?string $description = null,
 		public ?string $location = null,
@@ -64,10 +64,10 @@ readonly class Calendar_Event {
 		$summary = trim( $summary );
 
 		$start_datetime = $ical->iCalDateToDateTime( $ical_event->dtstart );
-		$end_datetime   = $ical->iCalDateToDateTime( $ical_event->dtend );
+		$end_datetime   = empty( $ical_event->dtend ) ? null : $ical->iCalDateToDateTime( $ical_event->dtend );
 
 		$start_time = DateTimeImmutable::createFromInterface( $start_datetime )->setTimezone( wp_timezone() );
-		$end_time   = DateTimeImmutable::createFromInterface( $end_datetime )->setTimezone( wp_timezone() );
+		$end_time   = is_null( $end_datetime ) ? null : DateTimeImmutable::createFromInterface( $end_datetime )->setTimezone( wp_timezone() );
 
 		// Detect recurring events via the RRULE property.
 		$rrule        = $ical_event->rrule ?? null;
@@ -225,7 +225,7 @@ readonly class Calendar_Event {
 			'summary'               => $this->summary,
 			'status'                => $this->status,
 			'startTime'             => $this->start_time->format( 'c' ),
-			'endTime'               => $this->end_time->format( 'c' ),
+			'endTime'               => $this->end_time?->format( 'c' ),
 			'url'                   => $this->url,
 			'description'           => $this->description,
 			'location'              => $this->location,

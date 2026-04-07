@@ -59,7 +59,7 @@ foreach ( $all_events as $event ) {
 		'simple-calendar/eventSummary'               => $event->summary,
 		'simple-calendar/eventStatus'                => $event->status,
 		'simple-calendar/eventStartTime'             => $event->start_time->format( 'c' ),
-		'simple-calendar/eventEndTime'               => $event->end_time->format( 'c' ),
+		'simple-calendar/eventEndTime'               => $event->end_time?->format( 'c' ),
 		'simple-calendar/eventUrl'                   => $event->url,
 		'simple-calendar/eventDescription'           => $event->description,
 		'simple-calendar/eventLocation'              => $event->location,
