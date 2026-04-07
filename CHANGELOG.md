@@ -1,5 +1,10 @@
 # Changelog
 
+## 3.1.0
+
+* Use blocks
+* Fix issue with null end dates
+
 ## 3.0.2
 
 * Use internal `Calendar_Event` class to pass data

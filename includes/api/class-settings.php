@@ -17,7 +17,7 @@ class Settings implements Settings_Interface, Logger_Settings_Interface {
 	public function get_plugin_version(): string {
 		return defined( 'BH_WP_SIMPLE_CALENDAR_VERSION' )
 			? constant( 'BH_WP_SIMPLE_CALENDAR_VERSION' )
-			: '3.0.2';
+			: '3.1.0';
 	}
 
 	public function get_log_level(): string {
