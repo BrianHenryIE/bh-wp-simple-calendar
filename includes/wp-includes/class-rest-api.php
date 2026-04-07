@@ -40,6 +40,23 @@ class REST_API {
 	public function register_routes(): void {
 		register_rest_route(
 			self::NAMESPACE,
+			'/cache/refresh',
+			array(
+				'methods'             => WP_REST_Server::CREATABLE,
+				'callback'            => array( $this, 'refresh_cache' ),
+				'permission_callback' => array( $this, 'permissions_check' ),
+				'args'                => array(
+					'calendarUrl' => array(
+						'required'          => true,
+						'type'              => 'string',
+						'sanitize_callback' => 'sanitize_url',
+					),
+				),
+			),
+		);
+
+		register_rest_route(
+			self::NAMESPACE,
 			'/events',
 			array(
 				'methods'             => WP_REST_Server::READABLE,
@@ -67,6 +84,23 @@ class REST_API {
 				),
 			),
 		);
+	}
+
+	/**
+	 * Refresh the cache for a given calendar URL.
+	 *
+	 * @param WP_REST_Request $request The REST request.
+	 * @return WP_REST_Response
+	 */
+	public function refresh_cache( WP_REST_Request $request ): WP_REST_Response {
+		$calendar_url = $request->get_param( 'calendarUrl' );
+		$success      = $this->api->refresh_calendar_cache( $calendar_url );
+
+		if ( $success ) {
+			return new WP_REST_Response( array( 'success' => true ), 200 );
+		}
+
+		return new WP_REST_Response( array( 'success' => false ), 502 );
 	}
 
 	/**

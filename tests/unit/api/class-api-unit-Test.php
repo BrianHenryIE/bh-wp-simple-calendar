@@ -13,6 +13,74 @@ use BrianHenryIE\WP_Simple_Calendar\WP_Includes\Cron;
 class API_Test extends Unit_Testcase {
 
 	/**
+	 * @covers \BrianHenryIE\WP_Simple_Calendar\API\API::refresh_calendar_cache
+	 */
+	public function test_refresh_calendar_cache_returns_true_on_success(): void {
+
+		\WP_Mock::userFunction(
+			'wp_remote_get',
+			array(
+				'times'  => 1,
+				'return' => array( 'body' => 'BEGIN:VCALENDAR' ),
+			)
+		);
+
+		\WP_Mock::userFunction(
+			'is_wp_error',
+			array(
+				'times'  => 1,
+				'return' => false,
+			)
+		);
+
+		\WP_Mock::userFunction(
+			'update_option',
+			array(
+				'times'  => 1,
+				'return' => true,
+			)
+		);
+
+		$api = new API( $this->logger );
+
+		$result = $api->refresh_calendar_cache( 'https://example.org/calendar.ics' );
+
+		$this->assertTrue( $result );
+	}
+
+	/**
+	 * @covers \BrianHenryIE\WP_Simple_Calendar\API\API::refresh_calendar_cache
+	 */
+	public function test_refresh_calendar_cache_returns_false_on_remote_failure(): void {
+
+		$wp_error = \Mockery::mock( \WP_Error::class );
+
+		\WP_Mock::userFunction(
+			'wp_remote_get',
+			array(
+				'times'  => 1,
+				'return' => $wp_error,
+			)
+		);
+
+		\WP_Mock::userFunction(
+			'is_wp_error',
+			array(
+				'times'  => 1,
+				'return' => true,
+			)
+		);
+
+		$wp_error->shouldReceive( 'get_error_message' )->once()->andReturn( 'Connection refused' );
+
+		$api = new API( $this->logger );
+
+		$result = $api->refresh_calendar_cache( 'https://example.org/calendar.ics' );
+
+		$this->assertFalse( $result );
+	}
+
+	/**
 	 * Check there is a regular cron job registered after the first calendar has been added.
 	 */
 	public function test_adding_calendar_to_cache_adds_cron_job(): void {

@@ -54,4 +54,66 @@ class REST_API_Test extends Unit_Testcase {
 
 		$this->assertInstanceOf( WP_Error::class, $result );
 	}
+
+	/**
+	 * @covers ::refresh_cache
+	 */
+	public function test_refresh_cache_returns_200_on_success(): void {
+		WP_Mock::userFunction( 'absint' )
+			->with( 200 )
+			->andReturn( 200 );
+
+		$api = $this->makeEmpty(
+			API_Interface::class,
+			array(
+				'refresh_calendar_cache' => true,
+			),
+		);
+
+		$sut = new REST_API( $api );
+
+		$request = $this->makeEmpty(
+			\WP_REST_Request::class,
+			array(
+				'get_param' => 'https://example.org/calendar.ics',
+			),
+		);
+
+		$response = $sut->refresh_cache( $request );
+
+		$this->assertInstanceOf( \WP_REST_Response::class, $response );
+		$this->assertSame( 200, $response->get_status() );
+		$this->assertSame( array( 'success' => true ), $response->get_data() );
+	}
+
+	/**
+	 * @covers ::refresh_cache
+	 */
+	public function test_refresh_cache_returns_502_on_failure(): void {
+		WP_Mock::userFunction( 'absint' )
+			->with( 502 )
+			->andReturn( 502 );
+
+		$api = $this->makeEmpty(
+			API_Interface::class,
+			array(
+				'refresh_calendar_cache' => false,
+			),
+		);
+
+		$sut = new REST_API( $api );
+
+		$request = $this->makeEmpty(
+			\WP_REST_Request::class,
+			array(
+				'get_param' => 'https://example.org/calendar.ics',
+			),
+		);
+
+		$response = $sut->refresh_cache( $request );
+
+		$this->assertInstanceOf( \WP_REST_Response::class, $response );
+		$this->assertSame( 502, $response->get_status() );
+		$this->assertSame( array( 'success' => false ), $response->get_data() );
+	}
 }
