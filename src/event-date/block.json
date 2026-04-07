@@ -19,7 +19,11 @@
 	"attributes": {
 		"dateFormat": {
 			"type": "string",
-			"default": "l F j, H:i"
+			"default": "l F j"
+		},
+		"timeFormat": {
+			"type": "string",
+			"default": "H:i"
 		},
 		"showEndTime": {
 			"type": "boolean",

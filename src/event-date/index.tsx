@@ -12,9 +12,13 @@ import { __ } from '@wordpress/i18n';
 import metadata from './block.json';
 
 interface EditProps {
-	attributes: { dateFormat: string; showEndTime: boolean };
+	attributes: { dateFormat: string; timeFormat: string; showEndTime: boolean };
 	setAttributes: (
-		attrs: Partial< { dateFormat: string; showEndTime: boolean } >
+		attrs: Partial< {
+			dateFormat: string;
+			timeFormat: string;
+			showEndTime: boolean;
+		} >
 	) => void;
 }
 
@@ -39,10 +43,33 @@ const Edit: React.FC< EditProps > = ( { attributes, setAttributes } ) => {
 						onChange={ ( value ) =>
 							setAttributes( { dateFormat: value } )
 						}
-						help={ __(
-							'PHP date format string. e.g. "l F j, H:i"',
+						help={ __( 'e.g. "l F j"', 'bh-wp-simple-calendar' ) }
+					/>
+					<TextControl
+						__nextHasNoMarginBottom
+						label={ __(
+							'Time format (PHP)',
 							'bh-wp-simple-calendar'
 						) }
+						value={ attributes.timeFormat }
+						onChange={ ( value ) =>
+							setAttributes( { timeFormat: value } )
+						}
+						help={
+							<>
+								{ __( 'e.g. "H:i" — ', 'bh-wp-simple-calendar' ) }
+								<a
+									href="https://www.php.net/manual/en/datetime.format.php"
+									target="_blank"
+									rel="noreferrer"
+								>
+									{ __(
+										'PHP date format reference',
+										'bh-wp-simple-calendar'
+									) }
+								</a>
+							</>
+						}
 					/>
 					<ToggleControl
 						__nextHasNoMarginBottom

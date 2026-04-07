@@ -117,7 +117,8 @@ class Event_Field_Renderer_Test extends Unit_Testcase {
 		$result = Event_Field_Renderer::render(
 			$block,
 			array(
-				'dateFormat'  => 'l F j, H:i',
+				'dateFormat'  => 'l F j',
+				'timeFormat'  => 'H:i',
 				'showEndTime' => false,
 			),
 			'date',
@@ -149,7 +150,8 @@ class Event_Field_Renderer_Test extends Unit_Testcase {
 		$result = Event_Field_Renderer::render(
 			$block,
 			array(
-				'dateFormat'  => 'H:i',
+				'dateFormat'  => 'l F j',
+				'timeFormat'  => 'H:i',
 				'showEndTime' => true,
 			),
 			'date',
@@ -157,6 +159,41 @@ class Event_Field_Renderer_Test extends Unit_Testcase {
 		);
 
 		$this->assertStringContainsString( '–', $result );
+	}
+
+	/**
+	 * @covers ::render
+	 */
+	public function test_render_date_all_day_omits_time(): void {
+		$block = $this->make_block(
+			array(
+				'simple-calendar/eventStartTime' => '2026-03-14T00:00:00+00:00',
+				'simple-calendar/eventEndTime'   => '2026-03-15T00:00:00+00:00',
+			)
+		);
+
+		WP_Mock::userFunction( 'get_block_wrapper_attributes' )
+			->once()
+			->andReturn( 'class="simple-calendar-event-date"' );
+
+		WP_Mock::userFunction( 'wp_date' )
+			->andReturnUsing( fn( $format, $ts ) => date( $format, $ts ) );
+
+		$result = Event_Field_Renderer::render(
+			$block,
+			array(
+				'dateFormat'  => 'l F j',
+				'timeFormat'  => 'H:i',
+				'showEndTime' => true,
+			),
+			'date',
+			'time'
+		);
+
+		// Should contain the date but not a time separator or time value.
+		$this->assertStringContainsString( 'Saturday', $result );
+		$this->assertStringNotContainsString( '00:00', $result );
+		$this->assertStringNotContainsString( '–', $result );
 	}
 
 	/**

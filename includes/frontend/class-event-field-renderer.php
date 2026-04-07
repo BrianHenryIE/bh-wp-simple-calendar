@@ -59,16 +59,23 @@ class Event_Field_Renderer {
 					break;
 
 				case 'date':
-					$date_format = $attributes['dateFormat'] ?? 'l F j, H:i';
+					$date_format = $attributes['dateFormat'] ?? 'l F j';
+					$time_format = $attributes['timeFormat'] ?? 'H:i';
 					$end_time    = $block->context['simple-calendar/eventEndTime'] ?? null;
 					$show_end    = $attributes['showEndTime'] ?? false;
 
-					$start = new DateTimeImmutable( $value );
-					$value = wp_date( $date_format, $start->getTimestamp() );
+					$start      = new DateTimeImmutable( $value );
+					$end        = $end_time ? new DateTimeImmutable( $end_time ) : null;
+					$is_all_day = $end && ( $end->getTimestamp() - $start->getTimestamp() === DAY_IN_SECONDS );
 
-					if ( $show_end && $end_time ) {
-						$end    = new DateTimeImmutable( $end_time );
-						$value .= ' – ' . wp_date( $date_format, $end->getTimestamp() );
+					if ( $is_all_day ) {
+						$value = wp_date( $date_format, $start->getTimestamp() );
+					} else {
+						$value = wp_date( $date_format . ', ' . $time_format, $start->getTimestamp() );
+
+						if ( $show_end && $end ) {
+							$value .= ' – ' . wp_date( $time_format, $end->getTimestamp() );
+						}
 					}
 					break;
 

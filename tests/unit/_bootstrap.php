@@ -12,6 +12,8 @@ global $plugin_root_dir;
 require_once $plugin_root_dir . '/autoload.php';
 
 require_once codecept_root_dir( 'wordpress/wp-includes/class-wp-error.php' );
+
+define( 'DAY_IN_SECONDS', 86400 );
 require_once codecept_root_dir( 'wordpress/wp-includes/class-wp-http-response.php' );
 require_once codecept_root_dir( 'wordpress/wp-includes/rest-api/class-wp-rest-response.php' );
 require_once codecept_root_dir( 'wordpress/wp-includes/rest-api/class-wp-rest-request.php' );
