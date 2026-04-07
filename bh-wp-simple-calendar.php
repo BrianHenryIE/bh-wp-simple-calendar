@@ -79,22 +79,3 @@ $container->singleton(
 $container->get( BH_WP_Simple_Calendar::class );
 
 $GLOBALS['bh_wp_simple_calendar'] = $container->get( API_Interface::class );
-
-
-// Fix: Deprecated: strip_tags(): Passing null to parameter #1 ($string) of type string is deprecated in /var/www/html/wp-admin/admin-header.php on line 41
-add_action(
-	'plugins_loaded',
-	function () {
-
-		if (
-			! isset( $_REQUEST['page'] )
-			|| ! is_string( $_REQUEST['page'] )
-			|| 'bh-wp-simple-calendar-logs' !== sanitize_key( wp_unslash( $_REQUEST['page'] ) )
-		) {
-			return;
-		}
-
-		global $title;
-		$title = 'Logs page';
-	}
-);
