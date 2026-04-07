@@ -1,0 +1,25 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "simple-calendar/event-recurrence",
+	"version": "1.0.0",
+	"title": "Event Recurrence",
+	"category": "widgets",
+	"icon": "update",
+	"description": "Displays recurrence information for recurring events (e.g. 'Every Tuesday').",
+	"keywords": [ "event", "recurring", "repeat", "recurrence" ],
+	"textdomain": "bh-wp-simple-calendar",
+	"parent": [ "simple-calendar/event-template" ],
+	"supports": {
+		"html": false,
+		"color": { "text": true, "background": true },
+		"spacing": { "margin": true, "padding": true },
+		"typography": { "fontSize": true, "fontFamily": true }
+	},
+	"usesContext": [
+		"simple-calendar/eventIsRecurring",
+		"simple-calendar/eventRecurrenceDescription"
+	],
+	"editorScript": "file:./index.js",
+	"render": "file:./render.php"
+}

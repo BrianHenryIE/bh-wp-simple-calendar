@@ -1,0 +1,77 @@
+.simple-calendar-block {
+
+	.simple-calendar-event-list {
+		list-style: none;
+		margin-left: 0;
+		padding-left: 0;
+	}
+
+	.simple-calendar-event-item {
+		margin-bottom: 10px;
+		padding-bottom: 10px;
+
+		&:not(:last-child) {
+			border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+		}
+	}
+
+	// Tighten gap within each flex row (when items wrap)
+	.simple-calendar-event-template > .wp-block-group {
+		row-gap: 2px;
+	}
+
+	// More space between the two row groups (title+date vs description+location)
+	.simple-calendar-event-template > .wp-block-group + .wp-block-group {
+		margin-top: 0.5em;
+	}
+
+	// Title takes as much space as it needs, date shares line or wraps right
+	.simple-calendar-event-title {
+		color: #1a1a1a;
+		font-weight: 500;
+		font-size: 1.1em;
+		line-height: 1.3;
+		margin: 0;
+
+		a {
+			color: inherit;
+			text-decoration: none;
+
+			&:hover {
+				text-decoration: underline;
+			}
+		}
+	}
+
+	.simple-calendar-event-date {
+		color: #757575;
+		font-size: 0.9em;
+		font-weight: 500;
+		line-height: 1.3;
+		white-space: nowrap;
+		margin-left: auto;
+	}
+
+	// Description takes as much space as it needs, location shares line or wraps right
+	.simple-calendar-event-description {
+		color: #4a4a4a;
+		font-size: 0.95em;
+		line-height: 1.4;
+	}
+
+	.simple-calendar-event-location {
+		color: #757575;
+		font-size: 0.9em;
+		font-weight: 500;
+		white-space: nowrap;
+		margin-left: auto;
+	}
+
+	// Status, recurrence, URL
+	.simple-calendar-event-status,
+	.simple-calendar-event-recurrence,
+	.simple-calendar-event-url {
+		color: #757575;
+		font-size: 0.85em;
+	}
+}

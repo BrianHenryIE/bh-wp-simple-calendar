@@ -1,0 +1,39 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "simple-calendar/event-date",
+	"version": "1.0.0",
+	"title": "Event Date",
+	"category": "widgets",
+	"icon": "calendar",
+	"description": "Displays the event date and time.",
+	"keywords": [ "event", "date", "time" ],
+	"textdomain": "bh-wp-simple-calendar",
+	"parent": [ "simple-calendar/event-template" ],
+	"supports": {
+		"html": false,
+		"color": { "text": true, "background": true },
+		"spacing": { "margin": true, "padding": true },
+		"typography": { "fontSize": true, "fontFamily": true, "__experimentalFontWeight": true }
+	},
+	"attributes": {
+		"dateFormat": {
+			"type": "string",
+			"default": "l F j"
+		},
+		"timeFormat": {
+			"type": "string",
+			"default": "H:i"
+		},
+		"showEndTime": {
+			"type": "boolean",
+			"default": false
+		}
+	},
+	"usesContext": [
+		"simple-calendar/eventStartTime",
+		"simple-calendar/eventEndTime"
+	],
+	"editorScript": "file:./index.js",
+	"render": "file:./render.php"
+}

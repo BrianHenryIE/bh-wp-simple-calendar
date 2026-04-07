@@ -15,8 +15,8 @@
  * Plugin Name:       Simple Calendar
  * Plugin URI:        http://github.com/BrianHenryIE/bh-wp-simple-calendar/
  * Description:       Displays iCal/.ics/Google Calendar in a block/widget/shortcode using templates.
- * Version:           3.0.2
- * Requires PHP:      8.4
+ * Version:           3.1.0
+ * Requires PHP:      8.3
  * Author:            Brian Henry
  * Author URI:        http://example.com/
  * License:           GPL-2.0+
@@ -34,9 +34,9 @@ use BrianHenryIE\WP_Simple_Calendar\WP_Logger\Logger;
 use BrianHenryIE\WP_Simple_Calendar\WP_Includes\Activator;
 use BrianHenryIE\WP_Simple_Calendar\WP_Includes\Deactivator;
 use BrianHenryIE\WP_Simple_Calendar\WP_Logger\Logger_Settings_Interface;
-use Exception;
 use BrianHenryIE\WP_Simple_Calendar\Psr\Container\ContainerInterface;
 use BrianHenryIE\WP_Simple_Calendar\Psr\Log\LoggerInterface;
+use Exception;
 
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
@@ -48,7 +48,7 @@ require_once plugin_dir_path( __FILE__ ) . 'autoload.php';
 /**
  * Current plugin version. Using SemVer - https://semver.org
  */
-define( 'BH_WP_SIMPLE_CALENDAR_VERSION', '3.0.2' );
+define( 'BH_WP_SIMPLE_CALENDAR_VERSION', '3.1.0' );
 define( 'BH_WP_SIMPLE_CALENDAR_BASENAME', plugin_basename( __FILE__ ) );
 define( 'BH_WP_SIMPLE_CALENDAR_PATH', plugin_dir_path( __FILE__ ) );
 define( 'BH_WP_SIMPLE_CALENDAR_URL', trailingslashit( plugins_url( plugin_basename( __DIR__ ) ) ) );
@@ -79,22 +79,3 @@ $container->singleton(
 $container->get( BH_WP_Simple_Calendar::class );
 
 $GLOBALS['bh_wp_simple_calendar'] = $container->get( API_Interface::class );
-
-
-// Fix: Deprecated: strip_tags(): Passing null to parameter #1 ($string) of type string is deprecated in /var/www/html/wp-admin/admin-header.php on line 41
-add_action(
-	'plugins_loaded',
-	function () {
-
-		if (
-			! isset( $_REQUEST['page'] )
-			|| ! is_string( $_REQUEST['page'] )
-			|| 'bh-wp-simple-calendar-logs' !== sanitize_key( wp_unslash( $_REQUEST['page'] ) )
-		) {
-			return;
-		}
-
-		global $title;
-		$title = 'Logs page';
-	}
-);

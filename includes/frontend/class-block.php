@@ -7,12 +7,16 @@
 
 namespace BrianHenryIE\WP_Simple_Calendar\Frontend;
 
+use BrianHenryIE\WP_Simple_Calendar\Psr\Log\LoggerAwareTrait;
+use BrianHenryIE\WP_Simple_Calendar\Psr\Log\LoggerInterface;
 use BrianHenryIE\WP_Simple_Calendar\Settings_Interface;
 
 /**
  * Enqueue the script, register the block and render via the Renderer class.
  */
 class Block {
+	use LoggerAwareTrait;
+
 	const BLOCK_TYPE_NAME = 'brianhenryie/simple-calendar';
 
 	/**
@@ -24,7 +28,9 @@ class Block {
 	public function __construct(
 		protected Settings_Interface $settings,
 		protected Renderer $renderer,
+		LoggerInterface $logger,
 	) {
+		$this->setLogger( $logger );
 	}
 
 	/**
@@ -77,50 +83,61 @@ class Block {
 	 */
 	public function render_block( array $js_args ): ?string {
 
-		// The array passed from javascript is in camelCase, convert to snake_case.
-		$args = array();
-		foreach ( $js_args as $key => $value ) {
-			$key          = strtolower( preg_replace( '/([a-z])([A-Z])/', '$1_$2', $key ) );
-			$args[ $key ] = $value;
-		}
+		try {
 
-		$validation_errors = $this->renderer->validate_settings( $args );
-
-		// TODO: Make sure this is only shown in the editing UI.
-		if ( ! empty( $validation_errors ) ) {
-
-			if ( ! is_admin() ) {
-				// Don't print anything on the frontend when there's a problem.
-				return null;
+			// The array passed from JavaScript is in camelCase, convert to snake_case.
+			$args = array();
+			foreach ( $js_args as $key => $value ) {
+				$key          = strtolower( preg_replace( '/([a-z])([A-Z])/', '$1_$2', $key ) );
+				$args[ $key ] = $value;
 			}
 
-			$html  = 'The following properties are required:';
-			$html .= '<ul>';
+			$validation_errors = $this->renderer->validate_settings( $args );
 
-			foreach ( $validation_errors as $error => $suggestion ) {
-				$html .= "<li><b>$error</b> <i>$suggestion</i></li>";
+			// TODO: Make sure this is only shown in the editing UI.
+			if ( ! empty( $validation_errors ) ) {
+
+				if ( ! is_admin() ) {
+					// Don't print anything on the frontend when there's a problem.
+					return null;
+				}
+
+				$html  = 'The following properties are required:';
+				$html .= '<ul>';
+
+				foreach ( $validation_errors as $error => $suggestion ) {
+					$html .= "<li><b>$error</b> <i>$suggestion</i></li>";
+				}
+
+				$html .= '</ul>';
+
+				return $html;
 			}
 
-			$html .= '</ul>';
+			// {
+			// "calendarId": "https:\/\/calendar.google.com\/calendar\/ical\/3bpg24atqjbsmhdb00ilcdrj5c%40group.calendar.google.com\/public\/basic.ics",
+			// "eventCount": 10,
+			// "eventPeriod": 92,
+			// "dateFormat": "l jS \\of F"
+			// }
+
+			$calendar_id = (string) $args['calendar_id'];
+			$count       = absint( $args['event_count'] );
+			$period      = absint( $args['event_period'] ); // ?: default.
+
+			// TODO: Should the page/widget the calendar is on be passed here?
+
+			$html = $this->renderer->get_html( $calendar_id, $period, $count );
 
 			return $html;
+
+		} catch ( \Throwable $t ) {
+
+			$this->logger->error( 'Error: ' . $t->getMessage(), array( 'exception' => $t ) );
+
+			return current_user_can( 'manage_options' )
+				? $t->getMessage()
+				: '';
 		}
-
-		// {
-		// "calendarId": "https:\/\/calendar.google.com\/calendar\/ical\/3bpg24atqjbsmhdb00ilcdrj5c%40group.calendar.google.com\/public\/basic.ics",
-		// "eventCount": 10,
-		// "eventPeriod": 92,
-		// "dateFormat": "l jS \\of F"
-		// }
-
-		$calendar_id = (string) $args['calendar_id'];
-		$count       = absint( $args['event_count'] );
-		$period      = absint( $args['event_period'] ); // ?: default.
-
-		// TODO: Should the page/widget the calendar is on be passed here?
-
-		$html = $this->renderer->get_html( $calendar_id, $period, $count );
-
-		return $html;
 	}
 }

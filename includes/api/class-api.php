@@ -174,6 +174,17 @@ class API implements API_Interface {
 	}
 
 	/**
+	 * Refresh the cache for a specific calendar URL by fetching fresh data from the remote.
+	 *
+	 * @param string $calendar_url The calendar URL to refresh.
+	 * @return bool True if the cache was successfully refreshed, false on failure.
+	 */
+	public function refresh_calendar_cache( string $calendar_url ): bool {
+		$result = $this->fetch_remote_calendar( $calendar_url );
+		return null !== $result;
+	}
+
+	/**
 	 * To be called hourly by cron to fetch the most recent events for all calendars.
 	 *
 	 * TODO: On a site with many, many calendars, this could exceed the PHP timeout.
