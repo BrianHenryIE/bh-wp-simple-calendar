@@ -11,6 +11,8 @@ import {
 	TextControl,
 	RangeControl,
 	Button,
+	Flex,
+	FlexItem,
 } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import { useEffect, useState } from '@wordpress/element';
@@ -49,6 +51,9 @@ export const Edit: React.FC< EditProps > = ( {
 	const [ events, setEvents ] = useState< CalendarEvent[] >( [] );
 	const [ isLoading, setIsLoading ] = useState( false );
 	const [ newUrl, setNewUrl ] = useState( '' );
+	const [ refreshingUrl, setRefreshingUrl ] = useState< string | null >(
+		null
+	);
 
 	const blockProps = useBlockProps( {
 		className: 'simple-calendar-block',
@@ -100,6 +105,17 @@ export const Edit: React.FC< EditProps > = ( {
 		} );
 	};
 
+	const refreshCache = ( url: string ) => {
+		setRefreshingUrl( url );
+		apiFetch( {
+			path: '/simple-calendar/v1/cache/refresh',
+			method: 'POST',
+			data: { calendarUrl: url },
+		} ).finally( () => {
+			setRefreshingUrl( null );
+		} );
+	};
+
 	return (
 		<>
 			<InspectorControls>
@@ -119,14 +135,35 @@ export const Edit: React.FC< EditProps > = ( {
 									} );
 								} }
 							/>
-							<Button
-								isDestructive
-								variant="tertiary"
-								onClick={ () => removeUrl( index ) }
-								size="small"
-							>
-								{ __( 'Remove', 'bh-wp-simple-calendar' ) }
-							</Button>
+							<Flex direction="column" align="flex-start" gap={ 1 }>
+								<FlexItem>
+									<Button
+										variant="tertiary"
+										onClick={ () => refreshCache( url ) }
+										size="small"
+										isBusy={ refreshingUrl === url }
+										disabled={ refreshingUrl !== null }
+									>
+										{ __(
+											'Refresh cache',
+											'bh-wp-simple-calendar'
+										) }
+									</Button>
+								</FlexItem>
+								<FlexItem>
+									<Button
+										isDestructive
+										variant="tertiary"
+										onClick={ () => removeUrl( index ) }
+										size="small"
+									>
+										{ __(
+											'Remove',
+											'bh-wp-simple-calendar'
+										) }
+									</Button>
+								</FlexItem>
+							</Flex>
 						</div>
 					) ) }
 					<div className="simple-calendar-add-url">
