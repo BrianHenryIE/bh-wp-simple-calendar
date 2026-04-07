@@ -4,19 +4,19 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 async function globalSetup( config: FullConfig ) {
-	const storageStatePath = path.join(
-		__dirname,
-		'.auth',
-		'storage-state.json'
-	);
+	const { storageState, baseURL } = config.projects[ 0 ].use;
+	const storageStatePath =
+		typeof storageState === 'string' ? storageState : path.join(
+				__dirname,
+				'.auth',
+				'storage-state.json'
+			);
 
 	// Ensure the auth directory exists.
 	fs.mkdirSync( path.dirname( storageStatePath ), { recursive: true } );
 
-	const { baseURL } = config.projects[ 0 ].use;
-
 	const requestContext = await request.newContext( {
-		baseURL: baseURL as string,
+		baseURL,
 	} );
 
 	const requestUtils = new RequestUtils( requestContext, {
