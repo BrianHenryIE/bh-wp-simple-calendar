@@ -3,7 +3,10 @@
 ## 3.1.0
 
 * Use blocks
+* Add `refresh cache` button
 * Fix issue with null end dates
+* Catch exceptions during rendering blocks
+* Improve date/time display (all day events, display only start/both start and end times)
 
 ## 3.0.2
 
