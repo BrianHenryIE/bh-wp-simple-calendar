@@ -6,7 +6,9 @@
 * Add `refresh cache` button
 * Fix issue with null end dates
 * Catch exceptions during rendering blocks
-* Improve date/time display (all day events, display only start/both start and end times)
+* Improve date/time: all day events, display only start/both start and end times
+* Improve location: optional Google Maps link
+* Improve location: apply regex replacement to shorten addresses (e.g. remove "USA")
 
 ## 3.0.2
 

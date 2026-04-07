@@ -16,6 +16,19 @@
 		"spacing": { "margin": true, "padding": true },
 		"typography": { "fontSize": true, "fontFamily": true }
 	},
+	"attributes": {
+		"linkToMaps": {
+			"type": "boolean",
+			"default": false
+		},
+		"locationRegexes": {
+			"type": "array",
+			"default": [],
+			"items": {
+				"type": "object"
+			}
+		}
+	},
 	"usesContext": [
 		"simple-calendar/eventLocation"
 	],

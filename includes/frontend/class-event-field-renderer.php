@@ -84,7 +84,32 @@ class Event_Field_Renderer {
 					break;
 
 				case 'location':
+					$full_address = $value;
+
+					foreach ( $attributes['locationRegexes'] ?? array() as $entry ) {
+						$regex       = $entry['regex'] ?? '';
+						$replacement = $entry['replacement'] ?? '';
+
+						if ( '' === $regex ) {
+							continue;
+						}
+
+						try {
+							$result = preg_replace( '/'.$regex.'/', $replacement, $value );
+							if ( null !== $result ) {
+								$value = $result;
+							}
+						} catch ( Throwable $regex_error ) {
+							// Invalid regex — leave $value unchanged and continue.
+						}
+					}
+
 					$value = esc_html( $value );
+
+					if ( ! empty( $attributes['linkToMaps'] ) ) {
+						$maps_url = 'https://www.google.com/maps/search/' . rawurlencode( $full_address );
+						$value    = '<a href="' . esc_url( $maps_url ) . '" target="_blank" rel="noopener noreferrer">' . $value . '</a>';
+					}
 					break;
 
 				case 'status':

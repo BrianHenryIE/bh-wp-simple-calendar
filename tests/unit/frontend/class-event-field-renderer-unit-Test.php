@@ -243,6 +243,188 @@ class Event_Field_Renderer_Test extends Unit_Testcase {
 	/**
 	 * @covers ::render
 	 */
+	public function test_render_location_with_maps_link(): void {
+		$block = $this->make_block(
+			array(
+				'simple-calendar/eventLocation' => 'Old Sacramento, CA',
+			)
+		);
+
+		WP_Mock::userFunction( 'get_block_wrapper_attributes' )
+			->once()
+			->andReturn( 'class="simple-calendar-event-location"' );
+
+		WP_Mock::userFunction( 'esc_html' )
+			->andReturnUsing( fn( $s ) => $s );
+
+		WP_Mock::userFunction( 'esc_url' )
+			->andReturnUsing( fn( $s ) => $s );
+
+		$result = Event_Field_Renderer::render(
+			$block,
+			array( 'linkToMaps' => true ),
+			'location',
+			'div'
+		);
+
+		$this->assertStringContainsString( 'href="https://www.google.com/maps/search/', $result );
+		$this->assertStringContainsString( rawurlencode( 'Old Sacramento, CA' ), $result );
+		$this->assertStringContainsString( 'Old Sacramento, CA', $result );
+	}
+
+	/**
+	 * @covers ::render
+	 */
+	public function test_render_location_with_regex(): void {
+		$block = $this->make_block(
+			array(
+				'simple-calendar/eventLocation' => 'Room 42, Conference Center',
+			)
+		);
+
+		WP_Mock::userFunction( 'get_block_wrapper_attributes' )
+			->once()
+			->andReturn( 'class="simple-calendar-event-location"' );
+
+		WP_Mock::userFunction( 'esc_html' )
+			->andReturnUsing( fn( $s ) => $s );
+
+		$result = Event_Field_Renderer::render(
+			$block,
+			array(
+				'locationRegexes' => array(
+					array(
+						'regex'       => '/Room \d+,?\s*/',
+						'replacement' => '',
+						'comment'     => 'Remove room numbers',
+					),
+				),
+			),
+			'location',
+			'div'
+		);
+
+		$this->assertStringNotContainsString( 'Room 42', $result );
+		$this->assertStringContainsString( 'Conference Center', $result );
+	}
+
+	/**
+	 * @covers ::render
+	 */
+	public function test_render_location_invalid_regex_falls_back_to_original(): void {
+		$block = $this->make_block(
+			array(
+				'simple-calendar/eventLocation' => 'Old Sacramento, CA',
+			)
+		);
+
+		WP_Mock::userFunction( 'get_block_wrapper_attributes' )
+			->once()
+			->andReturn( 'class="simple-calendar-event-location"' );
+
+		WP_Mock::userFunction( 'esc_html' )
+			->andReturnUsing( fn( $s ) => $s );
+
+		$result = Event_Field_Renderer::render(
+			$block,
+			array(
+				'locationRegexes' => array(
+					array(
+						'regex'       => 'not-a-valid-regex[',
+						'replacement' => '',
+						'comment'     => '',
+					),
+				),
+			),
+			'location',
+			'div'
+		);
+
+		$this->assertStringContainsString( 'Old Sacramento, CA', $result );
+	}
+
+	/**
+	 * @covers ::render
+	 */
+	public function test_render_location_regex_extracts_name_and_zip(): void {
+		$block = $this->make_block(
+			array(
+				'simple-calendar/eventLocation' => 'Southwestern College, 900 Otay Lakes Rd, Chula Vista, CA 91910, USA',
+			)
+		);
+
+		WP_Mock::userFunction( 'get_block_wrapper_attributes' )
+			->once()
+			->andReturn( 'class="simple-calendar-event-location"' );
+
+		WP_Mock::userFunction( 'esc_html' )
+			->andReturnUsing( fn( $s ) => $s );
+
+		$result = Event_Field_Renderer::render(
+			$block,
+			array(
+				'locationRegexes' => array(
+					array(
+						'regex'       => '/(.*?),.*,\s*(.*\s\d+), USA/',
+						'replacement' => '$1, $2',
+						'comment'     => 'Shorten Google Maps address to name and state/zip',
+					),
+				),
+			),
+			'location',
+			'div'
+		);
+
+		$this->assertStringContainsString( 'Southwestern College, CA 91910', $result );
+		$this->assertStringNotContainsString( 'Otay Lakes', $result );
+		$this->assertStringNotContainsString( 'USA', $result );
+	}
+
+	/**
+	 * @covers ::render
+	 */
+	public function test_render_location_multiple_regexes_applied_in_order(): void {
+		$block = $this->make_block(
+			array(
+				'simple-calendar/eventLocation' => 'Room 42, Building A, Conference Center',
+			)
+		);
+
+		WP_Mock::userFunction( 'get_block_wrapper_attributes' )
+			->once()
+			->andReturn( 'class="simple-calendar-event-location"' );
+
+		WP_Mock::userFunction( 'esc_html' )
+			->andReturnUsing( fn( $s ) => $s );
+
+		$result = Event_Field_Renderer::render(
+			$block,
+			array(
+				'locationRegexes' => array(
+					array(
+						'regex'       => '/Room \d+,?\s*/',
+						'replacement' => '',
+						'comment'     => 'Remove room numbers',
+					),
+					array(
+						'regex'       => '/Building [A-Z],?\s*/',
+						'replacement' => '',
+						'comment'     => 'Remove building codes',
+					),
+				),
+			),
+			'location',
+			'div'
+		);
+
+		$this->assertStringNotContainsString( 'Room 42', $result );
+		$this->assertStringNotContainsString( 'Building A', $result );
+		$this->assertStringContainsString( 'Conference Center', $result );
+	}
+
+	/**
+	 * @covers ::render
+	 */
 	public function test_render_status(): void {
 		$block = $this->make_block(
 			array(
