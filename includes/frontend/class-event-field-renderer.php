@@ -8,6 +8,8 @@
 namespace BrianHenryIE\WP_Simple_Calendar\Frontend;
 
 use DateTimeImmutable;
+use Throwable;
+
 /**
  * Renders event field blocks using block context.
  */
@@ -24,79 +26,90 @@ class Event_Field_Renderer {
 	 */
 	public static function render( object $block, array $attributes, string $field_type, string $tag = 'div' ): string {
 
-		$context_map = array(
-			'title'       => 'simple-calendar/eventSummary',
-			'date'        => 'simple-calendar/eventStartTime',
-			'description' => 'simple-calendar/eventDescription',
-			'location'    => 'simple-calendar/eventLocation',
-			'status'      => 'simple-calendar/eventStatus',
-			'recurrence'  => 'simple-calendar/eventRecurrenceDescription',
-			'url'         => 'simple-calendar/eventUrl',
-		);
+		try {
 
-		$context_key = $context_map[ $field_type ] ?? '';
-		$value       = $block->context[ $context_key ] ?? '';
+			$context_map = array(
+				'title'       => 'simple-calendar/eventSummary',
+				'date'        => 'simple-calendar/eventStartTime',
+				'description' => 'simple-calendar/eventDescription',
+				'location'    => 'simple-calendar/eventLocation',
+				'status'      => 'simple-calendar/eventStatus',
+				'recurrence'  => 'simple-calendar/eventRecurrenceDescription',
+				'url'         => 'simple-calendar/eventUrl',
+			);
 
-		if ( empty( $value ) ) {
-			return '';
+			$context_key = $context_map[ $field_type ] ?? '';
+			$value       = $block->context[ $context_key ] ?? '';
+
+			if ( empty( $value ) ) {
+				return '';
+			}
+
+			// Field-specific rendering.
+			switch ( $field_type ) {
+				case 'title':
+					$link_to_url = $attributes['linkToUrl'] ?? true;
+					$event_url   = $block->context['simple-calendar/eventUrl'] ?? null;
+					$text        = esc_html( $value );
+
+					if ( $link_to_url && $event_url ) {
+						$text = '<a href="' . esc_url( $event_url ) . '">' . $text . '</a>';
+					}
+					$value = $text;
+					break;
+
+				case 'date':
+					$date_format = $attributes['dateFormat'] ?? 'l F j, H:i';
+					$end_time    = $block->context['simple-calendar/eventEndTime'] ?? null;
+					$show_end    = $attributes['showEndTime'] ?? false;
+
+					$start = new DateTimeImmutable( $value );
+					$value = wp_date( $date_format, $start->getTimestamp() );
+
+					if ( $show_end && $end_time ) {
+						$end    = new DateTimeImmutable( $end_time );
+						$value .= ' – ' . wp_date( $date_format, $end->getTimestamp() );
+					}
+					break;
+
+				case 'description':
+					$value = wp_kses_post( $value );
+					break;
+
+				case 'location':
+					$value = esc_html( $value );
+					break;
+
+				case 'status':
+					$value = esc_html( ucfirst( strtolower( $value ) ) );
+					break;
+
+				case 'recurrence':
+					$is_recurring = $block->context['simple-calendar/eventIsRecurring'] ?? false;
+					if ( ! $is_recurring ) {
+						return '';
+					}
+					$value = esc_html( $value );
+					break;
+
+				case 'url':
+					$text  = $attributes['linkText'] ?? $value;
+					$value = '<a href="' . esc_url( $value ) . '">' . esc_html( $text ) . '</a>';
+					break;
+			}
+
+			$css_class          = 'simple-calendar-event-' . $field_type;
+			$wrapper_attributes = get_block_wrapper_attributes( array( 'class' => $css_class ) );
+
+			return '<' . $tag . ' ' . $wrapper_attributes . '>' . $value . '</' . $tag . '>';
+
+		} catch ( Throwable $t ) {
+
+			// TODO: Log.
+
+			return current_user_can( 'manage_options' )
+				? $t->getMessage()
+				: '';
 		}
-
-		// Field-specific rendering.
-		switch ( $field_type ) {
-			case 'title':
-				$link_to_url = $attributes['linkToUrl'] ?? true;
-				$event_url   = $block->context['simple-calendar/eventUrl'] ?? null;
-				$text        = esc_html( $value );
-
-				if ( $link_to_url && $event_url ) {
-					$text = '<a href="' . esc_url( $event_url ) . '">' . $text . '</a>';
-				}
-				$value = $text;
-				break;
-
-			case 'date':
-				$date_format = $attributes['dateFormat'] ?? 'l F j, H:i';
-				$end_time    = $block->context['simple-calendar/eventEndTime'] ?? null;
-				$show_end    = $attributes['showEndTime'] ?? false;
-
-				$start = new DateTimeImmutable( $value );
-				$value = wp_date( $date_format, $start->getTimestamp() );
-
-				if ( $show_end && $end_time ) {
-					$end    = new DateTimeImmutable( $end_time );
-					$value .= ' – ' . wp_date( $date_format, $end->getTimestamp() );
-				}
-				break;
-
-			case 'description':
-				$value = wp_kses_post( $value );
-				break;
-
-			case 'location':
-				$value = esc_html( $value );
-				break;
-
-			case 'status':
-				$value = esc_html( ucfirst( strtolower( $value ) ) );
-				break;
-
-			case 'recurrence':
-				$is_recurring = $block->context['simple-calendar/eventIsRecurring'] ?? false;
-				if ( ! $is_recurring ) {
-					return '';
-				}
-				$value = esc_html( $value );
-				break;
-
-			case 'url':
-				$text  = $attributes['linkText'] ?? $value;
-				$value = '<a href="' . esc_url( $value ) . '">' . esc_html( $text ) . '</a>';
-				break;
-		}
-
-		$css_class          = 'simple-calendar-event-' . $field_type;
-		$wrapper_attributes = get_block_wrapper_attributes( array( 'class' => $css_class ) );
-
-		return '<' . $tag . ' ' . $wrapper_attributes . '>' . $value . '</' . $tag . '>';
 	}
 }
