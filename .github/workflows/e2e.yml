@@ -36,7 +36,7 @@ jobs:
         run: npx playwright install --with-deps
 
       - name: Start wp-env
-        run: npm run wp-env
+        run: npx wp-env start
 
       - name: Wait for WordPress to be ready
         run: |
