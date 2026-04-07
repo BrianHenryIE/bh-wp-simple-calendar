@@ -25,7 +25,7 @@
 		"@types/wordpress__i18n": "^3.4.7",
 		"@wordpress/e2e-test-utils-playwright": "^1.4.0",
 		"@wordpress/env": "^10.39.0",
-		"@wordpress/scripts": "^30.0.0",
+		"@wordpress/scripts": "^31.8.0",
 		"dotenv": "^17.4.1",
 		"typescript": "^5.0.0"
 	}
