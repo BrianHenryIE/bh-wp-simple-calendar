@@ -95,7 +95,7 @@ class Event_Field_Renderer {
 						}
 
 						try {
-							$result = preg_replace( '/'.$regex.'/', $replacement, $value );
+							$result = preg_replace( '/' . $regex . '/', $replacement, $value );
 							if ( null !== $result ) {
 								$value = $result;
 							}

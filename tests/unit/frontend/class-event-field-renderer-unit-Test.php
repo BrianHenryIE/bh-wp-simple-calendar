@@ -294,7 +294,7 @@ class Event_Field_Renderer_Test extends Unit_Testcase {
 			array(
 				'locationRegexes' => array(
 					array(
-						'regex'       => '/Room \d+,?\s*/',
+						'regex'       => 'Room \d+,?\s*',
 						'replacement' => '',
 						'comment'     => 'Remove room numbers',
 					),
@@ -365,7 +365,7 @@ class Event_Field_Renderer_Test extends Unit_Testcase {
 			array(
 				'locationRegexes' => array(
 					array(
-						'regex'       => '/(.*?),.*,\s*(.*\s\d+), USA/',
+						'regex'       => '(.*?),.*,\s*(.*\s\d+), USA',
 						'replacement' => '$1, $2',
 						'comment'     => 'Shorten Google Maps address to name and state/zip',
 					),
@@ -402,12 +402,12 @@ class Event_Field_Renderer_Test extends Unit_Testcase {
 			array(
 				'locationRegexes' => array(
 					array(
-						'regex'       => '/Room \d+,?\s*/',
+						'regex'       => 'Room \d+,?\s*',
 						'replacement' => '',
 						'comment'     => 'Remove room numbers',
 					),
 					array(
-						'regex'       => '/Building [A-Z],?\s*/',
+						'regex'       => 'Building [A-Z],?\s*',
 						'replacement' => '',
 						'comment'     => 'Remove building codes',
 					),
