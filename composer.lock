@@ -13149,15 +13149,15 @@
         },
         {
             "name": "wpackagist-plugin/query-monitor",
-            "version": "4.0.0",
+            "version": "4.0.1",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/query-monitor/",
-                "reference": "tags/4.0.0"
+                "reference": "tags/4.0.1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/query-monitor.4.0.0.zip"
+                "url": "https://downloads.wordpress.org/plugin/query-monitor.4.0.1.zip"
             },
             "require": {
                 "composer/installers": "^1.0 || ^2.0"
@@ -13195,9 +13195,9 @@
     "platform": {
         "php": ">=8.3"
     },
-    "platform-dev": [],
+    "platform-dev": {},
     "platform-overrides": {
         "php": "8.3"
     },
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.9.0"
 }
