@@ -1,15 +1,14 @@
+/.claude
 /.git
 /.github
-/artifacts
 /.idea
+/artifacts
 /CHANGELOG.md
 /codeception.dist.yml
-/composer.json
 /composer.lock
 /dist-archive
 /node_modules
 /package-lock.json
-/package.json
 /phpcs.xml
 /phpstan.neon
 /phpstanbootstrap.php
