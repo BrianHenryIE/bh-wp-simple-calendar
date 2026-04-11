@@ -41,7 +41,7 @@ class Settings_Unit_Test extends Unit_Testcase {
 
 		$sut = new Settings();
 
-		self::assertEquals( '3.1.0', $sut->get_plugin_version() );
+		$this->assertEquals( '3.2.0', $sut->get_plugin_version() );
 
 		\Patchwork\restoreAll();
 	}

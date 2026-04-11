@@ -1,5 +1,10 @@
 # Changelog
 
+## 3.2.0
+
+* Add optional location link to Google Maps
+* Add regex replace on location address
+
 ## 3.1.0
 
 * Use blocks
