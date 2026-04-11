@@ -12,25 +12,25 @@ Live on [SacramentoGAA.org](https://sacramentogaa.org).
 
 ## Frontend
 
-![Vertical list of events with dates, descriptions, locations](./.github/frontend.png)
+<img src="./.github/frontend.png" alt="Vertical list of events with dates, descriptions, locations" width="50%">
 
 ## Backend
 
 The plugin adds a few new blocks. The main one is Simple Calendar and the others are only available to insert inside that block (via Event Template).
 
-![Blocks in the admin UI](./.github/blocks.png)
+<img src="./.github/blocks.png" alt="Blocks in the admin UI" width="50%">
 
 The main block requires setting the calendar URL. Probably a Google calendar link but any `.ics` URL should work. Calendars are cached for an hour and cache can be flushed in the UI. 
 
-![Field and buttons to add and remove a ics url, refresh cache button, slider for number of events to display, and slider for number of days to look ahead](./.github/calendar-block.png)
+<img src="./.github/calendar-block.png" alt="Field and buttons to add and remove a ics url, refresh cache button, slider for number of events to display, and slider for number of days to look ahead" width="50%">
 
 Use PHP date format. Time is separate so all-day events only display the date. Optionally display the end time,
 
-![Two text fields and a toggle, a link to PHP date format spec](./.github/event-date-block.png)
+<img src="./.github/event-date-block.png" alt="Two text fields and a toggle, a link to PHP date format spec" width="50%">
 
 Event location can link to Google Maps and regexes can be added to modify the address, e.g. no need to display "CA, USA" on every event for a local club, but that location information is needed for the Maps link.
 
-![Toggle to enable Google Maps link, a three-part config for regex replace, first field in a private note because regexes can be hard to understand their purpose, the regex pattern, and the replacement pattern](./.github/event-location-block.png)
+<img src="./.github/event-location-block.png" alt="Toggle to enable Google Maps link, a three-part config for regex replace, first field in a private note because regexes can be hard to understand their purpose, the regex pattern, and the replacement pattern" width="50%">
 
 ## Deprecated
 
