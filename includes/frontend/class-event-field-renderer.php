@@ -8,6 +8,7 @@
 namespace BrianHenryIE\WP_Simple_Calendar\Frontend;
 
 use DateTimeImmutable;
+use DateTimeZone;
 use Throwable;
 
 /**
@@ -69,7 +70,13 @@ class Event_Field_Renderer {
 					$is_all_day = $end && ( $end->getTimestamp() - $start->getTimestamp() === DAY_IN_SECONDS );
 
 					if ( $is_all_day ) {
-						$value = wp_date( $date_format, $start->getTimestamp() );
+						// All-day events can be shifted away from midnight by timezone conversion.
+						// If so, use UTC to preserve the intended calendar date.
+						if ( '00:00:00' !== $start->format( 'H:i:s' ) ) {
+							$value = wp_date( $date_format, $start->getTimestamp(), new DateTimeZone( 'UTC' ) );
+						} else {
+							$value = wp_date( $date_format, $start->getTimestamp() );
+						}
 					} else {
 						$value = wp_date( $date_format . ', ' . $time_format, $start->getTimestamp() );
 
