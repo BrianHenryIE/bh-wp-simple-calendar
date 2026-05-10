@@ -15,6 +15,7 @@ use Throwable;
  * Renders event field blocks using block context.
  */
 class Event_Field_Renderer {
+	private const MIDNIGHT_TIME = '00:00:00';
 
 	/**
 	 * Render an event field block.
@@ -72,7 +73,7 @@ class Event_Field_Renderer {
 					if ( $is_all_day ) {
 						// All-day events can be shifted away from midnight by timezone conversion.
 						// If so, use UTC to preserve the intended calendar date.
-						if ( '00:00:00' !== $start->format( 'H:i:s' ) ) {
+						if ( self::MIDNIGHT_TIME !== $start->format( 'H:i:s' ) ) {
 							$value = wp_date( $date_format, $start->getTimestamp(), new DateTimeZone( 'UTC' ) );
 						} else {
 							$value = wp_date( $date_format, $start->getTimestamp() );
