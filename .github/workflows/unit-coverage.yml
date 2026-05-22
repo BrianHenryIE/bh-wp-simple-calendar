@@ -194,7 +194,7 @@ jobs:
           echo "" >> coverage-comment.md
           echo "$OUTPUT" >> coverage-comment.md
         env:
-          PATH_PREFIX: ${{ GITHUB_WORKSPACE }}
+          PATH_PREFIX: ${{ github.GITHUB_WORKSPACE }}
 
       - name: Comment on PR
         uses: mshick/add-pr-comment@v3
