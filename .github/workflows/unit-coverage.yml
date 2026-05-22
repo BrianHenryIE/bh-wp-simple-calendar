@@ -189,12 +189,10 @@ jobs:
           echo "BRANCHED_COMMIT=$BRANCHED_COMMIT"
           git diff $BRANCHED_COMMIT...${{ github.event.pull_request.head.sha }} > branch.diff
           cat branch.diff
-          OUTPUT=$(vendor/bin/phpcov patch-coverage --path-prefix ${{ env.PATH_PREFIX }} ./gh-pages/${{ github.sha }}/phpunit/coveragephp.cov branch.diff || true)
+          OUTPUT=$(vendor/bin/phpcov patch-coverage --path-prefix $GITHUB_WORKSPACE ./gh-pages/${{ github.sha }}/phpunit/coveragephp.cov branch.diff || true)
           echo $OUTPUT
           echo "" >> coverage-comment.md
           echo "$OUTPUT" >> coverage-comment.md
-        env:
-          PATH_PREFIX: ${ echo $GITHUB_WORKSPACE }
 
       - name: Comment on PR
         uses: mshick/add-pr-comment@v3
