@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.2.1 – May 2026
+
+* Fix: timezone bug with all-day events displaying wrong day
+
 ## 3.2.0
 
 * Add optional location link to Google Maps
