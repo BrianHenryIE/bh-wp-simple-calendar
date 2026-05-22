@@ -3,6 +3,7 @@
 namespace BrianHenryIE\WP_Simple_Calendar\Frontend;
 
 use BrianHenryIE\WP_Simple_Calendar\Unit_Testcase;
+use BrianHenryIE\WP_Simple_Calendar\WP_Logger\Logger;
 use DateTimeImmutable;
 use DateTimeZone;
 use WP_Mock;
@@ -11,6 +12,19 @@ use WP_Mock;
  * @coversDefaultClass \BrianHenryIE\WP_Simple_Calendar\Frontend\Event_Field_Renderer
  */
 class Event_Field_Renderer_Test extends Unit_Testcase {
+
+	protected function setUp(): void {
+		parent::setUp();
+
+		$logger = $this->logger;
+
+		\Patchwork\redefine(
+			array( Logger::class, 'instance' ),
+			function () use ( $logger ) {
+				return $logger;
+			}
+		);
+	}
 
 	/**
 	 * Helper to create a mock WP_Block with context.
