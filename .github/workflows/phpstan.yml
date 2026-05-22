@@ -94,7 +94,7 @@ jobs:
         env:
           DIFF_FILENAME: ${{ steps.pr_diff.outputs.diff_filename }}
           CHECKSTYLE_FILENAME: "phpstan-checkstyle.xml"
-          BASE_PATH: $(pwd)
+          BASE_PATH: ${{ GITHUB_WORKSPACE }}
 
       # On PRs, print out the xml for debug.
       - name: Debug log filtered-checkstyle.xml
