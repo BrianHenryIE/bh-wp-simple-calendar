@@ -18,11 +18,15 @@ parameters:
         - vendor-prefixed
         - vendor/wp-cli
     ignoreErrors:
-        # LoggerAwareTrait allows for null $logger, but we set it in the constructor.
-        - '#LoggerInterface\|null#'
-        # PHPStan show errors when filters have more than two parameters.
-        - '#^Function apply_filters(_ref_array)? invoked with \d parameters, 2 required\.$#'
-        # Setting an empty array with type associative array in the PhpDoc prints this.
-        - '/does not accept default value of type array\(\)/'
-        # Parameter #2 $callback of static method WP_Mock::expectActionAdded() expects ...
-        - '/Parameter #\d+ \$callback of static method WP_Mock::expectActionAdded\(\) expects .*/'
+        - # LoggerAwareTrait allows for null $logger, but we set it in the constructor.
+            message: '#LoggerInterface\|null#'
+            reportUnmatched: false
+        - # PHPStan show errors when filters have more than two parameters.
+            message: '#^Function apply_filters(_ref_array)? invoked with \d parameters, 2 required\.$#'
+            reportUnmatched: false
+        - # Setting an empty array with type associative array in the PhpDoc prints this.
+            message: '/does not accept default value of type array\(\)/'
+            reportUnmatched: false
+        - # Parameter #2 $callback of static method WP_Mock::expectActionAdded() expects ...
+            message: '/Parameter #\d+ \$callback of static method WP_Mock::expectActionAdded\(\) expects .*/'
+            reportUnmatched: false
