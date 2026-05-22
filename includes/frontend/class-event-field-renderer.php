@@ -7,6 +7,7 @@
 
 namespace BrianHenryIE\WP_Simple_Calendar\Frontend;
 
+use BrianHenryIE\WP_Simple_Calendar\WP_Logger\Logger;
 use DateTimeImmutable;
 use DateTimeZone;
 use Throwable;
@@ -66,17 +67,45 @@ class Event_Field_Renderer {
 					$end_time    = $block->context['simple-calendar/eventEndTime'] ?? null;
 					$show_end    = $attributes['showEndTime'] ?? false;
 
-					$start      = new DateTimeImmutable( $value );
-					$end        = $end_time ? new DateTimeImmutable( $end_time ) : null;
-					$is_all_day = $end && ( $end->getTimestamp() - $start->getTimestamp() === DAY_IN_SECONDS );
+					$start            = new DateTimeImmutable( $value );
+					$end              = $end_time ? new DateTimeImmutable( $end_time ) : null;
+					$duration_seconds = $end ? $end->getTimestamp() - $start->getTimestamp() : 0;
+					$is_all_day       = $end && ( $duration_seconds > 0 ) && ( 0 === ( $duration_seconds % DAY_IN_SECONDS ) );
+					$is_multi_day     = $is_all_day && $duration_seconds > DAY_IN_SECONDS;
 
 					if ( $is_all_day ) {
-						// All-day events can be shifted away from midnight by timezone conversion.
-						// If so, use UTC to preserve the intended calendar date.
+						// All-day events are stored at midnight UTC by the iCal library, then
+						// converted to wp_timezone() on construction. If that conversion moves
+						// the time off midnight, render in UTC to recover the original calendar date.
 						if ( self::MIDNIGHT_TIME !== $start->format( 'H:i:s' ) ) {
-							$value = wp_date( $date_format, $start->getTimestamp(), new DateTimeZone( 'UTC' ) );
+							$formatted = wp_date( $date_format, $start->getTimestamp(), new DateTimeZone( 'UTC' ) );
 						} else {
-							$value = wp_date( $date_format, $start->getTimestamp() );
+							$formatted = wp_date( $date_format, $start->getTimestamp() );
+						}
+						if ( false === $formatted ) {
+							$logger = Logger::instance();
+							$logger->error(
+								'wp_date() failed: format={date_format}, timestamp={start_timestamp}',
+								array(
+									'date_format'     => $date_format,
+									'start_timestamp' => $start->getTimestamp(),
+								)
+							);
+							$value = '';
+						} else {
+							$value = $formatted;
+							if ( $show_end && $is_multi_day ) {
+								// iCal DTEND for all-day events is exclusive; subtract one day for the last displayed day.
+								$last_day_ts = $end->getTimestamp() - DAY_IN_SECONDS;
+								if ( self::MIDNIGHT_TIME !== $end->format( 'H:i:s' ) ) {
+									$end_formatted = wp_date( $date_format, $last_day_ts, new DateTimeZone( 'UTC' ) );
+								} else {
+									$end_formatted = wp_date( $date_format, $last_day_ts );
+								}
+								if ( false !== $end_formatted ) {
+									$value .= ' – ' . $end_formatted;
+								}
+							}
 						}
 					} else {
 						$value = wp_date( $date_format . ', ' . $time_format, $start->getTimestamp() );
@@ -109,6 +138,8 @@ class Event_Field_Renderer {
 							}
 						} catch ( Throwable $regex_error ) {
 							// Invalid regex — leave $value unchanged and continue.
+							$logger = Logger::instance();
+							$logger->warning( 'Regex failed: ' . $regex );
 						}
 					}
 
@@ -145,10 +176,16 @@ class Event_Field_Renderer {
 
 		} catch ( Throwable $t ) {
 
-			// TODO: Log.
+			$logger = Logger::instance();
+			$logger->error(
+				'Event_Field_Renderer::render failed for field_type={field_type}',
+				array(
+					'field_type' => $field_type,
+				)
+			);
 
 			return current_user_can( 'manage_options' )
-				? $t->getMessage()
+				? esc_html( $t->getMessage() )
 				: '';
 		}
 	}
