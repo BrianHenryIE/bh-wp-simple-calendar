@@ -12,7 +12,12 @@
 $wpEnvPath        = '.wp-env.json';
 $composerLockPath = 'composer.lock';
 
-$wpEnv = json_decode( file_get_contents( $wpEnvPath ), true );
+$wpEnvFileContents = file_get_contents( $wpEnvPath );
+if(!is_string($wpEnvFileContents)) {
+	throw new \RuntimeException('Failed to get contents of ' . $wpEnvPath);
+}
+
+$wpEnv = json_decode( $wpEnvFileContents, true );
 if ( $wpEnv === null ) {
 	fwrite( STDERR, "Failed to parse {$wpEnvPath}\n" );
 	exit( 1 );
@@ -42,7 +47,11 @@ if ( is_dir( $pluginsDir ) ) {
 }
 
 // 3. Update WordPress core version from composer.lock.
-$composerLock = json_decode( file_get_contents( $composerLockPath ), true );
+$composerLockFileontents = file_get_contents( $composerLockPath );
+if(!is_string($composerLockFileontents)) {
+	throw new \RuntimeException('Failed to get contents of ' . $composerLockPath);
+}
+$composerLock = json_decode( $composerLockFileontents, true );
 if ( $composerLock === null ) {
 	fwrite( STDERR, "Failed to parse {$composerLockPath}\n" );
 	exit( 1 );
@@ -55,7 +64,7 @@ foreach ( $composerLock['packages-dev'] ?? array() as $package ) {
 	}
 }
 
-$json = json_encode( $wpEnv, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES );
+$json = json_encode( $wpEnv, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR );
 // json_encode uses 4-space indentation; convert to 2-space to match .wp-env.json convention.
 $json = preg_replace_callback( '/^( +)/m', fn( $m ) => str_repeat( ' ', (int) ( strlen( $m[1] ) / 2 ) ), $json );
 
