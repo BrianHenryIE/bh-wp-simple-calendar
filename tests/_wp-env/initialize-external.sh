@@ -23,7 +23,7 @@ build_plugin_unix() {
   # Run the internal scripts which configure the environments:
   # First the script that is common to both environments:
   echo "run npx wp-env run cli ../setup/initialize-internal.sh $PLUGIN_SLUG;";
-  npx wp-env run cli ../setup/initialize-internal.sh $PLUGIN_SLUG;;
+  npx wp-env run cli ../setup/initialize-internal.sh $PLUGIN_SLUG;
   echo "run npx wp-env run tests-cli ../setup/initialize-internal.sh $PLUGIN_SLUG;";
   npx wp-env run tests-cli ../setup/initialize-internal.sh $PLUGIN_SLUG;
 
