@@ -1,5 +1,6 @@
 <?php
 /**
+ * The plugin settings.
  *
  * @package brianhenryie/bh-wp-simple-calendar
  */
@@ -11,15 +12,26 @@ use BrianHenryIE\WP_Simple_Calendar\WP_Logger\Logger_Settings_Interface;
 use BrianHenryIE\WP_Simple_Calendar\WP_Logger\Logger_Settings_Trait;
 use BrianHenryIE\WP_Simple_Calendar\Psr\Log\LogLevel;
 
+/**
+ * Plugin log level, name, version, slug etc.
+ */
 class Settings implements Settings_Interface, Logger_Settings_Interface {
 	use Logger_Settings_Trait;
 
+	/**
+	 * The currently installed version.
+	 *
+	 * An on object orientated method to return the value defined in the main plugin file.
+	 */
 	public function get_plugin_version(): string {
 		return defined( 'BH_WP_SIMPLE_CALENDAR_VERSION' )
 			? constant( 'BH_WP_SIMPLE_CALENDAR_VERSION' )
 			: '3.2.1';
 	}
 
+	/**
+	 * Minimum Psr log level to record.
+	 */
 	public function get_log_level(): string {
 		return LogLevel::INFO;
 	}
