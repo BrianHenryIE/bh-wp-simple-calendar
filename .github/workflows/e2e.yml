@@ -29,6 +29,12 @@ jobs:
           node-version: '20'
           cache: 'npm'
 
+      - name: Install sponge
+        run: sudo apt-get install moreutils
+
+      - name: Install PHP dependencies
+        run: composer install --verbose
+
       - name: Install dependencies
         run: npm ci
 
