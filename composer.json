@@ -59,7 +59,7 @@
 		"brianhenryie/php-codecoverage-markdown": "*",
 		"brianhenryie/strauss": "*",
 		"dealerdirect/phpcodesniffer-composer-installer": "*",
-		"johnpbloch/wordpress": "*",
+		"johnpbloch/wordpress": "6.9.4",
 		"kamazee/pr-filter": "^1.1.0",
 		"lucatume/wp-browser": "^4",
 		"phpstan/extension-installer": "*",

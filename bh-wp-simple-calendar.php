@@ -16,9 +16,10 @@
  * Plugin URI:        http://github.com/BrianHenryIE/bh-wp-simple-calendar/
  * Description:       Displays iCal/.ics/Google Calendar in a block/widget/shortcode using templates.
  * Version:           3.2.1
+ * Requires at least: 6.9.4
  * Requires PHP:      8.3
  * Author:            Brian Henry
- * Author URI:        http://example.com/
+ * Author URI:        http://BrianHenry.ie
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       bh-wp-simple-calendar
