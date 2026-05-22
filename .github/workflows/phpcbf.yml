@@ -50,7 +50,8 @@ jobs:
       - name: Run PHPCS to add annotations to the code
         continue-on-error: true
         run: |
-          vendor/bin/phpcs -q --report=checkstyle > tmp && mv tmp phpcs-checkstyle.xml
+          vendor/bin/phpcs -q --report=checkstyle > phpcs-checkstyle.xml
+          cat phpcs-checkstyle.xml
           cat phpcs-checkstyle.xml | cs2pr
 #          vendor/bin/phpcs -q --report=checkstyle | sponge phpcs-checkstyle.xml
 
