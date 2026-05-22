@@ -114,7 +114,7 @@ class Event_Field_Renderer_Test extends Unit_Testcase {
 			->andReturn( 'class="simple-calendar-event-date"' );
 
 		WP_Mock::userFunction( 'wp_date' )
-			->andReturnUsing( fn( $format, $ts ) => date( $format, $ts ) );
+			->andReturnUsing( fn( $format, $ts ) => gmdate( $format, $ts ) );
 
 		$result = Event_Field_Renderer::render(
 			$block,
@@ -147,7 +147,7 @@ class Event_Field_Renderer_Test extends Unit_Testcase {
 			->andReturn( 'class="simple-calendar-event-date"' );
 
 		WP_Mock::userFunction( 'wp_date' )
-			->andReturnUsing( fn( $format, $ts ) => date( $format, $ts ) );
+			->andReturnUsing( fn( $format, $ts ) => gmdate( $format, $ts ) );
 
 		$result = Event_Field_Renderer::render(
 			$block,
@@ -179,7 +179,7 @@ class Event_Field_Renderer_Test extends Unit_Testcase {
 			->andReturn( 'class="simple-calendar-event-date"' );
 
 		WP_Mock::userFunction( 'wp_date' )
-			->andReturnUsing( fn( $format, $ts ) => date( $format, $ts ) );
+			->andReturnUsing( fn( $format, $ts ) => gmdate( $format, $ts ) );
 
 		$result = Event_Field_Renderer::render(
 			$block,
