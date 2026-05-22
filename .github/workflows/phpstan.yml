@@ -77,14 +77,22 @@ jobs:
         env:
           CHECKSTYLE_FILENAME: "phpstan-checkstyle.xml"
 
-      - name: Fail if there are still PHPStan errors in the modified files (pr) (necessitates previous failure)
-        if: ${{ failure() && github.event_name == 'pull_request' }}
+      - name: Generate filtered-checkstyle.xml – PHPStan errors only the modified lines in the pr diff
+        if: ${{ github.event_name == 'pull_request' }}
         run: |
-          vendor/bin/prf filter-checkstyle ${{ env.DIFF_FILENAME }} ${{ env.CHECKSTYLE_FILENAME }} filtered-checkstyle.xml --base-path=$GITHUB_WORKSPACE
-          cat filtered-checkstyle.xml | cs2pr
+          vendor/bin/prf filter-checkstyle ${{ env.DIFF_FILENAME }} ${{ env.CHECKSTYLE_FILENAME }} ${{ env.OUTPUT_FILENAME }} --base-path=$GITHUB_WORKSPACE
         env:
           DIFF_FILENAME: ${{ steps.pr_diff.outputs.diff_filename }}
           CHECKSTYLE_FILENAME: "phpstan-checkstyle.xml"
+          OUTPUT_FILENAME: "filtered-checkstyle.xml"
+
+      # We don't really care about the annotations of cs2pr here, but we use it to fail.
+      - name: Fail if there are still PHPStan errors in modified lines
+        if: ${{ github.event_name == 'pull_request' }}
+        run: |
+          cat ${{ env.FILTERED_CHECKSTYLE_FILENAME }} | cs2pr
+        env:
+          FILTERED_CHECKSTYLE_FILENAME: "filtered-checkstyle.xml"
 
       # On PRs, print out the xml for debug.
       - name: Debug log filtered-checkstyle.xml
