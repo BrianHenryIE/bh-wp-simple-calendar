@@ -47,14 +47,6 @@ jobs:
         run: vendor/bin/phpstan analyse includes -c phpstan.neon --memory-limit 1G
         if: ${{ github.event_name != 'pull_request' }}
 
-      - name: Get changed files
-        if: ${{ github.event_name == 'pull_request' }}
-        id: changed_files_includes
-        uses: tj-actions/changed-files@v47
-        with:
-          separator: ' '
-          files: 'includes/**/**.php'
-
       # This outputs `steps.pr_diff.outputs.diff_filename` and `steps.pr_diff.outputs.diff_contents`.
       - name: Get the PR diff
         id: pr_diff
@@ -72,8 +64,7 @@ jobs:
         env:
           TARGET_BRANCH_REF_NAME: ${{ github.event.pull_request.base.ref }}
 
-      # On PRs, only fail for errors in important modified files.
-      - name: Run PHPStan at phpstan.neon level only on changed_files in includes directory
+      - name: Run PHPStan at phpstan.neon level only on files specified in phpstan.neon (i.e. excluding tests)
         if: ${{ github.event_name == 'pull_request' }}
         continue-on-error: true
         run: |
@@ -86,8 +77,8 @@ jobs:
         env:
           CHECKSTYLE_FILENAME: "phpstan-checkstyle.xml"
 
-      - name: Fail if there are still PHPStan errors in the modified files (pr)
-        if: ${{ github.event_name == 'pull_request' }}
+      - name: Fail if there are still PHPStan errors in the modified files (pr) (necessitates previous failure)
+        if: ${{ failure() && github.event_name == 'pull_request' }}
         run: |
           vendor/bin/prf filter-checkstyle ${{ env.DIFF_FILENAME }} ${{ env.CHECKSTYLE_FILENAME }} filtered-checkstyle.xml --base-path=$GITHUB_WORKSPACE
           cat filtered-checkstyle.xml | cs2pr

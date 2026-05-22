@@ -78,7 +78,7 @@ jobs:
       - name: Fail if there are still phpcs errors in the modified files (pr)
         if: ${{ github.event_name == 'pull_request' }}
         run: |
-          vendor/bin/prf filter-checkstyle ${{ env.DIFF_FILENAME }} ${{ env.CHECKSTYLE_FILENAME }}  filtered-checkstyle.xml --base-path=$(pwd)
+          vendor/bin/prf filter-checkstyle ${{ env.DIFF_FILENAME }} ${{ env.CHECKSTYLE_FILENAME }} filtered-checkstyle.xml --base-path=$(pwd)
           cat filtered-checkstyle.xml | cs2pr
         env:
           DIFF_FILENAME: ${{ steps.pr_diff.outputs.diff_filename }}
