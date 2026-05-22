@@ -29,8 +29,10 @@ jobs:
           tools: composer, cs2pr
           extensions: zip
 
-      - name: Install sponge
-        run: sudo apt-get install moreutils
+      #dpkg: error processing archive /var/cache/apt/archives/moreutils_0.69-1_amd64.deb (--unpack):
+      #  trying to overwrite '/usr/bin/parallel', which is also in package parallel 20231122+ds-1
+#      - name: Install sponge
+#        run: sudo apt-get install moreutils
 
       - name: Run composer install
         run: composer install
