@@ -5,3 +5,20 @@ I want to ask:
 * what is the next event?
 * when was the calendar cache last updated?
 
+I want notifications when:
+
+* a new event is added
+* an event is updated
+* an event is deleted
+
+
+TODO:
+
+* purge caches on plugin update
+* Improve "calendar updated" log to detail what has changed
+* "Starting cron job" should be debug not info level
+* Log level, change info -> warning – "Checking private uploads folder logs failed with error cURL error 28: Operation timed out after 2001 milliseconds with 0 bytes received"
+* commit hooks for coding standards
+
+
+install WP CLI i18n via composer.
