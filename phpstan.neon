@@ -12,6 +12,7 @@ parameters:
         - autoload.php
     scanFiles:
         - vendor/antecedent/patchwork/Patchwork.php
+        - tests/unit/class-unit-testcase.php
     scanDirectories:
         - vendor-prefixed
         - vendor/wp-cli
