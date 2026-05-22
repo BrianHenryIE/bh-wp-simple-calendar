@@ -29,6 +29,13 @@ jobs:
           node-version: '20'
           cache: 'npm'
 
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.3
+          tools: composer
+          extensions: zip
+
       - name: Install PHP dependencies
         run: composer install --verbose
 
