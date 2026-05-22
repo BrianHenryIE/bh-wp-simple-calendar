@@ -13,6 +13,7 @@ parameters:
     scanFiles:
         - vendor/antecedent/patchwork/Patchwork.php
         - tests/unit/class-unit-testcase.php
+        - tests/wpunit/class-wpunit-testcase.php
     scanDirectories:
         - vendor-prefixed
         - vendor/wp-cli
