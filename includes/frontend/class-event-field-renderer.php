@@ -131,20 +131,32 @@ class Event_Field_Renderer {
 							continue;
 						}
 
-						$value = preg_replace( '/' . $regex . '/', $replacement, $value )
-							?? ( function () use ( $value, $regex ) {
-								// Invalid regex — leave $value unchanged and continue.
-								$logger = Logger::instance();
-								$logger->warning(
-									'Regex failed: {regex} {error_no} {error_message}',
-									array(
-										'regex'         => $regex,
-										'error_no'      => preg_last_error(),
-										'error_message' => preg_last_error_msg(),
-									)
-								);
-								return $value;
-							} );
+						try {
+							$value = preg_replace( '/' . $regex . '/', $replacement, $value )
+									?? ( function () use ( $value, $regex ) {
+										// Invalid regex — leave $value unchanged and continue.
+										$logger = Logger::instance();
+										$logger->warning(
+											'Regex failed: {regex} {error_no} {error_message}',
+											array(
+												'regex'    => $regex,
+												'error_no' => preg_last_error(),
+												'error_message' => preg_last_error_msg(),
+											)
+										);
+
+										return $value;
+									} );
+						} catch ( Throwable $t ) {
+							// `preg_replace()` throws an Error when the $regex is malformed.
+							$logger = Logger::instance();
+							$logger->warning(
+								'Regex failed: {regex}',
+								array(
+									'regex' => $regex,
+								)
+							);
+						}
 					}
 
 					$value = esc_html( $value );
