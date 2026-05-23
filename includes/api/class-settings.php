@@ -21,7 +21,7 @@ class Settings implements Settings_Interface, Logger_Settings_Interface {
 	/**
 	 * The currently installed version.
 	 *
-	 * An on object orientated method to return the value defined in the main plugin file.
+	 * An object orientated method to return the value defined in the main plugin file.
 	 */
 	public function get_plugin_version(): string {
 		return defined( 'BH_WP_SIMPLE_CALENDAR_VERSION' )
