@@ -28,8 +28,10 @@ jobs:
           tools: composer, cs2pr
           extensions: zip
 
-      - name: Install sponge
-        run: sudo apt-get install moreutils
+#dpkg: error processing archive /var/cache/apt/archives/moreutils_0.69-1_amd64.deb (--unpack):
+#  trying to overwrite '/usr/bin/parallel', which is also in package parallel 20231122+ds-1
+#      - name: Install sponge
+#        run: sudo apt-get install moreutils
 
       - name: Run composer install
         run: composer install
@@ -44,14 +46,6 @@ jobs:
       - name: Run PHPStan to print errors on the includes directory in the normal format and fail hard (main)
         run: vendor/bin/phpstan analyse includes -c phpstan.neon --memory-limit 1G
         if: ${{ github.event_name != 'pull_request' }}
-
-      - name: Get changed files
-        if: ${{ github.event_name == 'pull_request' }}
-        id: changed_files_includes
-        uses: tj-actions/changed-files@v47
-        with:
-          separator: ' '
-          files: 'includes/**/**.php'
 
       # This outputs `steps.pr_diff.outputs.diff_filename` and `steps.pr_diff.outputs.diff_contents`.
       - name: Get the PR diff
@@ -70,17 +64,39 @@ jobs:
         env:
           TARGET_BRANCH_REF_NAME: ${{ github.event.pull_request.base.ref }}
 
-      # On PRs, only fail for errors in important modified files.
-      - name: Run PHPStan at phpstan.neon level only on changed_files in includes directory
+      - name: Run PHPStan at phpstan.neon level only on files specified in phpstan.neon (i.e. excluding tests)
         if: ${{ github.event_name == 'pull_request' }}
         continue-on-error: true
-        run: vendor/bin/phpstan analyse ${{ steps.changed_files_includes.outputs.all_changed_files }} -c phpstan.neon --memory-limit 1G --error-format=checkstyle | sponge phpstan-checkstyle.xml
+        run: vendor/bin/phpstan analyse -c phpstan.neon --memory-limit 1G --error-format=checkstyle > phpstan-checkstyle.xml
 
-      - name: Fail if there are still PHPStan errors in the modified files (pr)
+      # On PRs, print out the xml for debug.
+      - name: Debug log phpstan-checkstyle.xml
+        continue-on-error: true
+        if: ${{ github.event_name == 'pull_request' }}
+        run: cat ${{ env.CHECKSTYLE_FILENAME }}
+        env:
+          CHECKSTYLE_FILENAME: "phpstan-checkstyle.xml"
+
+      - name: Generate filtered-checkstyle.xml – PHPStan errors only the modified lines in the pr diff
         if: ${{ github.event_name == 'pull_request' }}
         run: |
-          vendor/bin/prf filter-checkstyle ${{ env.DIFF_FILENAME }} ${{ env.CHECKSTYLE_FILENAME }}  filtered-checkstyle.xml --base-path=$(pwd)
-          cat filtered-checkstyle.xml | cs2pr
+          vendor/bin/prf filter-checkstyle ${{ env.DIFF_FILENAME }} ${{ env.CHECKSTYLE_FILENAME }} ${{ env.OUTPUT_FILENAME }} --base-path=$GITHUB_WORKSPACE
         env:
           DIFF_FILENAME: ${{ steps.pr_diff.outputs.diff_filename }}
           CHECKSTYLE_FILENAME: "phpstan-checkstyle.xml"
+          OUTPUT_FILENAME: "filtered-checkstyle.xml"
+
+      # We don't really care about the annotations of cs2pr here, but we use it to fail.
+      - name: Fail if there are still PHPStan errors in modified lines
+        if: ${{ github.event_name == 'pull_request' }}
+        run: |
+          cat ${{ env.FILTERED_CHECKSTYLE_FILENAME }} | cs2pr
+        env:
+          FILTERED_CHECKSTYLE_FILENAME: "filtered-checkstyle.xml"
+
+      # On PRs, print out the xml for debug.
+      - name: Debug log filtered-checkstyle.xml
+        if: ${{ failure() && github.event_name == 'pull_request' }}
+        run: cat ${{ env.CHECKSTYLE_FILENAME }}
+        env:
+          CHECKSTYLE_FILENAME: "filtered-checkstyle.xml"

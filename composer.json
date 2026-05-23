@@ -35,13 +35,6 @@
 		}
 	},
 	"repositories": {
-    "kamazee/pr-filter": {
-      "url": "https://github.com/BrianHenryIE/pr-filter",
-      "type": "git",
-      "only": [
-        "kamazee/pr-filter"
-      ]
-    },
 		"outlandishideas/wpackagist": {
 			"type": "composer",
 			"url": "https://wpackagist.org"
@@ -66,17 +59,17 @@
 		"brianhenryie/php-codecoverage-markdown": "*",
 		"brianhenryie/strauss": "*",
 		"dealerdirect/phpcodesniffer-composer-installer": "*",
-		"johnpbloch/wordpress": "*",
-    "kamazee/pr-filter": "dev-PHP-8.0",
+		"johnpbloch/wordpress": "6.9.4",
+		"kamazee/pr-filter": "^1.1.0",
 		"lucatume/wp-browser": "^4",
 		"phpstan/extension-installer": "*",
+		"phpstan/phpstan-phpunit": "^2.0",
 		"phpunit/phpcov": "*",
-		"rector/rector": "*",
+		"rector/rector": "^2.4.1",
 		"squizlabs/php_codesniffer": "*",
 		"szepeviktor/phpstan-wordpress": "*",
 		"wordpress/wordpress": "*",
 		"wp-cli/dist-archive-command": "dev-main",
-		"wp-cli/wp-cli-bundle": "^2.12",
 		"wp-coding-standards/wpcs": "*",
 		"wpackagist-plugin/query-monitor": "*",
 		"wpackagist-theme/twentytwenty": "*"
@@ -147,13 +140,10 @@
 			"updated_files=$(echo $(git diff --name-only `git merge-base origin/master HEAD` | grep \\.php | tr '\\n' '\\0' | xargs -0 ls -1df 2>/dev/null)); if [ -n \"$updated_files\" ]; then phpcbf $(echo $updated_files); phpcs $(echo $updated_files); phpstan analyse $(echo $updated_files) --level max --memory-limit 1G; else echo \"No modified php files for phpstan.\"; fi;"
 		],
 		"create-plugin-archive": [
-			"wp i18n make-pot src languages/$(basename \"$PWD\").pot --domain=$(basename \"$PWD\")",
 			"wp dist-archive . ./dist-archive --plugin-dirname=$(basename \"$PWD\") --create-target-dir"
 		],
 		"sync-composer-wpenv": [
-      "for name in $(cat .wp-env.json | jq '.mappings | values[]' | sed -r 's/^\\\"|\\\"$//g'); do [ ! -d $name ] && [ ! -f $name ] && echo $name && jq 'del(.. | select(. ==\"'$name'\"))' .wp-env.json | sponge .wp-env.json || true; done",
-      "find wp-content/plugins -type d -depth 1 ! -type l | sort -h | jq -Rn '[inputs]' | jq 'reduce .[] as $item ({}; . + {$item:$item})' | jq '.[] |= \"./\\(.)\"' | jq '. | {mappings: .}' | jq --sort-keys -s '.[] * $existing[]' --slurpfile existing .wp-env.json | sponge .wp-env.json",
-      "INSTALLED_WORDPRESS_VERSION=$(cat composer.lock | jq --raw-output '.\"packages-dev\"[] | select(.name==\"johnpbloch/wordpress-core\") | .version'); cat .wp-env.json| jq '.core=\"WordPress/WordPress#'$INSTALLED_WORDPRESS_VERSION'\"' | sponge .wp-env.json"
-    ]
+			"@php bin/sync-composer-wpenv.php"
+		]
 	}
 }

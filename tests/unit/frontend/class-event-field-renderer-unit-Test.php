@@ -3,12 +3,28 @@
 namespace BrianHenryIE\WP_Simple_Calendar\Frontend;
 
 use BrianHenryIE\WP_Simple_Calendar\Unit_Testcase;
+use BrianHenryIE\WP_Simple_Calendar\WP_Logger\Logger;
+use DateTimeImmutable;
+use DateTimeZone;
 use WP_Mock;
 
 /**
  * @coversDefaultClass \BrianHenryIE\WP_Simple_Calendar\Frontend\Event_Field_Renderer
  */
 class Event_Field_Renderer_Test extends Unit_Testcase {
+
+	protected function setUp(): void {
+		parent::setUp();
+
+		$logger = $this->logger;
+
+		\Patchwork\redefine(
+			array( Logger::class, 'instance' ),
+			function () use ( $logger ) {
+				return $logger;
+			}
+		);
+	}
 
 	/**
 	 * Helper to create a mock WP_Block with context.
@@ -112,7 +128,7 @@ class Event_Field_Renderer_Test extends Unit_Testcase {
 			->andReturn( 'class="simple-calendar-event-date"' );
 
 		WP_Mock::userFunction( 'wp_date' )
-			->andReturnUsing( fn( $format, $ts ) => date( $format, $ts ) );
+			->andReturnUsing( fn( $format, $ts ) => gmdate( $format, $ts ) );
 
 		$result = Event_Field_Renderer::render(
 			$block,
@@ -145,7 +161,7 @@ class Event_Field_Renderer_Test extends Unit_Testcase {
 			->andReturn( 'class="simple-calendar-event-date"' );
 
 		WP_Mock::userFunction( 'wp_date' )
-			->andReturnUsing( fn( $format, $ts ) => date( $format, $ts ) );
+			->andReturnUsing( fn( $format, $ts ) => gmdate( $format, $ts ) );
 
 		$result = Event_Field_Renderer::render(
 			$block,
@@ -177,7 +193,7 @@ class Event_Field_Renderer_Test extends Unit_Testcase {
 			->andReturn( 'class="simple-calendar-event-date"' );
 
 		WP_Mock::userFunction( 'wp_date' )
-			->andReturnUsing( fn( $format, $ts ) => date( $format, $ts ) );
+			->andReturnUsing( fn( $format, $ts ) => gmdate( $format, $ts ) );
 
 		$result = Event_Field_Renderer::render(
 			$block,
@@ -193,6 +209,46 @@ class Event_Field_Renderer_Test extends Unit_Testcase {
 		// Should contain the date but not a time separator or time value.
 		$this->assertStringContainsString( 'Saturday', $result );
 		$this->assertStringNotContainsString( '00:00', $result );
+		$this->assertStringNotContainsString( '–', $result );
+	}
+
+	/**
+	 * @covers ::render
+	 */
+	public function test_render_date_all_day_with_shifted_start_uses_correct_day(): void {
+		$block = $this->make_block(
+			array(
+				'simple-calendar/eventStartTime' => '2026-03-13T17:00:00-07:00',
+				'simple-calendar/eventEndTime'   => '2026-03-14T17:00:00-07:00',
+			)
+		);
+
+		WP_Mock::userFunction( 'get_block_wrapper_attributes' )
+			->once()
+			->andReturn( 'class="simple-calendar-event-date"' );
+
+		WP_Mock::userFunction( 'wp_date' )
+			->andReturnUsing(
+				function ( $format, $timestamp, $timezone = null ) {
+					$dt = new DateTimeImmutable( '@' . $timestamp );
+					$dt = $dt->setTimezone( $timezone instanceof DateTimeZone ? $timezone : new DateTimeZone( 'America/Los_Angeles' ) );
+					return $dt->format( $format );
+				}
+			);
+
+		$result = Event_Field_Renderer::render(
+			$block,
+			array(
+				'dateFormat'  => 'l F j',
+				'timeFormat'  => 'H:i',
+				'showEndTime' => true,
+			),
+			'date',
+			'time'
+		);
+
+		$this->assertStringContainsString( 'Saturday', $result );
+		$this->assertStringNotContainsString( 'Friday', $result );
 		$this->assertStringNotContainsString( '–', $result );
 	}
 

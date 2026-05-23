@@ -15,10 +15,11 @@
  * Plugin Name:       Simple Calendar
  * Plugin URI:        http://github.com/BrianHenryIE/bh-wp-simple-calendar/
  * Description:       Displays iCal/.ics/Google Calendar in a block/widget/shortcode using templates.
- * Version:           3.2.0
+ * Version:           3.2.1
+ * Requires at least: 6.9.4
  * Requires PHP:      8.3
  * Author:            Brian Henry
- * Author URI:        http://example.com/
+ * Author URI:        http://BrianHenry.ie
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       bh-wp-simple-calendar
@@ -48,7 +49,7 @@ require_once plugin_dir_path( __FILE__ ) . 'autoload.php';
 /**
  * Current plugin version. Using SemVer - https://semver.org
  */
-define( 'BH_WP_SIMPLE_CALENDAR_VERSION', '3.2.0' );
+define( 'BH_WP_SIMPLE_CALENDAR_VERSION', '3.2.1' );
 define( 'BH_WP_SIMPLE_CALENDAR_BASENAME', plugin_basename( __FILE__ ) );
 define( 'BH_WP_SIMPLE_CALENDAR_PATH', plugin_dir_path( __FILE__ ) );
 define( 'BH_WP_SIMPLE_CALENDAR_URL', trailingslashit( plugins_url( plugin_basename( __DIR__ ) ) ) );

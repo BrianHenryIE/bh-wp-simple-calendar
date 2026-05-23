@@ -29,8 +29,10 @@ jobs:
           tools: composer, cs2pr
           extensions: zip
 
-      - name: Install sponge
-        run: sudo apt-get install moreutils
+      #dpkg: error processing archive /var/cache/apt/archives/moreutils_0.69-1_amd64.deb (--unpack):
+      #  trying to overwrite '/usr/bin/parallel', which is also in package parallel 20231122+ds-1
+#      - name: Install sponge
+#        run: sudo apt-get install moreutils
 
       - name: Run composer install
         run: composer install
@@ -48,8 +50,10 @@ jobs:
       - name: Run PHPCS to add annotations to the code
         continue-on-error: true
         run: |
-          vendor/bin/phpcs -q --report=checkstyle | sponge phpcs-checkstyle.xml
+          vendor/bin/phpcs -q --report=checkstyle > phpcs-checkstyle.xml
+          cat phpcs-checkstyle.xml
           cat phpcs-checkstyle.xml | cs2pr
+#          vendor/bin/phpcs -q --report=checkstyle | sponge phpcs-checkstyle.xml
 
       - name: Fail if there are still phpcs errors in the production code (master/main)
         if: ${{ github.event_name != 'pull_request' }}
@@ -74,8 +78,15 @@ jobs:
       - name: Fail if there are still phpcs errors in the modified files (pr)
         if: ${{ github.event_name == 'pull_request' }}
         run: |
-          vendor/bin/prf filter-checkstyle ${{ env.DIFF_FILENAME }} ${{ env.CHECKSTYLE_FILENAME }}  filtered-checkstyle.xml --base-path=$(pwd)
+          vendor/bin/prf filter-checkstyle ${{ env.DIFF_FILENAME }} ${{ env.CHECKSTYLE_FILENAME }} filtered-checkstyle.xml --base-path=$(pwd)
           cat filtered-checkstyle.xml | cs2pr
         env:
           DIFF_FILENAME: ${{ steps.pr_diff.outputs.diff_filename }}
           CHECKSTYLE_FILENAME: "phpcs-checkstyle.xml"
+
+      # On PRs, print out the xml for debug.
+      - name: Debug log filtered-checkstyle.xml
+        if: ${{ failure() && github.event_name == 'pull_request' }}
+        run: cat ${{ env.CHECKSTYLE_FILENAME }}
+        env:
+          CHECKSTYLE_FILENAME: "filtered-checkstyle.xml"

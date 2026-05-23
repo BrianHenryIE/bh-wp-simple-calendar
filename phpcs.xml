@@ -14,6 +14,7 @@
     <!-- Show colors -->
     <arg name="colors"/>
 
+    <exclude-pattern>/bin/sync-composer-wpenv.php</exclude-pattern>
     <exclude-pattern>/assets/</exclude-pattern>
     <exclude-pattern>/build/</exclude-pattern>
     <exclude-pattern>/dist-archive/</exclude-pattern>
