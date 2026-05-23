@@ -9,6 +9,8 @@ use BrianHenryIE\WP_Simple_Calendar\WPUnit_Testcase;
  */
 class Event_Field_Renderer_Wpunit_Test extends WPUnit_Testcase {
 
+	private string $orignal_timezone_option;
+
 	/**
 	 * Helper to create a mock WP_Block with context.
 	 *
@@ -21,6 +23,7 @@ class Event_Field_Renderer_Wpunit_Test extends WPUnit_Testcase {
 
 	protected function setUp(): void {
 		parent::setUp();
+		$this->orignal_timezone_option = get_option( 'timezone_string', 'America/Los_Angeles' );
 		update_option( 'timezone_string', 'America/Los_Angeles' );
 		// get_block_wrapper_attributes() reads WP_Block_Supports::$block_to_render, which is
 		// only set inside WordPress's block render pipeline. Prime it so the function works
@@ -33,6 +36,7 @@ class Event_Field_Renderer_Wpunit_Test extends WPUnit_Testcase {
 
 	protected function tearDown(): void {
 		\WP_Block_Supports::$block_to_render = null;
+		update_option( 'timezone_string', $this->orignal_timezone_option );
 		parent::tearDown();
 	}
 
