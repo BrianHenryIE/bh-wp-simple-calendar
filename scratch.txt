@@ -19,6 +19,7 @@ TODO:
 * "Starting cron job" should be debug not info level
 * Log level, change info -> warning – "Checking private uploads folder logs failed with error cURL error 28: Operation timed out after 2001 milliseconds with 0 bytes received"
 * commit hooks for coding standards
+* admin view should use real calendar when possible, only the current mock when no configured calendar or no upcoming events/
 
 
 install WP CLI i18n via composer.
