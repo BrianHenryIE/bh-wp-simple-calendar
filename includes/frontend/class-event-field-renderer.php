@@ -131,16 +131,20 @@ class Event_Field_Renderer {
 							continue;
 						}
 
-						try {
-							$result = preg_replace( '/' . $regex . '/', $replacement, $value );
-							if ( null !== $result ) {
-								$value = $result;
-							}
-						} catch ( Throwable $regex_error ) {
-							// Invalid regex — leave $value unchanged and continue.
-							$logger = Logger::instance();
-							$logger->warning( 'Regex failed: ' . $regex );
-						}
+						$value = preg_replace( '/' . $regex . '/', $replacement, $value )
+							?? ( function () use ( $value, $regex ) {
+								// Invalid regex — leave $value unchanged and continue.
+								$logger = Logger::instance();
+								$logger->warning(
+									'Regex failed: {regex} {error_no} {error_message}',
+									array(
+										'regex'         => $regex,
+										'error_no'      => preg_last_error(),
+										'error_message' => preg_last_error_msg(),
+									)
+								);
+								return $value;
+							} );
 					}
 
 					$value = esc_html( $value );
@@ -180,6 +184,7 @@ class Event_Field_Renderer {
 			$logger->error(
 				'Event_Field_Renderer::render failed for field_type={field_type}',
 				array(
+					'exception'  => $t,
 					'field_type' => $field_type,
 				)
 			);
