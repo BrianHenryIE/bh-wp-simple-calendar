@@ -65,7 +65,7 @@
 		"phpstan/extension-installer": "*",
 		"phpstan/phpstan-phpunit": "^2.0",
 		"phpunit/phpcov": "*",
-		"rector/rector": "^2.4.1",
+		"rector/rector": "^2.4.5",
 		"squizlabs/php_codesniffer": "*",
 		"szepeviktor/phpstan-wordpress": "*",
 		"wordpress/wordpress": "*",
