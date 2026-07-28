@@ -41,16 +41,17 @@ class Event_Field_Renderer_Wpunit_Test extends WPUnit_Testcase {
 	}
 
 	/**
-	 * All-day event whose iCal-midnight-UTC start is shifted to 17:00 by the LA timezone.
-	 * The fix renders in UTC to recover the correct calendar date (Saturday March 14).
+	 * All-day events are anchored to midnight in the site timezone and flagged via block context,
+	 * so the calendar date (Saturday March 14) renders directly.
 	 *
 	 * @covers ::render
 	 */
-	public function test_render_date_all_day_shifted_start_shows_correct_day(): void {
+	public function test_render_date_all_day_shows_correct_day(): void {
 		$block = $this->make_block(
 			array(
-				'simple-calendar/eventStartTime' => '2026-03-13T17:00:00-07:00',
-				'simple-calendar/eventEndTime'   => '2026-03-14T17:00:00-07:00',
+				'simple-calendar/eventStartTime' => '2026-03-14T00:00:00-07:00',
+				'simple-calendar/eventEndTime'   => '2026-03-15T00:00:00-07:00',
+				'simple-calendar/eventIsAllDay'  => true,
 			)
 		);
 
@@ -71,18 +72,18 @@ class Event_Field_Renderer_Wpunit_Test extends WPUnit_Testcase {
 	}
 
 	/**
-	 * All-day event on a UTC site — start is midnight UTC, H:i:s check passes, wp_timezone() path is safe.
-	 * Events are converted to wp_timezone() before storage, so this only occurs when the site is UTC.
+	 * All-day event on a UTC site.
 	 *
 	 * @covers ::render
 	 */
-	public function test_render_date_all_day_midnight_start_on_utc_site_shows_correct_day(): void {
+	public function test_render_date_all_day_on_utc_site_shows_correct_day(): void {
 		update_option( 'timezone_string', 'UTC' );
 
 		$block = $this->make_block(
 			array(
 				'simple-calendar/eventStartTime' => '2026-03-14T00:00:00+00:00',
 				'simple-calendar/eventEndTime'   => '2026-03-15T00:00:00+00:00',
+				'simple-calendar/eventIsAllDay'  => true,
 			)
 		);
 
@@ -110,8 +111,9 @@ class Event_Field_Renderer_Wpunit_Test extends WPUnit_Testcase {
 	public function test_render_date_multi_day_all_day_shows_date_range(): void {
 		$block = $this->make_block(
 			array(
-				'simple-calendar/eventStartTime' => '2026-03-12T17:00:00-07:00',
-				'simple-calendar/eventEndTime'   => '2026-03-15T17:00:00-07:00',
+				'simple-calendar/eventStartTime' => '2026-03-13T00:00:00-07:00',
+				'simple-calendar/eventEndTime'   => '2026-03-16T00:00:00-07:00',
+				'simple-calendar/eventIsAllDay'  => true,
 			)
 		);
 
@@ -139,8 +141,9 @@ class Event_Field_Renderer_Wpunit_Test extends WPUnit_Testcase {
 	public function test_render_date_multi_day_all_day_without_show_end_omits_end_date(): void {
 		$block = $this->make_block(
 			array(
-				'simple-calendar/eventStartTime' => '2026-03-12T17:00:00-07:00',
-				'simple-calendar/eventEndTime'   => '2026-03-15T17:00:00-07:00',
+				'simple-calendar/eventStartTime' => '2026-03-13T00:00:00-07:00',
+				'simple-calendar/eventEndTime'   => '2026-03-16T00:00:00-07:00',
+				'simple-calendar/eventIsAllDay'  => true,
 			)
 		);
 
@@ -157,5 +160,35 @@ class Event_Field_Renderer_Wpunit_Test extends WPUnit_Testcase {
 
 		$this->assertStringContainsString( 'Friday', $result );
 		$this->assertStringNotContainsString( '–', $result );
+	}
+
+	/**
+	 * A timed event lasting exactly 24 hours is not an all-day event; it must still show its time.
+	 * The previous duration-modulo heuristic misidentified these.
+	 *
+	 * @covers ::render
+	 */
+	public function test_render_date_timed_event_lasting_exactly_one_day_shows_time(): void {
+		$block = $this->make_block(
+			array(
+				'simple-calendar/eventStartTime' => '2026-03-13T09:30:00-07:00',
+				'simple-calendar/eventEndTime'   => '2026-03-14T09:30:00-07:00',
+				'simple-calendar/eventIsAllDay'  => false,
+			)
+		);
+
+		$result = Event_Field_Renderer::render(
+			$block,
+			array(
+				'dateFormat'  => 'l F j',
+				'timeFormat'  => 'H:i',
+				'showEndTime' => false,
+			),
+			'date',
+			'time'
+		);
+
+		$this->assertStringContainsString( 'Friday March 13', $result );
+		$this->assertStringContainsString( '09:30', $result );
 	}
 }

@@ -71,7 +71,9 @@ class API implements API_Interface {
 			return null;
 		}
 
-		$ical = new ICal();
+		// RFC 5545 "floating" times (no TZID, no trailing Z) mean local time. Without this the
+		// parser falls back to PHP's default timezone, which WordPress sets to UTC.
+		$ical = new ICal( array( 'defaultTimeZone' => wp_timezone_string() ) );
 		$ical->initString( $calendar_ics );
 
 		$range_end = new DateTime( 'now', new DateTimeZone( $ical->calendarTimeZone() ) );

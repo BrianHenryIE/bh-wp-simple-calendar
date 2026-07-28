@@ -185,6 +185,7 @@ class Event_Field_Renderer_Test extends Unit_Testcase {
 			array(
 				'simple-calendar/eventStartTime' => '2026-03-14T00:00:00+00:00',
 				'simple-calendar/eventEndTime'   => '2026-03-15T00:00:00+00:00',
+				'simple-calendar/eventIsAllDay'  => true,
 			)
 		);
 
@@ -215,11 +216,12 @@ class Event_Field_Renderer_Test extends Unit_Testcase {
 	/**
 	 * @covers ::render
 	 */
-	public function test_render_date_all_day_with_shifted_start_uses_correct_day(): void {
+	public function test_render_date_all_day_uses_site_timezone_day(): void {
 		$block = $this->make_block(
 			array(
-				'simple-calendar/eventStartTime' => '2026-03-13T17:00:00-07:00',
-				'simple-calendar/eventEndTime'   => '2026-03-14T17:00:00-07:00',
+				'simple-calendar/eventStartTime' => '2026-03-14T00:00:00-07:00',
+				'simple-calendar/eventEndTime'   => '2026-03-15T00:00:00-07:00',
+				'simple-calendar/eventIsAllDay'  => true,
 			)
 		);
 

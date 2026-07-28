@@ -12,6 +12,7 @@ namespace BrianHenryIE\WP_Simple_Calendar\API;
 use BrianHenryIE\WP_Simple_Calendar\ICal\Event;
 use BrianHenryIE\WP_Simple_Calendar\ICal\ICal;
 use DateTimeImmutable;
+use Exception;
 
 /**
  * Immutable DTO representing a single calendar event.
@@ -30,6 +31,7 @@ readonly class Calendar_Event {
 	 * @param bool               $is_recurring           Whether this event is part of a recurring series.
 	 * @param string|null        $recurrence_rule        The raw RRULE string (e.g. "FREQ=WEEKLY;BYDAY=TU").
 	 * @param string|null        $recurrence_description Human-readable recurrence (e.g. "Every Tuesday").
+	 * @param bool               $is_all_day             Whether this is an all-day event (iCal `VALUE=DATE`).
 	 */
 	public function __construct(
 		public string $summary,
@@ -43,6 +45,7 @@ readonly class Calendar_Event {
 		public bool $is_recurring = false,
 		public ?string $recurrence_rule = null,
 		public ?string $recurrence_description = null,
+		public bool $is_all_day = false,
 	) {
 	}
 
@@ -63,11 +66,14 @@ readonly class Calendar_Event {
 		$summary = preg_replace( '/\s+/', ' ', $summary );
 		$summary = trim( $summary );
 
-		$start_datetime = $ical->iCalDateToDateTime( $ical_event->dtstart );
-		$end_datetime   = empty( $ical_event->dtend ) ? null : $ical->iCalDateToDateTime( $ical_event->dtend );
+		// `VALUE=DATE` (rather than `DATE-TIME`) marks an all-day event.
+		$dtstart_array = $ical_event->dtstart_array ?? null;
+		$is_all_day    = 'DATE' === ( $dtstart_array[0]['VALUE'] ?? '' );
 
-		$start_time = DateTimeImmutable::createFromInterface( $start_datetime )->setTimezone( wp_timezone() );
-		$end_time   = is_null( $end_datetime ) ? null : DateTimeImmutable::createFromInterface( $end_datetime )->setTimezone( wp_timezone() );
+		$start_time = self::to_site_time( $ical, $ical_event->dtstart, $dtstart_array, $is_all_day );
+		$end_time   = empty( $ical_event->dtend )
+			? null
+			: self::to_site_time( $ical, $ical_event->dtend, $ical_event->dtend_array ?? null, $is_all_day );
 
 		// Detect recurring events via the RRULE property.
 		$rrule        = $ical_event->rrule ?? null;
@@ -100,7 +106,47 @@ readonly class Calendar_Event {
 			is_recurring: $is_recurring,
 			recurrence_rule: $rrule,
 			recurrence_description: $recurrence_description,
+			is_all_day: $is_all_day,
 		);
+	}
+
+	/**
+	 * Convert an iCal date/time to the WordPress site timezone.
+	 *
+	 * The ics-parser resolves `DTSTART;TZID=…` into `DTSTART_array[2]` (a Unix timestamp) during
+	 * parsing. The plain `dtstart`/`dtend` strings have the TZID parameter stripped, so passing
+	 * them to `ICal::iCalDateToDateTime()` treats them as floating times — which is why TZID
+	 * events used to display in the wrong timezone.
+	 *
+	 * All-day events carry no time or timezone at all; they are anchored to midnight in the site
+	 * timezone so the calendar date is preserved when formatting.
+	 *
+	 * @param ICal                   $ical       The ICal instance, used only for the fallback conversion.
+	 * @param string                 $ical_date  The raw date value, e.g. "20260711T100000" or "20260808".
+	 * @param array<int, mixed>|null $date_array The library's `DT{START|END}_array`, if available.
+	 * @param bool                   $is_all_day Whether this is an all-day (`VALUE=DATE`) event.
+	 *
+	 * @throws Exception When the date cannot be parsed at all.
+	 */
+	protected static function to_site_time( ICal $ical, string $ical_date, ?array $date_array, bool $is_all_day ): DateTimeImmutable {
+
+		if ( $is_all_day ) {
+			// The "!" resets the time portion to 00:00:00.
+			$midnight = DateTimeImmutable::createFromFormat( '!Ymd', substr( $ical_date, 0, 8 ), wp_timezone() );
+			if ( false !== $midnight ) {
+				return $midnight;
+			}
+		} elseif ( isset( $date_array[2] ) && is_numeric( $date_array[2] ) ) {
+			return ( new DateTimeImmutable( '@' . (int) $date_array[2] ) )->setTimezone( wp_timezone() );
+		}
+
+		// Fallback for events not produced by the parser (e.g. hand-constructed in tests).
+		$datetime = $ical->iCalDateToDateTime( $ical_date );
+		if ( false === $datetime ) {
+			throw new Exception( "Unable to parse iCal date: {$ical_date}" );
+		}
+
+		return DateTimeImmutable::createFromInterface( $datetime )->setTimezone( wp_timezone() );
 	}
 
 	/**
@@ -233,6 +279,7 @@ readonly class Calendar_Event {
 			'isRecurring'           => $this->is_recurring,
 			'recurrenceRule'        => $this->recurrence_rule,
 			'recurrenceDescription' => $this->recurrence_description,
+			'isAllDay'              => $this->is_all_day,
 		);
 	}
 }

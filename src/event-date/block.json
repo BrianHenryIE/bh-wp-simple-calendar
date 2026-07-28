@@ -32,7 +32,8 @@
 	},
 	"usesContext": [
 		"simple-calendar/eventStartTime",
-		"simple-calendar/eventEndTime"
+		"simple-calendar/eventEndTime",
+		"simple-calendar/eventIsAllDay"
 	],
 	"editorScript": "file:./index.js",
 	"render": "file:./render.php"

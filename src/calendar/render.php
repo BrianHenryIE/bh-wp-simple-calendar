@@ -65,6 +65,7 @@ foreach ( $all_events as $event ) {
 		'simple-calendar/eventLocation'              => $event->location,
 		'simple-calendar/eventUid'                   => $event->uid,
 		'simple-calendar/eventIsRecurring'           => $event->is_recurring,
+		'simple-calendar/eventIsAllDay'              => $event->is_all_day,
 		'simple-calendar/eventRecurrenceDescription' => $event->recurrence_description,
 	);
 
