@@ -36,6 +36,9 @@ jobs:
       - name: Run composer install
         run: composer install
 
+      - name: Add pr-filter package
+        run: composer require --dev kamazee/pr-filter --no-scripts
+
       - name: Run PHPStan at max level to add annotations to the code
         id: phpstan_max
         continue-on-error: true

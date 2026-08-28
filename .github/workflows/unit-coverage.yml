@@ -65,6 +65,12 @@ jobs:
       - name: Install PHP dependencies
         run: composer install --verbose
 
+      - name: Add brianhenryie/php-codecoverage-markdown package
+        run: composer require --dev brianhenryie/php-codecoverage-markdown --no-scripts
+
+      - name: Print installed packages
+        run: composer show
+
       - name: Install JS dependencies
         run: npm install
 
