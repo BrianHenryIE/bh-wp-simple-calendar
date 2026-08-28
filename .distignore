@@ -3,12 +3,11 @@
 /.github
 /.idea
 /artifacts
-/CHANGELOG.md
 /codeception.dist.yml
-/composer.lock
+composer.lock
 /dist-archive
 /node_modules
-/package-lock.json
+package-lock.json
 /phpcs.xml
 /phpstan.neon
 /phpstanbootstrap.php

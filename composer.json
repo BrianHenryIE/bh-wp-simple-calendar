@@ -1,149 +1,150 @@
 {
-	"name": "brianhenryie/bh-wp-simple-calendar",
-	"description": "This is a short description of what plugin_title does.",
-	"type": "wordpress-plugin",
-	"license": "GPL-2.0+-or-later",
-	"authors": [
-		{
-			"name": "Matthew Pemrich"
-		},
-		{
-			"name": "Nico Boehr"
-		},
-		{
-			"name": "Bram Waasdorp",
-			"email": "bram@waasdorpsoekhan.nl"
-		},
-		{
-			"name": "Brian Henry",
-			"email": "BrianHenryIE@gmail.com"
-		}
-	],
-	"minimum-stability": "dev",
-	"prefer-stable": true,
-	"config": {
-		"platform": {
-			"php": "8.3"
-		},
-		"process-timeout": 0,
-		"sort-packages": true,
-		"allow-plugins": {
-			"composer/installers": true,
-			"dealerdirect/phpcodesniffer-composer-installer": true,
-			"johnpbloch/wordpress-core-installer": true,
-			"phpstan/extension-installer": true
-		}
-	},
-	"repositories": {
-		"outlandishideas/wpackagist": {
-			"type": "composer",
-			"url": "https://wpackagist.org"
-		},
-		"wordpress/wordpress": {
-			"url": "https://github.com/WordPress/wordpress-develop.git",
-			"type": "git"
-		}
-	},
-	"require": {
+  "name": "brianhenryie/bh-wp-simple-calendar",
+  "description": "This is a short description of what plugin_title does.",
+  "type": "wordpress-plugin",
+  "license": "GPL-2.0+-or-later",
+  "authors": [
+    {
+      "name": "Matthew Pemrich"
+    },
+    {
+      "name": "Nico Boehr"
+    },
+    {
+      "name": "Bram Waasdorp",
+      "email": "bram@waasdorpsoekhan.nl"
+    },
+    {
+      "name": "Brian Henry",
+      "email": "BrianHenryIE@gmail.com"
+    }
+  ],
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "config": {
+    "platform": {
+      "php": "8.3"
+    },
+    "process-timeout": 0,
+    "sort-packages": true,
+    "allow-plugins": {
+      "composer/installers": true,
+      "dealerdirect/phpcodesniffer-composer-installer": true,
+      "johnpbloch/wordpress-core-installer": true,
+      "phpstan/extension-installer": true
+    }
+  },
+  "repositories": {
+    "outlandish/wpackagist": {
+      "type": "composer",
+      "url": "https://wpackagist.org",
+      "only": [
+        "wpackagist-plugin/*",
+        "wpackagist-theme/*"
+      ]
+    }
+  },
+  "require": {
     "php": ">=8.3",
-		"johngrogg/ics-parser": "^3",
-		"alleyinteractive/wordpress-autoloader": "*",
-		"brianhenryie/bh-wp-private-uploads": "^0.2",
-		"brianhenryie/bh-wp-logger": "^0.2",
-		"lucatume/di52": "^4"
-	},
-	"require-dev": {
-		"10up/wp_mock": "^1.0",
-		"antecedent/patchwork": "^2.1",
-		"brianhenryie/color-logger": "*",
-		"brianhenryie/php-codecoverage-markdown": "*",
-		"brianhenryie/strauss": "*",
-		"dealerdirect/phpcodesniffer-composer-installer": "*",
-		"johnpbloch/wordpress": "6.9.4",
-		"kamazee/pr-filter": "^1.1.0",
-		"lucatume/wp-browser": "^4",
-		"phpstan/extension-installer": "*",
-		"phpstan/phpstan-phpunit": "^2.0",
-		"phpunit/phpcov": "*",
-		"rector/rector": "^2.4.1",
-		"squizlabs/php_codesniffer": "*",
-		"szepeviktor/phpstan-wordpress": "*",
-		"wordpress/wordpress": "*",
-		"wp-cli/dist-archive-command": "dev-main",
-		"wp-coding-standards/wpcs": "*",
-		"wpackagist-plugin/query-monitor": "*",
-		"wpackagist-theme/twentytwenty": "*"
-	},
-	"autoload-dev": {
-		"psr-4": {
-			"BrianHenryIE\\WP_Simple_Calendar\\": [
-				"tests/unit",
-				"tests/wpunit",
-				"tests/integration"
-			]
-		},
-		"classmap": [
-			"tests/_support"
-		]
-	},
-	"extra": {
-		"strauss": {
-			"namespace_prefix": "BrianHenryIE\\WP_Simple_Calendar\\",
-			"target_directory": "/vendor-prefixed/",
-			"classmap_prefix": "BH_WP_Simple_Calendar_",
-			"namespace_replacement_patterns": {
-				"~BrianHenryIE\\\\(.*)~": "BrianHenryIE\\WP_Simple_Calendar\\\\$1"
-			},
-			"override_autoload": {
-				"johngrogg/ics-parser": {
-					"classmap": ["src"]
-				}
-			}
-		}
-	},
-	"scripts": {
-		"post-install-cmd": [
-			"strauss",
-			"@sync-composer-wpenv"
-		],
-		"post-update-cmd": [
-			"strauss",
-			"@sync-composer-wpenv"
-		],
-		"test": [
-			"codecept run unit",
-			"codecept run wpunit",
-			"codecept run integration"
-		],
-		"test-coverage": [
-			"codecept run unit --coverage unit.cov",
-			"codecept run wpunit --coverage wpunit.cov",
-			"phpcov merge --clover tests/_output/clover.xml --html tests/_output/html tests/_output;",
-			"open tests/_output/html/index.html"
-		],
-		"cs": [
-			"phpcs || true",
-			"phpstan analyse --memory-limit 1G"
-		],
-		"cs-fix": [
-			"phpcbf || true",
-			"@cs"
-		],
-		"cs-strict": [
-			"phpcs || true",
-			"phpstan analyse --level max --memory-limit 1G"
-		],
-		"cs-changes": [
-			"updated_files=$(echo $(git diff --name-only `git merge-base origin/master HEAD` | grep \\.php | tr '\\n' '\\0' | xargs -0 ls -1df 2>/dev/null)); if [ -n \"$updated_files\" ]; then phpcbf $(echo $updated_files); phpcs $(echo $updated_files); phpstan analyse $(echo $updated_files) --memory-limit 1G; else echo \"No modified php files for phpstan.\"; fi;"
-		],
-		"cs-changes-strict": [
-			"updated_files=$(echo $(git diff --name-only `git merge-base origin/master HEAD` | grep \\.php | tr '\\n' '\\0' | xargs -0 ls -1df 2>/dev/null)); if [ -n \"$updated_files\" ]; then phpcbf $(echo $updated_files); phpcs $(echo $updated_files); phpstan analyse $(echo $updated_files) --level max --memory-limit 1G; else echo \"No modified php files for phpstan.\"; fi;"
-		],
-		"create-plugin-archive": [
-			"wp dist-archive . ./dist-archive --plugin-dirname=$(basename \"$PWD\") --create-target-dir"
-		],
-		"sync-composer-wpenv": [
-			"@php bin/sync-composer-wpenv.php"
-		]
-	}
+    "johngrogg/ics-parser": "^3",
+    "alleyinteractive/wordpress-autoloader": "*",
+    "brianhenryie/bh-wp-private-uploads": ">0.2",
+    "brianhenryie/bh-wp-logger": ">0.2",
+    "lucatume/di52": "^4"
+  },
+  "require-dev": {
+    "10up/wp_mock": "^1.0",
+    "antecedent/patchwork": "^2.1",
+    "brianhenryie/color-logger": "*",
+    "brianhenryie/php-codecoverage-markdown": "*",
+    "brianhenryie/strauss": "*",
+    "dealerdirect/phpcodesniffer-composer-installer": "*",
+    "johnpbloch/wordpress": "6.9.4",
+    "kamazee/pr-filter": "^1.1.0",
+    "lucatume/wp-browser": "^4",
+    "phpstan/extension-installer": "*",
+    "phpstan/phpstan-phpunit": "^2.0",
+    "phpunit/phpcov": "*",
+    "rector/rector": "^2.4.1",
+    "squizlabs/php_codesniffer": "*",
+    "szepeviktor/phpstan-wordpress": "*",
+    "wp-cli/dist-archive-command": "dev-main",
+    "wp-coding-standards/wpcs": "*",
+    "wpackagist-plugin/query-monitor": "*",
+    "wpackagist-theme/twentytwenty": "*"
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "BrianHenryIE\\WP_Simple_Calendar\\": [
+        "tests/unit",
+        "tests/wpunit",
+        "tests/integration"
+      ]
+    },
+    "classmap": [
+      "tests/_support"
+    ]
+  },
+  "extra": {
+    "strauss": {
+      "namespace_prefix": "BrianHenryIE\\WP_Simple_Calendar\\",
+      "target_directory": "/vendor-prefixed/",
+      "classmap_prefix": "BH_WP_Simple_Calendar_",
+      "namespace_replacement_patterns": {
+        "~BrianHenryIE\\\\(.*)~": "BrianHenryIE\\WP_Simple_Calendar\\\\$1"
+      },
+      "override_autoload": {
+        "johngrogg/ics-parser": {
+          "classmap": [
+            "src"
+          ]
+        }
+      }
+    }
+  },
+  "scripts": {
+    "post-install-cmd": [
+      "strauss",
+      "@sync-composer-wpenv"
+    ],
+    "post-update-cmd": [
+      "strauss",
+      "@sync-composer-wpenv"
+    ],
+    "test": [
+      "codecept run unit",
+      "codecept run wpunit",
+      "codecept run integration"
+    ],
+    "test-coverage": [
+      "codecept run unit --coverage unit.cov",
+      "codecept run wpunit --coverage wpunit.cov",
+      "phpcov merge --clover tests/_output/clover.xml --html tests/_output/html tests/_output;",
+      "open tests/_output/html/index.html"
+    ],
+    "cs": [
+      "phpcs || true",
+      "phpstan analyse --memory-limit 1G"
+    ],
+    "cs-fix": [
+      "phpcbf || true",
+      "@cs"
+    ],
+    "cs-strict": [
+      "phpcs || true",
+      "phpstan analyse --level max --memory-limit 1G"
+    ],
+    "cs-changes": [
+      "updated_files=$(echo $(git diff --name-only `git merge-base origin/master HEAD` | grep \\.php | tr '\\n' '\\0' | xargs -0 ls -1df 2>/dev/null)); if [ -n \"$updated_files\" ]; then phpcbf $(echo $updated_files); phpcs $(echo $updated_files); phpstan analyse $(echo $updated_files) --memory-limit 1G; else echo \"No modified php files for phpstan.\"; fi;"
+    ],
+    "cs-changes-strict": [
+      "updated_files=$(echo $(git diff --name-only `git merge-base origin/master HEAD` | grep \\.php | tr '\\n' '\\0' | xargs -0 ls -1df 2>/dev/null)); if [ -n \"$updated_files\" ]; then phpcbf $(echo $updated_files); phpcs $(echo $updated_files); phpstan analyse $(echo $updated_files) --level max --memory-limit 1G; else echo \"No modified php files for phpstan.\"; fi;"
+    ],
+    "create-plugin-archive": [
+      "wp dist-archive . ./dist-archive --plugin-dirname=$(basename \"$PWD\") --create-target-dir"
+    ],
+    "sync-composer-wpenv": [
+      "@php bin/sync-composer-wpenv.php"
+    ]
+  }
 }
