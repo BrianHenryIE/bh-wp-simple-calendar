@@ -32,6 +32,10 @@ Event location can link to Google Maps and regexes can be added to modify the ad
 
 <img src="./.github/event-location-block.png" alt="Toggle to enable Google Maps link, a three-part config for regex replace, first field in a private note because regexes can be hard to understand their purpose, the regex pattern, and the replacement pattern" width="276px">
 
+Event description has an option to only show the description on the first listed instance of a recurring event, so the same text is not repeated on every instance.
+
+<img src="./.github/event-description-block.png" alt="Toggle to only show the description on the first occurrence of a recurring event" width="280px">
+
 ## Deprecated
 
 * Widget functionality/implementation should still work. Templates can be overridden in your child theme: `calendar-template-1.php`,  `calendar-item-template-1.php`.

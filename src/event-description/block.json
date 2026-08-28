@@ -16,8 +16,15 @@
 		"spacing": { "margin": true, "padding": true },
 		"typography": { "fontSize": true, "fontFamily": true }
 	},
+	"attributes": {
+		"showOnlyForFirstOccurrence": {
+			"type": "boolean",
+			"default": false
+		}
+	},
 	"usesContext": [
-		"simple-calendar/eventDescription"
+		"simple-calendar/eventDescription",
+		"simple-calendar/eventIsFirstDisplayedInstance"
 	],
 	"editorScript": "file:./index.js",
 	"render": "file:./render.php"
