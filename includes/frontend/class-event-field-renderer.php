@@ -9,14 +9,12 @@ namespace BrianHenryIE\WP_Simple_Calendar\Frontend;
 
 use BrianHenryIE\WP_Simple_Calendar\WP_Logger\Logger;
 use DateTimeImmutable;
-use DateTimeZone;
 use Throwable;
 
 /**
  * Renders event field blocks using block context.
  */
 class Event_Field_Renderer {
-	private const MIDNIGHT_TIME = '00:00:00';
 
 	/**
 	 * Render an event field block.
@@ -67,21 +65,15 @@ class Event_Field_Renderer {
 					$end_time    = $block->context['simple-calendar/eventEndTime'] ?? null;
 					$show_end    = $attributes['showEndTime'] ?? false;
 
-					$start            = new DateTimeImmutable( $value );
-					$end              = $end_time ? new DateTimeImmutable( $end_time ) : null;
-					$duration_seconds = $end ? $end->getTimestamp() - $start->getTimestamp() : 0;
-					$is_all_day       = $end && ( $duration_seconds > 0 ) && ( 0 === ( $duration_seconds % DAY_IN_SECONDS ) );
-					$is_multi_day     = $is_all_day && $duration_seconds > DAY_IN_SECONDS;
+					$start        = new DateTimeImmutable( $value );
+					$end          = $end_time ? new DateTimeImmutable( $end_time ) : null;
+					$is_all_day   = (bool) ( $block->context['simple-calendar/eventIsAllDay'] ?? false );
+					$is_multi_day = $is_all_day && $end && $end > $start->modify( '+1 day' );
 
 					if ( $is_all_day ) {
-						// All-day events are stored at midnight UTC by the iCal library, then
-						// converted to wp_timezone() on construction. If that conversion moves
-						// the time off midnight, render in UTC to recover the original calendar date.
-						if ( self::MIDNIGHT_TIME !== $start->format( 'H:i:s' ) ) {
-							$formatted = wp_date( $date_format, $start->getTimestamp(), new DateTimeZone( 'UTC' ) );
-						} else {
-							$formatted = wp_date( $date_format, $start->getTimestamp() );
-						}
+						// All-day events are anchored to midnight in the site timezone, so the
+						// date formats correctly without any timezone adjustment here.
+						$formatted = wp_date( $date_format, $start->getTimestamp() );
 						if ( false === $formatted ) {
 							$logger = Logger::instance();
 							$logger->error(
@@ -95,13 +87,10 @@ class Event_Field_Renderer {
 						} else {
 							$value = $formatted;
 							if ( $show_end && $is_multi_day ) {
-								// iCal DTEND for all-day events is exclusive; subtract one day for the last displayed day.
-								$last_day_ts = $end->getTimestamp() - DAY_IN_SECONDS;
-								if ( self::MIDNIGHT_TIME !== $end->format( 'H:i:s' ) ) {
-									$end_formatted = wp_date( $date_format, $last_day_ts, new DateTimeZone( 'UTC' ) );
-								} else {
-									$end_formatted = wp_date( $date_format, $last_day_ts );
-								}
+								// iCal DTEND for all-day events is exclusive; step back one day for the
+								// last displayed day. Use modify() rather than subtracting seconds so a
+								// DST transition inside the range doesn't shift the date.
+								$end_formatted = wp_date( $date_format, $end->modify( '-1 day' )->getTimestamp() );
 								if ( false !== $end_formatted ) {
 									$value .= ' – ' . $end_formatted;
 								}

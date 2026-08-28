@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.2.2
+
+* Fix: events using a `TZID` timezone displayed at the wrong time
+* Fix: all-day events are now identified from the iCal `VALUE=DATE` parameter rather than guessed from their duration
+* Fix: "floating" times without a timezone are interpreted in the site's timezone
+
 ## 3.2.1 – May 2026
 
 * Fix: timezone bug with all-day events displaying wrong day

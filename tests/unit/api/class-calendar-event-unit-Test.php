@@ -86,6 +86,7 @@ class Calendar_Event_Test extends Unit_Testcase {
 			is_recurring: true,
 			recurrence_rule: 'FREQ=DAILY',
 			recurrence_description: 'Every day',
+			is_all_day: true,
 		);
 
 		$array = $event->to_array();
@@ -101,6 +102,7 @@ class Calendar_Event_Test extends Unit_Testcase {
 		$this->assertTrue( $array['isRecurring'] );
 		$this->assertSame( 'FREQ=DAILY', $array['recurrenceRule'] );
 		$this->assertSame( 'Every day', $array['recurrenceDescription'] );
+		$this->assertTrue( $array['isAllDay'] );
 	}
 
 	/**
@@ -123,6 +125,7 @@ class Calendar_Event_Test extends Unit_Testcase {
 		$this->assertFalse( $array['isRecurring'] );
 		$this->assertNull( $array['recurrenceRule'] );
 		$this->assertNull( $array['recurrenceDescription'] );
+		$this->assertFalse( $array['isAllDay'] );
 	}
 
 	/**

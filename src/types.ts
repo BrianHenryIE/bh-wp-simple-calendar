@@ -14,6 +14,7 @@ export interface CalendarEvent {
 	isRecurring: boolean;
 	recurrenceRule: string | null;
 	recurrenceDescription: string | null;
+	isAllDay: boolean;
 }
 
 /**
@@ -32,6 +33,7 @@ export const PLACEHOLDER_EVENTS: CalendarEvent[] = [
 		isRecurring: true,
 		recurrenceRule: 'FREQ=MONTHLY;BYDAY=1TU',
 		recurrenceDescription: 'Every month on 1st Tuesday',
+		isAllDay: false,
 	},
 	{
 		summary: 'Workshop: Getting Started',
@@ -45,6 +47,7 @@ export const PLACEHOLDER_EVENTS: CalendarEvent[] = [
 		isRecurring: false,
 		recurrenceRule: null,
 		recurrenceDescription: null,
+		isAllDay: false,
 	},
 	{
 		summary: 'Annual Celebration',
@@ -59,6 +62,7 @@ export const PLACEHOLDER_EVENTS: CalendarEvent[] = [
 		isRecurring: false,
 		recurrenceRule: null,
 		recurrenceDescription: null,
+		isAllDay: false,
 	},
 ];
 
