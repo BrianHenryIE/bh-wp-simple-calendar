@@ -277,6 +277,141 @@ class Event_Field_Renderer_Test extends Unit_Testcase {
 	}
 
 	/**
+	 * By default, the description is printed on every instance of a recurring event.
+	 *
+	 * @covers ::render
+	 */
+	public function test_render_description_repeat_instance_shown_by_default(): void {
+		$block = $this->make_block(
+			array(
+				'simple-calendar/eventDescription' => 'Weekly sync meeting.',
+				'simple-calendar/eventIsFirstDisplayedInstance' => false,
+			)
+		);
+
+		WP_Mock::userFunction( 'get_block_wrapper_attributes' )
+			->once()
+			->andReturn( 'class="simple-calendar-event-description"' );
+
+		WP_Mock::userFunction( 'wp_kses_post' )
+			->andReturnUsing( fn( $s ) => $s );
+
+		$result = Event_Field_Renderer::render( $block, array(), 'description', 'div' );
+
+		$this->assertStringContainsString( 'Weekly sync meeting.', $result );
+	}
+
+	/**
+	 * @covers ::render
+	 */
+	public function test_render_description_repeat_instance_shown_when_option_disabled(): void {
+		$block = $this->make_block(
+			array(
+				'simple-calendar/eventDescription' => 'Weekly sync meeting.',
+				'simple-calendar/eventIsFirstDisplayedInstance' => false,
+			)
+		);
+
+		WP_Mock::userFunction( 'get_block_wrapper_attributes' )
+			->once()
+			->andReturn( 'class="simple-calendar-event-description"' );
+
+		WP_Mock::userFunction( 'wp_kses_post' )
+			->andReturnUsing( fn( $s ) => $s );
+
+		$result = Event_Field_Renderer::render(
+			$block,
+			array( 'showOnlyForFirstOccurrence' => false ),
+			'description',
+			'div'
+		);
+
+		$this->assertStringContainsString( 'Weekly sync meeting.', $result );
+	}
+
+	/**
+	 * @covers ::render
+	 */
+	public function test_render_description_repeat_instance_hidden_when_option_enabled(): void {
+		$block = $this->make_block(
+			array(
+				'simple-calendar/eventDescription' => 'Weekly sync meeting.',
+				'simple-calendar/eventIsFirstDisplayedInstance' => false,
+			)
+		);
+
+		WP_Mock::userFunction( 'get_block_wrapper_attributes' )
+			->never();
+
+		$result = Event_Field_Renderer::render(
+			$block,
+			array( 'showOnlyForFirstOccurrence' => true ),
+			'description',
+			'div'
+		);
+
+		$this->assertSame( '', $result );
+	}
+
+	/**
+	 * @covers ::render
+	 */
+	public function test_render_description_first_instance_shown_when_option_enabled(): void {
+		$block = $this->make_block(
+			array(
+				'simple-calendar/eventDescription' => 'Weekly sync meeting.',
+				'simple-calendar/eventIsFirstDisplayedInstance' => true,
+			)
+		);
+
+		WP_Mock::userFunction( 'get_block_wrapper_attributes' )
+			->once()
+			->andReturn( 'class="simple-calendar-event-description"' );
+
+		WP_Mock::userFunction( 'wp_kses_post' )
+			->andReturnUsing( fn( $s ) => $s );
+
+		$result = Event_Field_Renderer::render(
+			$block,
+			array( 'showOnlyForFirstOccurrence' => true ),
+			'description',
+			'div'
+		);
+
+		$this->assertStringContainsString( 'Weekly sync meeting.', $result );
+	}
+
+	/**
+	 * When the parent block does not provide the context (e.g. an older calendar block),
+	 * the description should still be shown rather than silently disappearing.
+	 *
+	 * @covers ::render
+	 */
+	public function test_render_description_shown_when_option_enabled_but_context_missing(): void {
+		$block = $this->make_block(
+			array(
+				'simple-calendar/eventDescription' => 'Weekly sync meeting.',
+			)
+		);
+
+		WP_Mock::userFunction( 'get_block_wrapper_attributes' )
+			->once()
+			->andReturn( 'class="simple-calendar-event-description"' );
+
+		WP_Mock::userFunction( 'wp_kses_post' )
+			->andReturnUsing( fn( $s ) => $s );
+
+		$result = Event_Field_Renderer::render(
+			$block,
+			array( 'showOnlyForFirstOccurrence' => true ),
+			'description',
+			'div'
+		);
+
+		$this->assertStringContainsString( 'Weekly sync meeting.', $result );
+	}
+
+	/**
 	 * @covers ::render
 	 */
 	public function test_render_location(): void {

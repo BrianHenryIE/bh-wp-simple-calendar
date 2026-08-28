@@ -106,6 +106,15 @@ class Event_Field_Renderer {
 					break;
 
 				case 'description':
+					// Optionally print the description only on the first displayed instance of a
+					// recurring event, rather than repeating it on every instance.
+					$show_only_for_first_occurrence = ! empty( $attributes['showOnlyForFirstOccurrence'] );
+					$is_first_displayed_instance    = (bool) ( $block->context['simple-calendar/eventIsFirstDisplayedInstance'] ?? true );
+
+					if ( $show_only_for_first_occurrence && ! $is_first_displayed_instance ) {
+						return '';
+					}
+
 					$value = wp_kses_post( $value );
 					break;
 

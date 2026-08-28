@@ -53,20 +53,30 @@ $wrapper_attributes = get_block_wrapper_attributes( array( 'class' => 'simple-ca
 $output  = '<div ' . $wrapper_attributes . '>';
 $output .= '<ul class="simple-calendar-event-list">';
 
+// Instances of a recurring event share a UID. Track which UIDs have already been displayed so
+// child blocks can, e.g., print the description only on the first instance.
+$displayed_uids = array();
+
 foreach ( $all_events as $event ) {
+	$is_first_displayed_instance = empty( $event->uid ) || ! isset( $displayed_uids[ $event->uid ] );
+	if ( ! empty( $event->uid ) ) {
+		$displayed_uids[ $event->uid ] = true;
+	}
+
 	// Render the inner blocks (event-template) with this event's context.
 	$event_context = array(
-		'simple-calendar/eventSummary'               => $event->summary,
-		'simple-calendar/eventStatus'                => $event->status,
-		'simple-calendar/eventStartTime'             => $event->start_time->format( 'c' ),
-		'simple-calendar/eventEndTime'               => $event->end_time?->format( 'c' ),
-		'simple-calendar/eventUrl'                   => $event->url,
-		'simple-calendar/eventDescription'           => $event->description,
-		'simple-calendar/eventLocation'              => $event->location,
-		'simple-calendar/eventUid'                   => $event->uid,
-		'simple-calendar/eventIsRecurring'           => $event->is_recurring,
-		'simple-calendar/eventIsAllDay'              => $event->is_all_day,
-		'simple-calendar/eventRecurrenceDescription' => $event->recurrence_description,
+		'simple-calendar/eventSummary'                  => $event->summary,
+		'simple-calendar/eventStatus'                   => $event->status,
+		'simple-calendar/eventStartTime'                => $event->start_time->format( 'c' ),
+		'simple-calendar/eventEndTime'                  => $event->end_time?->format( 'c' ),
+		'simple-calendar/eventUrl'                      => $event->url,
+		'simple-calendar/eventDescription'              => $event->description,
+		'simple-calendar/eventLocation'                 => $event->location,
+		'simple-calendar/eventUid'                      => $event->uid,
+		'simple-calendar/eventIsRecurring'              => $event->is_recurring,
+		'simple-calendar/eventIsAllDay'                 => $event->is_all_day,
+		'simple-calendar/eventRecurrenceDescription'    => $event->recurrence_description,
+		'simple-calendar/eventIsFirstDisplayedInstance' => $is_first_displayed_instance,
 	);
 
 	$output .= '<li class="simple-calendar-event-item">';

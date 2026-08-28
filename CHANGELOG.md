@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.3.0
+
+* Add: option to not repeatedly print the same description on repeated events 
+
 ## 3.2.2
 
 * Fix: events using a `TZID` timezone displayed at the wrong time

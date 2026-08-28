@@ -30,7 +30,7 @@ jobs:
 
     strategy:
       matrix:
-        php: [ '8.4' ]
+        php: [ '8.3', '8.4', '8.5', '8.6' ]
 
     steps:
       - uses: actions/checkout@v6
@@ -64,6 +64,12 @@ jobs:
 
       - name: Install PHP dependencies
         run: composer install --verbose
+
+      - name: Add brianhenryie/php-codecoverage-markdown package
+        run: composer require --dev brianhenryie/php-codecoverage-markdown --no-scripts
+
+      - name: Print installed packages
+        run: composer show
 
       - name: Install JS dependencies
         run: npm install
